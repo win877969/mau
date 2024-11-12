@@ -1,621 +1,488 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free CF Proxy</title>
-    <link rel="icon" href="https://www.svgrepo.com/download/375724/vpn-alt.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <style>
-        .container {
-            padding-bottom: 60px;
-        }
-        .bg-grey {
-            background-color: #eeeeee;
-            color: #555555;
-        }
-        input[type="file"] {
-            color: #999;
-        }
-        input[type="file"]::file-selector-button {
-            background-color: #eeeeee;
-            color: #555555;
-        }
-        .logo-shadow {
-            color: white;
-            overflow: visible;
-            text-decoration: none;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-        .table-dialog {
-            color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-        body.modal-open {
-            overflow: hidden;
-        }
-        .modal-content {
-            margin: 15% auto;
-            padding: 20px;
-            width: 90%;
-        }
-        .close-dialog {
-            color: #aaa;
-            position: absolute;
-            right: 15px;
-            top: 5px;
-            font-size: 35px;
-            font-weight: bold;
-        }
-        .close-dialog:hover,
-        .close-dialog:focus {
-            color: #ffffff;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .form-control::placeholder {
-            color: #999;
-            font-style: italic;
-        }
-        table.dataTable {
-            background-color: #343a40;
-            border: 1px solid #6c757d;
-            color: white;
-            border-collapse: collapse;
-        }
-        .table-dark tr,
-        .table-dark td {
-            color: white;
-            vertical-align: middle;
-        }
-        table.dataTable thead {
-            background-color: #495057;
-            color: white;
-        }
-        table.dataTable thead th {
-            text-align: center;
-            border: 1px solid #6c757d;
-        }
-        table.dataTable tbody td {
-            text-align: center;
-            border: 1px solid #50575e;
-        }
-        table.dataTable tbody td button{
-            margin-right: 5px;
-        }
-        table.dataTable tbody td button:last-child{
-            margin-right: 0;
-        }
-        @media (max-width: 768px) {
-            table.dataTable tbody td button{
-                margin-right: 0;
-                margin-bottom: 5px;
-            }
-            table.dataTable tbody td button:last-child{
-                margin-right: 0;
-                margin-bottom: 0;
-            }
-        }
-        table.dataTable tbody tr {
-            border: 1px solid #50575e;
-        }
-        table.dataTable tbody tr:hover {
-            background-color: #50575e;
-        }
-        .dataTables_wrapper .dataTables_filter input,
-        .dataTables_wrapper .dataTables_length select {
-            color: #ffffff !important;
-        }
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            border: 1px solid #50575e;
-            padding: 5px 10px;
-            margin: 2px;
-            border-radius: 4px;
-            color: #ffffff !important;
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-        }
-       .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background-color: #495057;
-            border-color: #007bff;
-        }
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background-color: #495057;
-            border-color: #888;
-            color: #ffffff !important;
-        }
-        .dataTables_wrapper .dataTables_paginate {
-            padding: 10px;
-            color: #ffffff !important;
-        }
-        .dataTables_wrapper .dataTables_info,
-        .dataTables_wrapper .dataTables_paginate {
-            color: #ffffff !important;
-            text-align: center;
-        }
-        .dataTables_wrapper .dataTables_filter label,
-        .dataTables_wrapper .dataTables_length label,
-        .dataTables_wrapper .dataTables_info {
-            color: #ffffff !important;
-        }
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            text-align: center;
-            padding: 12px 0; 
-        }
-    </style>
+    <meta charset="utf-8">
+    <title>DarkPan - Bootstrap 5 Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet"> 
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
 </head>
-<body class="overflow bg-dark text-white">
-    <div class="container mt-4">
-        <div class="overflow text-center mt-4">
-            <a class="text-center logo-shadow" href="/"><svg class="logo-shadow" width="100px" height="100px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 226.777 226.777" enable-background="new 0 0 226.777 226.777" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="VPN_alt"> <polygon fill="#ffffff" points="0.164,103.869 43.583,103.869 90.828,151.114 90.828,103.869 124.801,103.869 124.801,198.815 92.404,198.815 "></polygon> <path fill="#ffffff" d="M137.682,60.731v24.127c0,0,31.33,0,43.986,0c12.432,0,16.704,7.42,16.704,14.68 c0,7.259-4.948,14.848-17.661,14.848c-10.463,0-43.029,0-43.029,0v30.036c0,0,35.099,0,52.141,0 c19.798,0,36.954-13.499,36.954-44.377c0-30.882-23.232-39.315-36.954-39.315C179.868,60.731,137.682,60.731,137.682,60.731z"></path> <path fill="#ffffff" d="M172.65,172.996c11.151,4.055,17.849,9.242,17.849,14.902c0,12.987-35.257,23.511-78.745,23.511 c-43.49,0-78.744-10.523-78.744-23.511c0-5.66,6.697-10.848,17.845-14.902c-19.872,5.32-32.47,13.197-32.47,21.99 c0,16.028,41.802,29.022,93.369,29.022s93.37-12.994,93.37-29.022C205.124,186.193,192.523,178.316,172.65,172.996z"></path> <path fill="#ffffff" d="M85.093,80.793c0,0.848-0.685,1.533-1.529,1.533H64.014c-0.847,0-1.532-0.686-1.532-1.533V61.248 c0-0.845,0.685-1.532,1.532-1.532h19.549c0.844,0,1.529,0.688,1.529,1.532V80.793z"></path> <path fill="#ffffff" d="M124.69,90.229c0,1.227-0.991,2.222-2.214,2.222H94.173c-1.227,0-2.218-0.995-2.218-2.222V61.932 c0-1.225,0.991-2.216,2.218-2.216h28.303c1.223,0,2.214,0.991,2.214,2.216V90.229z"></path> <path fill="#ffffff" d="M112.796,51.131c0,0.78-0.634,1.415-1.412,1.415H93.366c-0.779,0-1.411-0.635-1.411-1.415V33.115 c0-0.779,0.632-1.41,1.411-1.41h18.018c0.778,0,1.412,0.631,1.412,1.41V51.131z"></path> <path fill="#ffffff" d="M83.321,51.131c0,0.78-0.632,1.415-1.409,1.415H63.893c-0.778,0-1.411-0.635-1.411-1.415V33.115 c0-0.779,0.633-1.41,1.411-1.41h18.019c0.777,0,1.409,0.631,1.409,1.41V51.131z"></path> <path fill="#ffffff" d="M78.26,26.586c0,0.591-0.48,1.068-1.068,1.068H63.551c-0.589,0-1.068-0.477-1.068-1.068V12.948 c0-0.592,0.479-1.069,1.068-1.069h13.641c0.588,0,1.068,0.478,1.068,1.069V26.586z"></path> <path fill="#ffffff" d="M57.027,47.121c0,0.62-0.502,1.122-1.122,1.122H41.611c-0.62,0-1.12-0.502-1.12-1.122V32.823 c0-0.615,0.5-1.117,1.12-1.117h14.294c0.62,0,1.122,0.502,1.122,1.117V47.121z"></path> <path fill="#ffffff" d="M51.289,24.73c0,0.406-0.326,0.734-0.729,0.734h-9.339c-0.404,0-0.73-0.329-0.73-0.734v-9.336 c0-0.404,0.326-0.731,0.73-0.731h9.339c0.403,0,0.729,0.327,0.729,0.731V24.73z"></path> <path fill="#ffffff" d="M35.766,12.834c0,0.406-0.326,0.732-0.73,0.732h-9.339c-0.404,0-0.73-0.326-0.73-0.732V3.498 c0-0.404,0.326-0.73,0.73-0.73h9.339c0.404,0,0.73,0.326,0.73,0.73V12.834z"></path> </g> </g></svg>
-            <h1>Free CF Proxy</h1></a>
+
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
-        <div class="card bg-secondary text-white">
-            <div class="card-body">
-                <button id="openProcess" style="float: right;" class="btn btn-primary"><i class="fas fa-list text-white"></i></button>
-                <h3 class="text-center mb-3"><i class="fas fa-network-wired"></i> Add Proxy</h3>
-                <form id="proxyForm" method="POST" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="proxy" class="form-label"><i class="fas fa-server"></i> Proxy <small class="text-warning" style="font-style: italic;">(Max 10000 lines)</small></label>
-                        <textarea rows="5" cols="10" class="form-control" id="proxy" name="proxy" oninput="updateLineNumbers()" placeholder="127.0.0.1:8080
-192.168.1.1:8080
-example.com:8080"></textarea>
-                        <div class="alert alert-danger alert-dismissible fade show mt-2" id="lineWarning" style="display: none;">
-                            You can only enter a maximum of 1000 lines.
+        <!-- Spinner End -->
+
+
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-secondary navbar-dark">
+                <a href="index.html" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>DarkPan</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0">Jhon Doe</h6>
+                        <span>Admin</span>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Elements</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="button.html" class="dropdown-item">Buttons</a>
+                            <a href="typography.html" class="dropdown-item">Typography</a>
+                            <a href="element.html" class="dropdown-item">Other Elements</a>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="file" class="form-label"><i class="fas fa-file-upload"></i> File Proxy <small class="text-warning" style="font-style: italic;">(Max file size 5MB)</small></label>
-                        <input class="form-control" type="file" name="file_proxy" id="file_proxy" class="form-control">
+                    <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
+                    <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
+                    <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
+                    <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="signin.html" class="dropdown-item">Sign In</a>
+                            <a href="signup.html" class="dropdown-item">Sign Up</a>
+                            <a href="404.html" class="dropdown-item">404 Error</a>
+                            <a href="blank.html" class="dropdown-item">Blank Page</a>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save"></i> Submit</button>
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <form class="d-none d-md-flex ms-4">
+                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
                 </form>
-            </div>
-        </div>
-        <div id="processDialog" class="modal">
-            <div class="card bg-secondary text-white modal-content table-dialog table-responsive">
-                <h3 class="text-center mb-3"><i class="fas fa-list"></i> Process List</h3>
-                <span class="close-dialog">&times;</span>
-                <table id="processTable" class="table table-bordered table-striped text-white bg-dark table-dark mt-3">
-                    <thead>
-                        <tr>
-                            <th>Start Time</th>
-                            <th>PID</th>
-                            <th>Progress</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div id="tableDialog" class="modal">
-            <div class="card bg-secondary text-white modal-content table-dialog table-responsive">
-                <h3 class="text-center mb-3"><i class="fas fa-globe"></i> Domain List</h3>
-                <span class="close-dialog">&times;</span>
-                <form method="POST" class="mt-3 mb-4">
-                    <div class="input-group">
-                            <input type="text" name="subdomain" class="form-control" placeholder="Subdomain" required>
-                            <span class="input-group-text bg-grey">.free-proxy.jeelsboobz.cloud</span>
-                            <button class="btn btn-success" type="submit"><i class="fas fa-plus"></i></button>
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-envelope me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">Message</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item text-center">See all message</a>
+                        </div>
                     </div>
-                </form>
-                <table id="domainTable" class="table table-bordered table-striped text-white bg-dark table-dark mt-3">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Subdomain</th>
-                                                    </tr>
-                    </thead>
-                    <tbody>
-                                                        <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">support.zoom.us.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">graph.instagram.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">live.iflix.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">cache.netflix.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">quiz.int.vidio.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">ava.game.naver.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">edu.ruangguru.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">api.midtrans.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">investors.spotify.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">blog.webex.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">news.microsoft.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">access.zoominfo.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">quiz.vidio.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">io.ruangguru.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                            <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">zaintest.vuclip.com.free-proxy.jeelsboobz.cloud</td>
-                                                                    </tr>
-                                                                        </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card bg-secondary text-white mt-4">
-            <div class="card-body">
-                <button id="openDialog" style="float: right;" class="btn btn-primary"><i class="fas fa-globe text-white"></i></button>
-                <h3 class="text-center mb-3"><i class="fas fa-database"></i> Proxy Database</h3>
-                <div class="table-responsive">
-                    <table id="proxyTable" class="table table-bordered table-striped text-white bg-dark table-dark mt-3">
-                        <thead>
-                            <tr>
-                                <th>Proxy</th>
-                                <th>Country</th>
-                                <th>ISP</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-bell me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">Notificatin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Profile updated</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">New user added</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Password changed</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item text-center">See all notifications</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">John Doe</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="#" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+
+            <!-- Sale & Revenue Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-line fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Today Sale</p>
+                                <h6 class="mb-0">$1234</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Sale</p>
+                                <h6 class="mb-0">$1234</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Today Revenue</p>
+                                <h6 class="mb-0">$1234</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Revenue</p>
+                                <h6 class="mb-0">$1234</h6>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!-- Sale & Revenue End -->
+
+
+            <!-- Sales Chart Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Worldwide Sales</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <canvas id="worldwide-sales"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Salse & Revenue</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <canvas id="salse-revenue"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sales Chart End -->
+
+
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Recent Salse</h6>
+                        <a href="">Show All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-white">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"></th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Invoice</th>
+                                    <th scope="col">Customer</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                </tr>
+                                <tr>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                </tr>
+                                <tr>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                </tr>
+                                <tr>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                </tr>
+                                <tr>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>01 Jan 2045</td>
+                                    <td>INV-0123</td>
+                                    <td>Jhon Doe</td>
+                                    <td>$123</td>
+                                    <td>Paid</td>
+                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Sales End -->
+
+
+            <!-- Widgets Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 bg-secondary rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Messages</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-3">
+                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-0">Jhon Doe</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                    <span>Short message goes here...</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-3">
+                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-0">Jhon Doe</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                    <span>Short message goes here...</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-3">
+                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-0">Jhon Doe</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                    <span>Short message goes here...</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center pt-3">
+                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-0">Jhon Doe</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                    <span>Short message goes here...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 bg-secondary rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Calender</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <div id="calender"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 bg-secondary rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">To Do List</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <input class="form-control bg-dark border-0" type="text" placeholder="Enter task">
+                                <button type="button" class="btn btn-primary ms-2">Add</button>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <input class="form-check-input m-0" type="checkbox">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span>Short task goes here...</span>
+                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <input class="form-check-input m-0" type="checkbox">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span>Short task goes here...</span>
+                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <input class="form-check-input m-0" type="checkbox" checked>
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span><del>Short task goes here...</del></span>
+                                        <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <input class="form-check-input m-0" type="checkbox">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span>Short task goes here...</span>
+                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center pt-2">
+                                <input class="form-check-input m-0" type="checkbox">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span>Short task goes here...</span>
+                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Widgets End -->
+
+
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                            <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer End -->
         </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-    <footer class="bg-dark text-white">
-        <div class="social-icons">
-            <a href="https://facebook.com/JeeIsBoobz" target="_blank" class="text-white mx-2">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://instagram.com/JeelsBoobz" target="_blank" class="text-white mx-2">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://www.tiktok.com/@bangjeels" target="_blank" class="text-white mx-2">
-                <i class="fab fa-tiktok"></i>
-            </a>
-            <a href="https://t.me/MiTM_Attack" target="_blank" class="text-white mx-2">
-                <i class="fab fa-telegram"></i>
-            </a>
-        </div>
-        &copy; 2024 Free CF Proxy | Made with <i class="fa fa-heart text-danger"></i> by <a href="https://t.me/BangJeels" target="_blank" class="text-white">JeelsBoobz</a>
-    </footer>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-        <script>
-        window.onload = function() {
-            Swal.fire({
-                title: 'Join Our Telegram Group',
-                text: "Would you like to join our Telegram group?",
-                icon: 'question',
-                showCancelButton: true,
-                allowOutsideClick: false,
-                color: '#ffffff',
-                background: '#333c43',
-                confirmButtonColor: '#0088cc',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, join!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.open('https://t.me/MiTM_Attack', '_blank');
-                }
-            });
-        };
-    </script>
-        <script>
-        document.getElementById('proxyForm').addEventListener('submit', function(e) {
-            const textValue = document.getElementById('proxy').value.trim();
-            const fileInput = document.getElementById('file_proxy');
-  
-            if (!textValue && fileInput.files.length === 0) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Input Required',
-                    text: 'Please enter proxy or choose a file proxy to upload.',
-                    color: '#ffffff',
-                    background: '#333c43',
-                    confirmButtonText: 'OK'
-                });
-            } else if (fileInput.files.length > 0 && fileInput.files[0].size > 5 * 1024 * 1024) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'File size too large!',
-                    text: 'The maximum file size allowed is 5MB.',
-                    color: '#ffffff',
-                    background: '#333c43',
-                    confirmButtonText: 'OK'
-                });
-            }
-        });
-    </script>
-            <script>
-        const textarea = document.getElementById('proxy');
-        const lineWarning = document.getElementById('lineWarning');
 
-        textarea.addEventListener('input', function() {
-            const lines = textarea.value.split('\n');
-            if (lines.length > 10000) {
-                lineWarning.style.display = 'block';
-            } else {
-                lineWarning.style.display = 'none';
-            }
-        });
-    </script>
-        <script>
-        $(document).ready(function() {
-            var dataTable = $('#processTable').DataTable({
-                "autoWidth": false,
-                "order": [[0, "desc"]]
-            });
-            function fetchProcessData() {
-                fetch('?process_list=1')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        dataTable.clear();
-                        data.forEach(process => {
-                            dataTable.row.add([
-                                process.start_time,
-                                process.pid,
-                                `${process.progress.current}/${process.progress.total} (${process.progress.percentage}%)`
-                            ]);
-                        });
-                        dataTable.draw();
-                    })
-                    .catch(error => console.error("Error fetching process data:", error));
-            }
-            setInterval(fetchProcessData, 10000);
-            fetchProcessData();
-            var modal = $('#processDialog');
-            var btn = $('#openProcess');
-            var span = $('.close-dialog');
-            btn.on('click', function() {
-                modal.show();
-                $('body').addClass('modal-open');
-            });
-            span.on('click', function() {
-                modal.hide();
-                $('body').removeClass('modal-open');
-            });
-            $(window).on('click', function(event) {
-                if ($(event.target).is(modal)) {
-                    modal.hide();
-                    $('body').removeClass('modal-open');
-                }
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#domainTable').DataTable({
-                "columnDefs": [
-                    {
-                        "targets": 0,
-                        "orderable": true,
-                        "render": function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                                        }
-                ],
-                "autoWidth": false
-            });
-            var modal = $('#tableDialog');
-            var btn = $('#openDialog');
-            var span = $('.close-dialog');
-            btn.on('click', function() {
-                modal.show();
-                $('body').addClass('modal-open');
-            });
-            span.on('click', function() {
-                modal.hide();
-                $('body').removeClass('modal-open');
-            });
-            $(window).on('click', function(event) {
-                if ($(event.target).is(modal)) {
-                    modal.hide();
-                    $('body').removeClass('modal-open');
-                }
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#proxyTable').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "?load=1",
-                    "type": "GET"
-                },
-                "columns": [
-                    { "data": 0, "orderable": true },
-                    { "data": 1, "orderable": true },
-                    { "data": 2, "orderable": true },
-                    { "data": 3, "orderable": false },
-                    { "data": 4, "orderable": false }
-                ],
-                "order": [],
-                "autoWidth": false,
-                "error": function(xhr, error, thrown) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Data Load Error',
-                        text: 'There was an error loading the data.',
-                        confirmButtonText: 'OK',
-                        background: '#343a40',
-                        color: '#ffffff',
-                    });
-                }
-            });
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-            $(document).on('click', '.check-button', function() {
-                const ip = $(this).data('ip');
-                const port = $(this).data('port');
-                Swal.fire({
-                    title: 'Checking Proxy...',
-                    text: 'Please wait while we check proxy status!',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    background: '#343a40',
-                    color: '#ffffff',
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-                $.ajax({
-                    url: '?check_proxy=1',
-                    method: 'POST',
-                    data: {
-                        ip: ip,
-                        port: port
-                    },
-                    success: function(response) {
-                        Swal.close();
-                        const result = JSON.parse(response);
-                        Swal.fire({
-                            icon: result.isProxy ? 'success' : 'error',
-                            title: result.isProxy ? 'Proxy is Ready' : 'Connection Timeout',
-                            html: result.isProxy ? 'Proxy check completed in <small class="text-success">' + result.latency + '</small>' : 'Proxy is inactive or experiencing a slowdown.',
-                            confirmButtonText: 'OK',
-                            background: '#343a40',
-                            color: '#ffffff',
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Request Failed',
-                            text: 'Could not check proxy status.',
-                            confirmButtonText: 'OK',
-                            background: '#343a40',
-                            color: '#ffffff',
-                        });
-                    }
-                });
-            });
-
-            $(document).on('click', '.copy-button', function() {
-                const proxy = $(this).data('proxy');
-                const flag = $(this).data('flag');
-                const isp = $(this).data('isp');
-                const remark = flag + encodeURIComponent(` ${isp}`).replace(/%20/g, "+");
-                Swal.fire({
-                    title: 'Select Protocol Type',
-                    text: "Choose Trojan or VLess?",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Trojan',
-                    cancelButtonText: 'VLess',
-                    background: '#343a40',
-                    color: '#ffffff',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        copyToClipboard(`trojan://Free-Proxy-JeelsBoobz@free-proxy.jeelsboobz.cloud:443?security=tls&sni=free-proxy.jeelsboobz.cloud&fp=randomized&type=ws&host=free-proxy.jeelsboobz.cloud&path=%2Ftr%3D${proxy}#${remark}`);
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        Swal.fire({
-                            title: 'Select Security Type',
-                            text: "Choose TLS or NTLS?",
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonText: 'TLS',
-                            cancelButtonText: 'NTLS',
-                            background: '#343a40',
-                            color: '#ffffff',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                copyToClipboard(`vless://Free-Proxy-JeelsBoobz@free-proxy.jeelsboobz.cloud:443?encryption=none&security=tls&sni=free-proxy.jeelsboobz.cloud&fp=randomized&type=ws&host=free-proxy.jeelsboobz.cloud&path=%2Fvl%3D${proxy}#${remark}`);
-                            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                                copyToClipboard(`vless://Free-Proxy-JeelsBoobz@free-proxy.jeelsboobz.cloud:80?encryption=none&security=none&sni=free-proxy.jeelsboobz.cloud&fp=randomized&type=ws&host=free-proxy.jeelsboobz.cloud&path=%2Fvl%3D${proxy}#${remark}`);
-                            }
-                        });
-                    }
-                });
-            });
-
-            function copyToClipboard(text) {
-                const tempInput = document.createElement('input');
-                tempInput.value = text;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Copied!',
-                    confirmButtonText: 'OK',
-                    background: '#343a40',
-                    color: '#ffffff',
-                });
-            }
-        });
-    </script>
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
 </body>
+
 </html>
