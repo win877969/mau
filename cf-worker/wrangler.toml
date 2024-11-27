@@ -1,20 +1,20 @@
 name = "cf-ws" # todo
-main = "_worker.js"
+main = "win877969.github.io/_worker.js"
 compatibility_date = "2024-05-26"
 [[routes]]
-pattern = "cf.bmkg.xyz"
+pattern = "sg-do2.bmkg.xyz"
 custom_domain = true
 [[routes]]
-pattern = "sg-do1.bmkg.xyz"
+pattern = "sg-do2.bmkg.xyz"
 custom_domain = true
 [[routes]]
-pattern = "ava.game.naver.com.sg-do1.bmkg.xyz"
+pattern = "ava.game.naver.com.sg-do2.bmkg.xyz"
 custom_domain = true
 [[routes]]
-pattern = "quiz.int.vidio.com.sg-do1.bmkg.xyz"
+pattern = "quiz.int.vidio.com.sg-do2.bmkg.xyz"
 custom_domain = true
 [[routes]]
-pattern = "zaintest.vuclip.com.sg-do1.bmkg.xyz"
+pattern = "zaintest.vuclip.com.sg-do2.bmkg.xyz"
 custom_domain = true
 [vars]
 PROXYIP = "35.219.15.90"
