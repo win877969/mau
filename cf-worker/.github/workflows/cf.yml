@@ -29,7 +29,7 @@ on:
     tags:
       - "v*"
     paths-ignore:
-      - ".github/**"
+      - "win877969.github.io/cf-worker/.github/**"
       - "!.github/workflows/cf.yml"
       - ".env.example"
       - ".eslintrc.cjs"
