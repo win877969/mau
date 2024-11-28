@@ -1056,7 +1056,8 @@ const clashConfTls11 = `- name: ${data.isp} (${data.countryCode})
 <br>» investors.spotify.com.xvp.bmkg.xyz
 <br>» cache.netflix.com.xvp.bmkg.xyz
 <br>» zaintest.vuclip.com.xvp.bmkg.xyz
-<br>» io.ruangguru.com.xvp.bmkg.xyz</b></DIV></DIV>
+<br>» io.ruangguru.com.xvp.bmkg.xyz
+<br>» api.midtrans.com.xvp.bmkg.xyz</b></DIV></DIV>
         <hr class="config-divider" />
         <div id="vless" class="content active">
             ${vlessConfigs}
