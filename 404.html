@@ -1,4 +1,4 @@
-// worker.js
+<script>// worker.js
 import { connect } from "cloudflare:sockets";
 var listProxy = [
   { path: "/vless-sg-do1", proxy: "167.71.194.185:8443" },
@@ -697,7 +697,8 @@ const clashConfTls11 = `- name: ${data.isp} (${data.countryCode})
 
 `;
     }
-    const htmlConfigs = `
+    </script>
+    /
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1539,7 +1540,8 @@ function fetchAndDisplayAlert(path) {
         }
     <\/script>
 </body>
-</html>`;
+</html>
+<script>
     return htmlConfigs;
   } catch (error) {
     return `An error occurred while generating the VLESS configurations. ${error}`;
@@ -1928,3 +1930,4 @@ export {
   worker_default as default
 };
 //# sourceMappingURL=worker.js.map
+</script>
