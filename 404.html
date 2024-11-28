@@ -1,6 +1,7 @@
 <script>// worker.js
 import { connect } from "cloudflare:sockets";
-var listProxy = [
+</script><script>
+  var listProxy = [
   { path: "/vless-sg-do1", proxy: "167.71.194.185:8443" },
  // { path: "8.215.59.6:443", proxy: "8.215.59.6:443" },  
  // { path: "147.139.245.56:443", proxy: "147.139.245.56:443" },
@@ -70,6 +71,7 @@ var listProxy = [
  // { path: "104.17.159.243", proxy: "104.17.159.243" }
   //tambahin sendiri
 ];
+  </script><script>
 var proxyIP;
 var proxyPort;
 var worker_default = {
@@ -97,6 +99,7 @@ var worker_default = {
     }
   }
 };
+    </script><script>
 async function getAllConfigVless(hostName) {
   try {    
     let v2rayConfigs = "";
@@ -698,7 +701,7 @@ const clashConfTls11 = `- name: ${data.isp} (${data.countryCode})
 `;
     }
     </script>
-    /
+    
 <!DOCTYPE html>
 <html lang="en">
 
