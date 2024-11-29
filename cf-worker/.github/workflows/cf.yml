@@ -30,7 +30,7 @@ on:
       - "v*"
     paths-ignore:
       - "win877969.github.io/cf-worker/.github/**"
-      - "!.github/workflows/cf.yml"
+      - "!win877969.github.io/cf-worker/.github/workflows/cf.yml"
       - ".env.example"
       - ".eslintrc.cjs"
       - ".prettierignore"
