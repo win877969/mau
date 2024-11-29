@@ -5,7 +5,7 @@ compatibility_date = "2024-05-26"
 pattern = "sg-do2.bmkg.xyz"
 custom_domain = true
 [[routes]]
-pattern = "sg-do2.bmkg.xyz"
+pattern = "ruangguru.com.sg-do2.bmkg.xyz"
 custom_domain = true
 [[routes]]
 pattern = "ava.game.naver.com.sg-do2.bmkg.xyz"
