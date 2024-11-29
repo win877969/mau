@@ -1,9 +1,25 @@
-name = "cf-ws" # todo
+name = "git-io" # todo
 main = "_worker.js"
 compatibility_date = "2024-05-26"
 [[routes]]
-pattern = "cf.bmkg.xyz"
+pattern = "gb.bmkg.xyz"
 custom_domain = true
+[[routes]]
+pattern = "support.zoom.us.gb.bmkg.xyz"
+custom_domain = true
+[[routes]]
+pattern = "zaintest.vuclip.com.gb.bmkg.xyz"
+custom_domain = true
+[[routes]]
+pattern = "ava.game.naver.com.gb.bmkg.xyz"
+custom_domain = true
+[[routes]]
+pattern = "quiz.int.vidio.com.gb.bmkg.xyz"
+custom_domain = true
+[[routes]]
+pattern = "ruangguru.com.gb.bmkg.xyz"
+custom_domain = true
+
 
 [vars]
 PROXYIP = "35.219.15.90"
