@@ -1,0 +1,847 @@
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        <title>Proxybox</title>
+        <link rel="icon" href="https://i.ibb.co/PtbrSGD/favicon-32x32.png" type="image/png">
+        <style>
+            /* Global Styles */
+            body {
+                font-family: 'Arial', sans-serif;
+                background: linear-gradient(45deg, #333333, #000000);
+                color: #fff;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .menu-button {
+              display: block;
+              position: absolute;
+              top: 40px;
+              right: 10px;
+              background: transparent;
+              border: none;
+              color: white;
+              font-size: 34px;
+              cursor: pointer;
+              z-index: 100;
+          }     
+          
+          .menu-popup {
+              display: none;
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(0, 0, 0, 0.8);
+              color: white;
+              z-index: 99;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+          }
+          .menu-popup ul {
+              list-style: none;
+              padding: 0;
+              text-align: center;
+          }
+          .menu-popup li {
+              padding: 10px 0;
+          }
+          .menu-popup li a {
+              color: #00aced;
+              text-decoration: none;
+          }
+          .menu-popup li a:hover {
+              color: #007bff;
+          }
+  
+    
+          h1 {
+            color: white;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+    
+            /* Header Section */
+            .header {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px 20px;
+            }
+    
+            .logo {
+                position: fixed; /* Menempatkan logo di posisi absolut relatif terhadap header */
+                top: 50%; /* Posisikan di tengah secara vertikal */
+                left: 50%; /* Posisikan di tengah secara horizontal */
+                transform: translate(-50%, -50%); /* Pastikan logo benar-benar berada di tengah */
+                z-index: -1; /* Kirim logo ke belakang teks */
+                opacity: 0.3; /* Sesuaikan transparansi logo */
+                width: 70%; /* Sesuaikan ukuran logo dengan lebar header */
+                max-width: 900px; /* Batas ukuran maksimum logo */
+                height: auto; /* Agar logo tetap proporsional */
+            }
+    
+            /* Search Bar */
+            .search-bar {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            .search-bar input {
+                padding: 8px 12px;
+                border-radius: 5px;
+            }
+    
+            .search-bar button {
+                padding: 8px 12px;
+                border-radius: 5px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+    
+            .search-bar button:hover {
+                background-color: #0056b3;
+            }
+    
+            /* Table Styles */
+            table {
+                width: 90%;
+                margin: 30px auto;
+                border-collapse: collapse;
+                background-color: rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+    
+            th, td {
+                padding: 8px;
+                text-align: left;
+                border-bottom: 1px solid #555;
+            }
+    
+            th {
+                background-color: #444;
+            }
+    
+            tr:hover {
+                background-color: #555;
+            }
+    
+            /* Pagination */
+            .pagination {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 20px;
+            }
+    
+            .button {
+                padding: 8px 16px;
+                background-color: #007bff;
+                border-radius: 5px;
+                text-decoration: none;
+                color: white;
+                transition: background-color 0.3s;
+            }
+    
+            .button:hover {
+                background-color: #0056b3;
+            }
+    
+            /* Status and Action Buttons */
+            .status-button,
+            .trojan-tls-button,
+            .trojan-ntls-button,
+            .vless-button,
+            .vless-ntls-button {
+                padding: 8px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+            }
+    
+            .button:hover {
+                background-color: #0056b3;
+            }
+            .status-button.active {
+                background-color: #28a745;
+            }
+            .status-button {
+                background-color: #ada028;
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+            .status-button.inactive {
+                background-color: #dc3545;
+            }
+
+            .status-button:hover {
+                background-color: #218838;
+            }
+    
+            .trojan-tls-button {
+                background-color: #17a2b8;
+                color: white;
+            }
+    
+            .trojan-ntls-button {
+                background-color: #6c757d;
+                color: white;
+            }
+    
+            .vless-button {
+                background-color: #28a745;
+                color: white;
+            }
+    
+            .vless-ntls-button {
+                background-color: #dc3545;
+                color: white;
+            }
+    
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .header {
+                    flex-direction: column;
+                    align-items: center;
+                }
+    
+                .search-bar input {
+                    width: 90%;
+                    font-size: 14px;
+                }
+    
+                table {
+                    width: 100%; /* Penuh lebar layar */
+                }
+                th, td {
+                    font-size: 14px; /* Ukuran teks lebih kecil */
+                    word-wrap: break-word; /* Bungkus teks panjang */
+                }
+    
+                .button {
+                    font-size: 12px;
+                }
+    
+                .status-button,
+                .trojan-tls-button,
+                .trojan-ntls-button,
+                .vless-button,
+                .vless-ntls-button {
+                    font-size: 12px;
+                    padding: 6px 10px;
+                }             
+            }
+            .table-container {
+                overflow-x: auto; /* Mengaktifkan scroll horizontal jika tabel terlalu lebar */
+                margin: 20px auto; /* Memberi margin agar lebih rapi */
+                border-radius: 10px; /* Menambahkan radius pada tepi */
+                background-color: rgba(255, 255, 255, 0.1); /* Warna background */
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Menambahkan bayangan */
+            }
+            
+            .table-container table {
+                width: 95%; /* Pastikan tabel mengisi container-nya */
+                min-width: 600px; /* Tetapkan lebar minimum untuk tabel */
+            }
+            
+            .telegram-link {
+                display: flex;
+                align-items: center; /* Agar teks sejajar dengan ikon */
+                margin-bottom: 20px; /* Jarak dari bawah halaman */
+                text-decoration: none; /* Menghilangkan garis bawah tautan */
+                font-family: Arial, sans-serif; /* Font teks */
+                font-size: 16px; /* Ukuran font teks */
+                color: #333; /* Warna teks */
+                justify-content: center; /* Menyusun elemen di tengah horizontal */
+              }
+          
+              .telegram-link img {
+                margin-right: 10px; /* Jarak antara ikon dan teks */
+              }
+          
+              .telegram-link:hover {
+                color: #0088cc; /* Warna teks berubah saat hover */
+              }
+        </style>
+    </head>
+    <body>
+    <!-- Logo -->
+        <div class="header">
+            <img src="https://i.ibb.co/3sddqf6/012302df0c6ac857f44ee0459548ff01.png" alt="Logo" class="logo">
+        </div>
+        <button class="menu-button" onclick="toggleMenu()">☰</button>
+        <div class="menu-popup" id="menuPopup">
+            <button class="close" onclick="toggleMenu()">&times;</button>
+            <ul>
+                <li><a href="#">ava.game.naver.com.cfwaio.proxybox.us.kg</a></li>
+                <li><a href="#">support.zoom.us.cfwaio.proxybox.us.kg</a></li>
+                <li><a href="#">graph.instagram.com.cfwaio.proxybox.us.kg</a></li>
+                <li><a href="#">live.iflix.com.cfwaio.proxybox.us.kg</a></li>
+                <li><a href="#">cache.netflix.com.cfwaio.proxybox.us.kg</a></li>
+                <li><a href="#">quiz.int.vidio.com.cfwaio.proxybox.us.kg</a></li>
+                <li><a href="#">investors.spotify.com.cfwaio.proxybox.us.kg</a></li>
+                <li><a href="#">zaintest.vuclip.com.cfwaio.proxybox.us.kg</a></li>
+                <li><a href="#">blog.webex.com.cfwaio.proxybox.us.kg</a></li>
+            </ul>
+        </div> 
+        <!-- Title -->
+        <h1>
+        <a href="https://proxybox.us.kg/" style="text-decoration: none; color: inherit;">
+          Easy Create Vless and Trojan <br>🧨Serverless🧨<br/>
+        </a>
+        </h1>
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <form method="get">
+                <input type="text" name="search" placeholder="Search..." value="" />
+                <button type="submit" class="button">Search</button>
+            </form>
+        </div>
+  
+        <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>IP - Port</th>
+                    <th>Country - Organization</th>
+                    <th>Check Status</th>
+                    <th>Trojan</th>
+                    <th>Vless</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td>139.180.136.178:29661</td>
+            <td>SG - Vultr</td>
+            <td>
+                <button class="status-button" data-ip="139.180.136.178" data-port="29661" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="139.180.136.178" data-port="29661" data-country="SG" data-organization="Vultr" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="139.180.136.178" data-port="29661" data-country="SG" data-organization="Vultr" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="139.180.136.178" data-port="29661" data-country="SG" data-organization="Vultr" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="139.180.136.178" data-port="29661" data-country="SG" data-organization="Vultr" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>103.133.223.51:2096</td>
+            <td>ID - Cloud Teknologi Nusantara</td>
+            <td>
+                <button class="status-button" data-ip="103.133.223.51" data-port="2096" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="103.133.223.51" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="103.133.223.51" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="103.133.223.51" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="103.133.223.51" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>103.133.223.50:2096</td>
+            <td>ID - Cloud Teknologi Nusantara</td>
+            <td>
+                <button class="status-button" data-ip="103.133.223.50" data-port="2096" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="103.133.223.50" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="103.133.223.50" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="103.133.223.50" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="103.133.223.50" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>43.133.145.156:53136</td>
+            <td>ID - Tencent cloud computing</td>
+            <td>
+                <button class="status-button" data-ip="43.133.145.156" data-port="53136" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="43.133.145.156" data-port="53136" data-country="ID" data-organization="Tencent cloud computing" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="43.133.145.156" data-port="53136" data-country="ID" data-organization="Tencent cloud computing" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="43.133.145.156" data-port="53136" data-country="ID" data-organization="Tencent cloud computing" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="43.133.145.156" data-port="53136" data-country="ID" data-organization="Tencent cloud computing" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>103.133.223.52:2096</td>
+            <td>ID - Cloud Teknologi Nusantara</td>
+            <td>
+                <button class="status-button" data-ip="103.133.223.52" data-port="2096" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="103.133.223.52" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="103.133.223.52" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="103.133.223.52" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="103.133.223.52" data-port="2096" data-country="ID" data-organization="Cloud Teknologi Nusantara" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>138.2.89.238:43254</td>
+            <td>SG - Oracle Cloud</td>
+            <td>
+                <button class="status-button" data-ip="138.2.89.238" data-port="43254" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="138.2.89.238" data-port="43254" data-country="SG" data-organization="Oracle Cloud" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="138.2.89.238" data-port="43254" data-country="SG" data-organization="Oracle Cloud" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="138.2.89.238" data-port="43254" data-country="SG" data-organization="Oracle Cloud" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="138.2.89.238" data-port="43254" data-country="SG" data-organization="Oracle Cloud" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>54.169.229.188:443</td>
+            <td>SG - Amazoncom</td>
+            <td>
+                <button class="status-button" data-ip="54.169.229.188" data-port="443" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="54.169.229.188" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="54.169.229.188" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="54.169.229.188" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="54.169.229.188" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>43.156.16.213:31528</td>
+            <td>SG - Tencent cloud computing</td>
+            <td>
+                <button class="status-button" data-ip="43.156.16.213" data-port="31528" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="43.156.16.213" data-port="31528" data-country="SG" data-organization="Tencent cloud computing" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="43.156.16.213" data-port="31528" data-country="SG" data-organization="Tencent cloud computing" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="43.156.16.213" data-port="31528" data-country="SG" data-organization="Tencent cloud computing" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="43.156.16.213" data-port="31528" data-country="SG" data-organization="Tencent cloud computing" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>3.1.94.232:443</td>
+            <td>SG - Amazoncom</td>
+            <td>
+                <button class="status-button" data-ip="3.1.94.232" data-port="443" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="3.1.94.232" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="3.1.94.232" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="3.1.94.232" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="3.1.94.232" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>139.180.144.170:666</td>
+            <td>SG - Vultr</td>
+            <td>
+                <button class="status-button" data-ip="139.180.144.170" data-port="666" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="139.180.144.170" data-port="666" data-country="SG" data-organization="Vultr" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="139.180.144.170" data-port="666" data-country="SG" data-organization="Vultr" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="139.180.144.170" data-port="666" data-country="SG" data-organization="Vultr" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="139.180.144.170" data-port="666" data-country="SG" data-organization="Vultr" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>54.251.167.101:443</td>
+            <td>SG - Amazoncom</td>
+            <td>
+                <button class="status-button" data-ip="54.251.167.101" data-port="443" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="54.251.167.101" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="54.251.167.101" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="54.251.167.101" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="54.251.167.101" data-port="443" data-country="SG" data-organization="Amazoncom" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>139.180.136.178:29806</td>
+            <td>SG - Vultr</td>
+            <td>
+                <button class="status-button" data-ip="139.180.136.178" data-port="29806" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="139.180.136.178" data-port="29806" data-country="SG" data-organization="Vultr" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="139.180.136.178" data-port="29806" data-country="SG" data-organization="Vultr" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="139.180.136.178" data-port="29806" data-country="SG" data-organization="Vultr" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="139.180.136.178" data-port="29806" data-country="SG" data-organization="Vultr" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>168.138.166.213:10500</td>
+            <td>SG - Oracle Cloud</td>
+            <td>
+                <button class="status-button" data-ip="168.138.166.213" data-port="10500" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="168.138.166.213" data-port="10500" data-country="SG" data-organization="Oracle Cloud" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="168.138.166.213" data-port="10500" data-country="SG" data-organization="Oracle Cloud" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="168.138.166.213" data-port="10500" data-country="SG" data-organization="Oracle Cloud" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="168.138.166.213" data-port="10500" data-country="SG" data-organization="Oracle Cloud" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>129.150.58.86:57621</td>
+            <td>SG - Oracle Cloud</td>
+            <td>
+                <button class="status-button" data-ip="129.150.58.86" data-port="57621" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="129.150.58.86" data-port="57621" data-country="SG" data-organization="Oracle Cloud" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="129.150.58.86" data-port="57621" data-country="SG" data-organization="Oracle Cloud" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="129.150.58.86" data-port="57621" data-country="SG" data-organization="Oracle Cloud" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="129.150.58.86" data-port="57621" data-country="SG" data-organization="Oracle Cloud" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>213.35.108.135:12596</td>
+            <td>SG - Oracle Cloud</td>
+            <td>
+                <button class="status-button" data-ip="213.35.108.135" data-port="12596" onclick="checkStatus(this)">
+                    Check
+                </button>
+            </td>
+            <td>
+                <button class="trojan-tls-button" data-ip="213.35.108.135" data-port="12596" data-country="SG" data-organization="Oracle Cloud" onclick="generateTrojanTlsUrl(this)">
+                    TrojanTls
+                </button>
+                <button class="trojan-ntls-button" data-ip="213.35.108.135" data-port="12596" data-country="SG" data-organization="Oracle Cloud" onclick="generateTrojanNtlsUrl(this)">
+                    TrojanNtls
+                </button>
+            </td>
+            <td>
+                <button class="vless-button" data-ip="213.35.108.135" data-port="12596" data-country="SG" data-organization="Oracle Cloud" onclick="generateVlessTlsUrl(this)">
+                    VlessTls
+                </button>
+                <button class="vless-ntls-button" data-ip="213.35.108.135" data-port="12596" data-country="SG" data-organization="Oracle Cloud" onclick="generateVlessNtlsUrl(this)">
+                    VlessNtls
+                </button>
+            </td>
+        </tr>
+    
+            </tbody>
+        </table>
+        
+        <div class="pagination">
+            
+            
+            
+                    <a href="?page=1&search=" class="button active">1</a>
+                
+                    <a href="?page=2&search=" class="button ">2</a>
+                
+                    <a href="?page=3&search=" class="button ">3</a>
+                
+            <a href="?page=2&search=" class="button">Next</a>
+            <a href="?page=792&search=" class="button">Last</a>
+        </div>
+    
+        </div>
+        <a href="https://t.me/vlesstgbot" target="_blank" class="telegram-link">
+        <img src="https://img.icons8.com/doodle/48/telegram.png" alt="Telegram" width="48" height="48">
+        </a>
+            <script>
+            async function checkStatus(button) {
+              const ip = button.dataset.ip;
+              const port = button.dataset.port;
+  
+              button.textContent = "Checking...";
+              button.disabled = true;
+  
+              try {
+                  const response = await fetch(`/check?ip=${ip}&port=${port}`);
+                  const result = await response.json();
+  
+                  if (result.proxy_ip === "Aktif") {
+                      button.textContent = "Active";
+                      button.classList.add("active");
+                      button.classList.remove("inactive");
+                  } else {
+                      button.textContent = "Inactive";
+                      button.classList.add("inactive");
+                      button.classList.remove("active");
+                  }
+              } catch (error) {
+                  button.textContent = "Error";
+                  button.classList.add("inactive");
+              } finally {
+                  button.disabled = false;
+              }
+          }
+  
+                function generateTrojanTlsUrl(button) {
+                    const ip = button.dataset.ip;
+                    const port = button.dataset.port;
+                    const country = button.dataset.country;
+                    const organization = button.dataset.organization;
+  
+                    const trojanTlsUrl = `trojan://cfwaio-proxybox-uskg@cfwaio.proxybox.us.kg:443?path=%2Ftr%3D${ip}:${port}&security=tls&encryption=none&host=cfwaio.proxybox.us.kg&fp=randomized&type=ws&sni=cfwaio.proxybox.us.kg#${country} ${organization}`;
+  
+                    navigator.clipboard.writeText(trojanTlsUrl).then(() => {
+                        button.textContent = "Copied!";
+                        setTimeout(() => button.textContent = "TrojanTls", 2000);
+                    }).catch(err => {
+                        console.error('Error copying to clipboard: ', err);
+                    });
+                }
+  
+                function generateTrojanNtlsUrl(button) {
+                    const ip = button.dataset.ip;
+                    const port = button.dataset.port;
+                    const country = button.dataset.country;
+                    const organization = button.dataset.organization;
+  
+                    const trojanNtlsUrl = `trojan://cfwaio-proxybox-uskg@cfwaio.proxybox.us.kg:80?path=%2Ftr%3D${ip}:${port}&security=none&encryption=none&host=cfwaio.proxybox.us.kg&fp=randomized&type=ws&sni=cfwaio.proxybox.us.kg#${country} ${organization}`;
+  
+                    navigator.clipboard.writeText(trojanNtlsUrl).then(() => {
+                        button.textContent = "Copied!";
+                        setTimeout(() => button.textContent = "TrojanNtls", 2000);
+                    }).catch(err => {
+                        console.error('Error copying to clipboard: ', err);
+                    });
+                }
+  
+                function generateVlessTlsUrl(button) {
+                    const ip = button.dataset.ip;
+                    const port = button.dataset.port;
+                    const country = button.dataset.country;
+                    const organization = button.dataset.organization;
+  
+                    const vlessUrl = `vless://cfwaio-proxybox-uskg@cfwaio.proxybox.us.kg:443?encryption=none&security=tls&sni=cfwaio.proxybox.us.kg&fp=randomized&type=ws&host=cfwaio.proxybox.us.kg&path=%2Fvl%3D${ip}:${port}#${country} ${organization}`;
+  
+                    navigator.clipboard.writeText(vlessUrl).then(() => {
+                        button.textContent = "Copied!";
+                        setTimeout(() => button.textContent = "VlessTls", 2000);
+                    }).catch(err => {
+                        console.error('Error copying to clipboard: ', err);
+                    });
+                }
+  
+                function generateVlessNtlsUrl(button) {
+                    const ip = button.dataset.ip;
+                    const port = button.dataset.port;
+                    const country = button.dataset.country;
+                    const organization = button.dataset.organization;
+  
+                    const vlessNtlsUrl = `vless://cfwaio-proxybox-uskg@cfwaio.proxybox.us.kg:80?path=%2Fvl%3D${ip}:${port}&security=none&encryption=none&host=cfwaio.proxybox.us.kg&fp=randomized&type=ws&sni=cfwaio.proxybox.us.kg#${country} ${organization}`;
+  
+                    navigator.clipboard.writeText(vlessNtlsUrl).then(() => {
+                        button.textContent = "Copied!";
+                        setTimeout(() => button.textContent = "VlessNtls", 2000);
+                    }).catch(err => {
+                        console.error('Error copying to clipboard: ', err);
+                    });
+                }
+                function toggleMenu() {
+                  const menuPopup = document.getElementById('menuPopup');
+                  if (menuPopup.style.display === 'flex') {
+                      menuPopup.style.display = 'none';
+                  } else {
+                      menuPopup.style.display = 'flex';
+                  }
+              }            
+            </script>
+        </body>
+        </html>
+    
