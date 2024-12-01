@@ -149,6 +149,17 @@
                 line-height: 1.5;
             }
         .config-section {
+        max-width: 100%;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 255, 136, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--glow);
+        transform-style: preserve-3d;
+        animation: cardFloat 6s ease-in-out infinite;
+        }
+ .aaaa {
             background: rgba(0, 0, 0, 0.5);
             background-color: #3c3c3c;
             padding: 20px;
