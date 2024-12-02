@@ -1,14 +1,15 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 #aaa.a {
+        
+}
+      :root {
         --primary-: #00ff88;
         --secondary-: #00ffff;
         --accent-: #ff00ff;
         --dark-: #080c14;
         --darker-: #040608;
         --light-: #e0ffff;
-}
-      :root {
-        --card-bg: rgba(8, 12, 20, 0.95);
+        --card-bg: rgba(8, 12, 20, 0.71);
         --glow: 0 0 20px rgba(0, 255, 136, 0.3);
       }  
           
@@ -169,7 +170,7 @@
 
      .config-section {
         max-width: 100%;
-        background: #a5a5a5;
+        background: var(--card-bg);
         color: #fff;
         backdrop-filter: blur(10px);
         border: 1px solid rgba(0, 255, 136, 0.2);
