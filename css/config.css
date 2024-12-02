@@ -18,10 +18,7 @@
         box-sizing: border-box;
           }
 
-      body {
-        
-        min-height: 85vh;
-            }
+      
   
         .containerlogo {
                 background-color: #1d1d1d;
@@ -169,7 +166,19 @@
                 font-style: italic;
                 line-height: 1.5;
             }
-        .config-section {
+
+     .config-section {
+        max-width: 100%;
+        background: #3a6523;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 255, 136, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--glow);
+        transform-style: preserve-3d;
+        animation: cardFloat 6s ease-in-out infinite;
+        }
+        .config-section1 {
         max-width: 100%;
         background: var(--card-bg);
         backdrop-filter: blur(10px);
