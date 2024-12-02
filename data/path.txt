@@ -1,0 +1,9 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "ISP | COUNTRY": "<p class="tablinks" onclick="openCity(event, 'v2ray${path}')"><a href="#v2ray${path}">${data.isp} | (${data.countryCode})</a></p>",
+    
+    }
+  ]
+}
