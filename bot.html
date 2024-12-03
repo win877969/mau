@@ -22,6 +22,16 @@
 <style>
   body {
   background-color: #000;
+  margin: 0;
+  } 
+    .top-container {
+  background-color: #f1f1f1;
+  padding: 30px;
+  text-align: center;
+}
+
+.content {
+  padding: 16px;
 }
   
 .header {
@@ -36,7 +46,7 @@
   width: 100%;
 }
 
-.sticky + .container {
+.sticky + .content {
   padding-top: 102px;
 }
 .footer {
@@ -58,6 +68,7 @@
 <div class="header" id="myHeader">
   <h2>My Header</h2>
 </div>
+    <div class="content">
     <div class="container">
       
       <div class="py-5 text-center">
@@ -423,7 +434,7 @@
     </div>  
     </div></footer>
 
-    </div>
+    </div></div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
