@@ -23,31 +23,18 @@
   body {
   background-color: #000;
   margin: 0;
+  padding: 0;
   } 
-    .top-container {
-  background-color: #f1f1f1;
-  padding: 30px;
-  text-align: center;
-}
 
-.content {
-  padding: 16px;
-}
-  
-.header {
-  padding: 10px 16px;
-  background: #000000;
-  color: #000;
-}
-
-.sticky {
+header {
+  background-color: grey;
   position: fixed;
-  top: 0;
+  padding-top: 60px; 
   width: 100%;
 }
 
-.sticky + .content {
-  padding-top: 102px;
+main {
+  padding-top: 80px; /* bad, because it's fixed */
 }
 .footer {
    position: fixed;
@@ -65,10 +52,10 @@
   <body>
     
 
-<div class="header" id="myHeader">
+<header>
   <h2>My Header</h2>
-</div>
-    <div class="content">
+</header>
+    <main>
     <div class="container">
       
       <div class="py-5 text-center">
@@ -434,7 +421,7 @@
     </div>  
     </div></footer>
 
-    </div></div>
+    </div></main>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -443,19 +430,7 @@
     <script src="https://bmkg.xyz/bot/popper.min.js"></script>
     <script src="https://bmkg.xyz/bot/bootstrap.min.js"></script>
     <script src="https://bmkg.xyz/bot/vendor/holder.min.js"></script>
-<script>
-window.onscroll = function() {myFunction()};
 
-var header = document.getElementById("myHeader");
-var sticky = header.offsetTop;
-
-function myFunction() {
-  if (window.pageYOffset > sticky) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
-  }
-}
 </script>
   </body>
 </html>
