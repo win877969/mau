@@ -3,7 +3,7 @@
     --primary: #EB1616;
     --secondary: #191C24;
     --light: #6C7293;
-    --dark: #000000;
+    --dark: #6C7293;
 }
 
 .back-to-top {
@@ -69,7 +69,7 @@
     left: 0;
     bottom: 0;
     width: 250px;
-    height: 100vh;
+    height: 150vh;
     overflow-y: auto;
     background: var(--secondary);
     transition: 0.5s;
