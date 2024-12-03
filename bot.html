@@ -23,6 +23,22 @@
   body {
   background-color: lightblue;
 }
+  
+.header {
+  padding: 10px 16px;
+  background-color: #000000;
+  color: #000;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.sticky + .content {
+  padding-top: 102px;
+}
 .footer {
    position: fixed;
    left: 0;
@@ -38,6 +54,9 @@
 
   <body>
     
+<div class="header" id="myHeader">
+  <h2>My Header</h2>
+</div>
 
     <div class="container">
       <div class="py-5 text-center">
@@ -141,6 +160,19 @@
     <script src="https://bmkg.xyz/bot/popper.min.js"></script>
     <script src="https://bmkg.xyz/bot/bootstrap.min.js"></script>
     <script src="https://bmkg.xyz/bot/vendor/holder.min.js"></script>
+<script>
+window.onscroll = function() {myFunction()};
 
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+</script>
   </body>
 </html>
