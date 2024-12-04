@@ -23,7 +23,29 @@
   
   background-color: #000;
 }
-  
+  div.dt-container .dt-search input {
+  border: 1px solid #fff;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: red;
+  color: inherit;
+  margin-left: 3px;
+}
+  div.dt-container .dt-length,
+div.dt-container .dt-search,
+div.dt-container .dt-info,
+div.dt-container .dt-processing,
+div.dt-container .dt-paging {
+  color: inherit;
+}
+  html.dark .dt-container .dt-search input,
+html.dark .dt-container .dt-length select {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: blue;
+}
+*[dir=rtl] div.dt-container div.dt-search input {
+  margin: 0 3px 0 0;
+}
 
 .container {
   max-width: 960px;
