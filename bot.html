@@ -16,9 +16,9 @@
     <link href="https://bmkg.xyz/bot/bootstrap.min.css" rel="stylesheet">
     <link href="https://bmkg.xyz/css/config.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="https://bmkg.xyz/bot/form-validation.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->datatables.min.css
+    <link href="https://bmkg.xyz/bot/css/datatables.css" rel="stylesheet">
+  <link href="https://bmkg.xyz/bot/css/datatables.min.css" rel="stylesheet">
   
   <!-- Fonts and icons -->
   
@@ -79,8 +79,8 @@ main {
 
 
 
-  <table id="fresh-table" class="table">
-    <thead>
+  <table id="example" class="display" style="width:100%">
+     <thead>
       <th data-field="id">ID</th>
       <th data-field="name">Name</th>    </thead>
     <tbody>
@@ -465,66 +465,11 @@ main {
     <script>window.jQuery || document.write('<script src="https://bmkg.xyz/bot/jquery-slim.min.js"><\/script>')</script>
     <script src="https://bmkg.xyz/bot/popper.min.js"></script>
     <script src="https://bmkg.xyz/bot/bootstrap.min.js"></script>
-    <script src="https://bmkg.xyz/bot/vendor/holder.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table/dist/bootstrap-table.min.js"></script>
-
-<script type="text/javascript">
-  var $table = $('#fresh-table')
-  var $alertBtn = $('#alertBtn')
-
-  window.operateEvents = {
-    'click .like': function (e, value, row, index) {
-      alert('You click like icon, row: ' + JSON.stringify(row))
-      console.log(value, row, index)
-    },
-    'click .edit': function (e, value, row, index) {
-      alert('You click edit icon, row: ' + JSON.stringify(row))
-      console.log(value, row, index)
-    },
-    'click .remove': function (e, value, row, index) {
-      $table.bootstrapTable('remove', {
-        field: 'id',
-        values: [row.id]
-      })
-    }
-  }
-
-  function operateFormatter(value, row, index) {
-    return [
-      
-    ].join('')
-  }
-
-  $(function () {
-    $table.bootstrapTable({
-      classes: 'table table-hover table-striped',
-      toolbar: '.toolbar',
-
-      search: true,
-      showRefresh: true,
-      showToggle: true,
-      showColumns: true,
-      pagination: true,
-      striped: true,
-      sortable: true,
-      pageSize: 10,
-      pageList: [10, 15, 25, 50, 100],
-
-      formatShowingRows: function (pageFrom, pageTo, totalRows) {
-        return ''
-      },
-      formatRecordsPerPage: function (pageNumber) {
-        return pageNumber + ' rows visible'
-      }
-    })
-
-    $alertBtn.click(function () {
-      alert('You pressed on Alert')
-    })
-  })
-
-</script>
+    <script src="https://bmkg.xyz/vendor/holder.min.js"></script>
+        <script src="https://bmkg.xyz/bot/css/bootstrap.min.js"></script>
+    <script src="https://bmkg.xyz/bot/css/datatbles.js"></script>
+     <script>
+       new DataTable('#example');
+</script>   
   </body>
 </html>
