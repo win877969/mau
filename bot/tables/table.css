@@ -589,10 +589,10 @@ div.dt-container {
   clear: both;
 }
 div.dt-container .dt-search input {
-  border: 1px solid #aaa;
+  border: 1px solid #fff;
   border-radius: 3px;
   padding: 5px;
-  background-color: transparent;
+  background-color: #fff;
   color: inherit;
   margin-left: 3px;
 }
