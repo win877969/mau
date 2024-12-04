@@ -365,78 +365,19 @@ main {
 
 
 
+header {
+  background-color: red;
+  position: fixed;
+  width: 100%;
+}
 
-.navbar{
-	background: #212121;
-	margin: 0;
-	padding: 20px 30px;
+main {
+  padding-top: 80px; /* bad, because it's fixed */
 }
- 
-.logo{
-	font-size: 14pt;
-	font-weight: bold;
-	text-decoration: none;
-	color: white;
-}
- 
+</style>
 
- 
-.tombol{
-	display: none;
-	color: white;
-	font-size: 14pt;			
-}
- 
-.tombol:hover{
-	cursor: pointer;
-}
- 
- 
-.menu{
-	margin: 0;
-	display: flex;
-	list-style: none;
-	padding: 0;			
-}
- 
-.menu li{
-	padding-left: 0;
-	margin-right: 10px;
-}
- 
-.menu li a{
-	padding:10px;
-	color: white;
-	text-decoration: none;
-	display: inline-block;
-}
- 
- 
-@media screen and (max-width: 768px) {
-	.menu {
-		display: none;
-	}
- 
-	.menu.aktif{
-		display:inline-block;
-		position: absolute;
-		top: 64px;
-		background: #212121;
-		padding: 10px 20px;
-		right: 0;
-		left: 0;
-	}
- 
-	.menu.aktif li a{
-		padding: 10px;
-		display: inline-block !important;
-	}
- 
-	.tombol {
-		display: block;
-	}
-}
-		
+
+	
 </style>
 
 
@@ -447,26 +388,14 @@ main {
 
 
 
-<nav class="navbar">
+
  
 <div class="container">
-      <a href="https://www.malasngoding.com" class="logo">Malas Ngoding</a>
-		
-		<ul class="menu">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">Tentang</a></li>
-			<li><a href="#">Produk</a></li>
-			<li><a href="#">Layanan</a></li>
-			<li><a href="#">Kontak Kami</a></li>
-		</ul>
- 
- 
-		<div class="tombol">
-			&#9776;
-		</div>
- 
-	</div>
-</nav><div>
+      
+ <header>
+  <h1>Example</h1>
+</header>
+	
       <div class="py-5 text-center">
        <div class="config-header">
 
