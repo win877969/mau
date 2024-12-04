@@ -10,7 +10,7 @@
 
     <title>Checkout example for Bootstrap</title>
     <!-- Bootstrap core CSS -->
-   <link href="https://bmkg.xyz/css/config.css" rel="stylesheet">
+   <link href="https://bmkg.xyz/bot/botbootstrap.min.css" rel="stylesheet">
   <link href="https://bmkg.xyz/bot/form-validation.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
@@ -56,7 +56,18 @@ header {
   width: 0%;
   text-align: center;
 }
-
+.config-section {
+        max-width: 100%;
+        background: var(--card-bg);
+        color: #fff;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 255, 136, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--glow);
+        transform-style: preserve-3d;
+        animation: cardFloat 6s ease-in-out infinite;
+        }
 main {
   padding-top: 80px; /* bad, because it's fixed */
 }
