@@ -377,121 +377,17 @@ main {
 
   <body>
 
-<style>
 
 
-.navbar{
-	background: #000;
-	margin: 0;
-	padding: 20px 30px;
-}
- 
-.logo{
-	font-size: 14pt;
-	font-weight: bold;
-	text-decoration: none;
-	color: white;
-}
- 
- 
-.tombol{
-	display: none;
-	color: white;
-	font-size: 14pt;			
-}
- 
-.tombol:hover{
-	cursor: pointer;
-}
- 
- 
-.menu{
-	margin: 0;
-	display: flex;
-	list-style: none;
-	padding: 0;			
-}
- 
-.menu li{
-	padding-left: 0;
-	margin-right: 10px;
-}
- 
-.menu li a{
-	padding:10px;
-	color: white;
-	text-decoration: none;
-	display: inline-block;
-}
- 
- 
-@media screen and (max-width: 768px) {
-	.menu {
-		display: none;
-	}
- 
-	.menu.aktif{
-		display:inline-block;
-		position: absolute;
-		top: 64px;
-		background: #000;
-		padding: 10px 20px;
-		right: 0;
-		left: 0;
-	}
- 
-	.menu.aktif li a{
-		padding: 10px;
-		display: inline-block !important;
-	}
- 
-	.tombol {
-		display: block;
-	}
-}
 
-</style>
-
-
+ 
 <div class="container">
       
       <div class="py-5 text-center">
        <div class="config-header">
-<nav class="navbar">
-	 <header>
- 
-		<a href="https://bmkg.xyz" class="logo">Malas Ngoding</a>
-		
-		<ul class="menu">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">Tentang</a></li>
-			<li><a href="#">Produk</a></li>
-			<li><a href="#">Layanan</a></li>
-			<li><a href="#">Kontak Kami</a></li>
-		</ul>
- 
- 
-		<div class="tombol">
-			&#9776;
-		</div>
- 
-	</header>
-</nav>
- 
 
  
-	<script type="text/javascript">
-		// deklarasi tombol dan menu
-		const tombol = document.querySelector('.tombol');
-		const menu = document.querySelector('.menu');
- 
-		// membuat event click
-		// pada saat tombol di click, tambahkan class aktif pada class menu
-		// saat diklik lagi, maka class aktif dihilangkan dari class menu (toggle)
-		tombol.addEventListener('click', () => {
-			menu.classList.toggle('aktif');
-		});
-	</script>
+	
  
 
          ALAAH KINTIL </div>
@@ -884,7 +780,11 @@ main {
         
     </div>  
     </div></footer>
-
+<div class="header">
+    <div class="config-footer">  <p class="mb-1">&copy; 2017-2018 Company Name</p>
+        
+    </div>  
+    </div>
     </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
