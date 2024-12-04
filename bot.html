@@ -62,12 +62,48 @@ header {
   width: 0%;
   text-align: center;
 }
-.config-section {
+.config-header {
+        max-width: 100%;
+        background: rgba(5, 0, 255, 0.53);
+        color: #fff;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(242, 89, 0, 1);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--glow);
+        transform-style: preserve-3d;
+        animation: cardFloat 6s ease-in-out infinite;
+        }
+  .config-menu {
+        max-width: 100%;
+        background: rgba(0, 0, 60, 0.84);
+        color: #fff;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(242, 89, 0, 1);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--glow);
+        transform-style: preserve-3d;
+        animation: cardFloat 6s ease-in-out infinite;
+        }
+  .config-section {
         max-width: 100%;
         background: var(--card-bg);
         color: #fff;
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(0, 255, 136, 0.2);
+        border: 1px solid rgba(242, 89, 0, 1);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--glow);
+        transform-style: preserve-3d;
+        animation: cardFloat 6s ease-in-out infinite;
+        }
+  .config-footer {
+        max-width: 100%;
+        background: rgba(0, 0, 0, 0.31);
+        color: #fff;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(242, 89, 0, 1);
         border-radius: 20px;
         padding: 2rem;
         box-shadow: var(--glow);
@@ -96,11 +132,11 @@ main {
    
       
       <div class="py-5 text-center">
-       <div class="config-section"> ALAAH KINTIL </div>
+       <div class="config-header"> ALAAH KINTIL </div>
 </div>
       <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
-          <div class="config-section">
+          <div class="config-menu">
 
   <!--
     Available colors for the full background: full-color-blue, full-color-azure, full-color-green, full-color-red, full-color-orange
@@ -482,7 +518,7 @@ main {
      <footer class="my-5 pt-5 text-muted text-center text-small">
 
    <div class="footer">
-    <div class="config-section">  <p class="mb-1">&copy; 2017-2018 Company Name</p>
+    <div class="config-footer">  <p class="mb-1">&copy; 2017-2018 Company Name</p>
         
     </div>  
     </div></footer>
