@@ -69,7 +69,19 @@ max-width:66.666667%}
 .mr-5,.mx-5 {margin-right:3rem!important}
 .mb-5,.my-5 {margin-bottom:3rem!important}
 .ml-5,.mx-5 {margin-left:3rem!important}
-
+.container {width:100%;
+padding-right:15px;
+padding-left:15px;
+margin-right:auto;
+margin-left:auto}
+@media (min-width:576px) {.container {max-width:540px}
+}
+@media (min-width:768px) {.container {max-width:720px}
+}
+@media (min-width:992px) {.container {max-width:960px}
+}
+@media (min-width:1200px) {.container {max-width:1140px}
+}
   body {
   background-color: #000;
   margin: 0;
