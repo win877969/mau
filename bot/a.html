@@ -120,20 +120,7 @@ html.dark .dt-container .dt-paging .dt-paging-button:active {
         --card-bg: rgba(8, 12, 20, 0.71);
         --glow: 0 0 25px rgba(205, 0, 0, 1);
       }  
-header {
-  background-color: grey;
-  position: fixed;
-  left: 0;
-  width: 0%;
-  text-align: center;
-}
-.header {
-  background-color: grey;
-  position: fixed;
-  left: 0;
-  width: 0%;
-  text-align: center;
-}
+
 
   .button2 {
                 background-color: #ffa500;
@@ -374,7 +361,6 @@ header {
 main {
   padding-top: 80px; /* bad, because it's fixed */
 }
-</style>
 
 
 	
@@ -392,7 +378,10 @@ main {
  
 <div class="container">
       
- 
+ <header>
+  <h1>Example</h1>
+</header>
+      <main>
 	
       <div class="py-5 text-center">
        <div class="config-header">
@@ -782,10 +771,7 @@ main {
          </div>
         </div>
       </div>
-<header>
-  <h1>Example</h1>
-</header>
-      
+
      <footer class="my-5 pt-5 text-muted text-center text-small">
 
    <div class="footer">
@@ -801,7 +787,7 @@ main {
 	
  
 	
-    </div></div>
+    </div></main></div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
