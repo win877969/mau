@@ -31,7 +31,8 @@ function cekProxy() {
       const tidakAktif = [];
 
       proxies.forEach(proxy => {
-        const [ip, port] = proxy.split(",");
+      const ip = '${ip}'; // Ganti dengan IP proxy
+      const port = '${port}'; // Ganti dengan port proxy
         fetch(`https://${ip}:${port}`)
           .then(response => {
             if (response.ok) {
@@ -76,3 +77,4 @@ fetch("proxy_list.txt")
   </script>
 </body>
 </html>
+
