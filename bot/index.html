@@ -6,7 +6,20 @@
 </head>
 <body>
   <h1>Proxy Aktif:</h1>
-  <div id="proxy-list">
+  <div id="proxy-list"><table id="example" class="display" style="width:100%">      
+  <thead>
+    <tr>
+      <th>IP : PORT</th>
+      <th> COUNTRY | ISP</th>
+    </tr>
+  </thead>
+    <tbody>
+    <tr>
+      <td>${ip}:${port} </td>
+      <td>(${negara}) | ${penyedia}</td>
+    </tr>
+  </tbody>
+</table>
   </div>
 
   <script>
@@ -21,20 +34,7 @@ fetch("proxy_list.txt")
       const proxyElement = document.createElement('div');
       proxyElement.className = 'proxy';
       proxyElement.innerHTML = `
-       <table id="example" class="display" style="width:100%">      
-  <thead>
-    <tr>
-      <th>IP : PORT</th>
-      <th> COUNTRY | ISP</th>
-    </tr>
-  </thead>
-    <tbody>
-    <tr>
-      <td>${ip}:${port} </td>
-      <td>(${negara}) | ${penyedia}</td>
-    </tr>
-  </tbody>
-</table>`;
+       `;
       proxyList.appendChild(proxyElement);
     });
   })
