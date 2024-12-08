@@ -97,11 +97,11 @@
           proxyElement.className = 'proxy';
           proxyElement.innerHTML = `
             <ul id="myUL">
-  <li><a href="#">${ip}:${port} (${negara}, ${penyedia})</a>
+  <li><a href="#">${ip}:${port} (${negara}, ${penyedia})</a></li>
+</ul>
             <button class="copy-vless">Copy VLESS</button>
             <button class="copy-trojan">Copy TROJAN</button>
-            <button class="copy-ss">Copy SS</button></li>
-</ul>
+            <button class="copy-ss">Copy SS</button>
           `;
           proxyList.appendChild(proxyElement);
           const copyVlessBtn = proxyElement.querySelector('.copy-vless');
