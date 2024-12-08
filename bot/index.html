@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,21 +7,72 @@
 <body>
   <h1>Proxy Aktif:</h1>
   <div id="proxy-list"></div>
+  <button id="cek-proxy">Cek Proxy Aktif</button>
+  <div id="popup" style="display:none;">
+    <h2>Hasil Cek Proxy:</h2>
+    <p id="popup-message"></p>
+  </div>
+
   <script>
-    fetch("proxy_list.txt")
-      .then(response => response.text())
-      .then(data => {
-        const proxyList = document.getElementById('proxy-list');
-        const proxies = data.split("\n");
-        proxies.forEach(proxy => {
-          const [ip, port, negara, penyedia] = proxy.split(",");
-          const proxyElement = document.createElement('div');
-          proxyElement.className = 'proxy';
-          proxyElement.innerHTML = `<span>${ip}:${port} (${negara}, ${penyedia})</span>`;
-          proxyList.appendChild(proxyElement);
-        });
-      })
-      .catch(error => console.error("Error:", error));
+    const cekProxyBtn = document.getElementById('cek-proxy');
+const popup = document.getElementById('popup');
+const popupMessage = document.getElementById('popup-message');
+
+cekProxyBtn.addEventListener('click', () => {
+  cekProxy();
+});
+
+function cekProxy() {
+  fetch("proxy_list.txt")
+    .then(response => response.text())
+    .then(data => {
+      const proxies = data.split("\n");
+      const aktif = [];
+      const tidakAktif = [];
+
+      proxies.forEach(proxy => {
+        const [ip, port] = proxy.split(",");
+        fetch(`https://${ip}:${port}`)
+          .then(response => {
+            if (response.ok) {
+              aktif.push(proxy);
+            } else {
+              tidakAktif.push(proxy);
+            }
+            updatePopup(aktif, tidakAktif);
+          })
+          .catch(error => {
+            tidakAktif.push(proxy);
+            updatePopup(aktif, tidakAktif);
+          });
+      });
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+function updatePopup(aktif, tidakAktif) {
+  const message = `Proxy Aktif: ${aktif.length}\nProxy Tidak Aktif: ${tidakAktif.length}`;
+  popupMessage.innerText = message;
+  popup.style.display = 'block';
+  setTimeout(() => {
+    popup.style.display = 'none';
+  }, 3000);
+}
+
+fetch("proxy_list.txt")
+  .then(response => response.text())
+  .then(data => {
+    const proxyList = document.getElementById('proxy-list');
+    const proxies = data.split("\n");
+    proxies.forEach(proxy => {
+      const [ip, port, negara, penyedia] = proxy.split(",");
+      const proxyElement = document.createElement('div');
+      proxyElement.className = 'proxy';
+      proxyElement.innerHTML = `<span>${ip}:${port} (${negara}, ${penyedia})</span>`;
+      proxyList.appendChild(proxyElement);
+    });
+  })
+  .catch(error => console.error("Error:", error));
   </script>
 </body>
 </html>
