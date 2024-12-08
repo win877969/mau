@@ -1,117 +1,79 @@
-
 <!DOCTYPE html>
 <html>
 <head>
   <title>Proxy Aktif</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    #proxy-list {
-      margin-top: 20px;
-    }
-    .proxy {
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      padding: 10px;
-    }
-    .pagination {
-      margin-top: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
 </head>
 <body>
   <h1>Proxy Aktif:</h1>
   <input type="text" id="search" placeholder="Cari proxy...">
   <button id="cari">Cari</button>
-  <table>
-        
-         <div id="proxy-list"></div>
-  <div class="pagination">
-    <button id="prev">Sebelumnya</button>
-    <span id="halaman">Halaman 1 dari 1</span>
-    <button id="next">Selanjutnya</button>
-  </div>
+  <table id="proxy-table" class="display">
+    <thead>
+      <tr>
+        <th>IP</th>
+        <th>Port</th>
+        <th>Negara</th>
+        <th>Penyedia</th>
+      </tr>
+    </thead>
+    <tbody id="proxy-list">
+    </tbody>
+  </table>
 
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
   <script>
+
+JavaScript
+
 let proxies = [];
-let halamanSaatIni = 1;
-let jumlahHalaman = 1;
-let jumlahProxyPerHalaman = 10;
+let table;
 
-// Fungsi untuk memuat proxy
-function muatProxy() {
-  fetch("proxy_list.txt")
-    .then(response => response.text())
-    .then(data => {
-      proxies = data.split("\n").map(proxy => {
-        const [ip, port, negara, penyedia] = proxy.split(",");
-        return { ip, port, negara, penyedia };
-      });
-      tampilkanProxy();
-    })
-    .catch(error => console.error("Error:", error));
-}
+// Muat proxy awal
+fetch("proxy_list.txt")
+  .then(response => response.text())
+  .then(data => {
+    proxies = data.split("\n").map(proxy => {
+      const [ip, port, negara, penyedia] = proxy.split(",");
+      return { ip, port, negara, penyedia };
+    });
+    tampilkanProxy();
+  })
+  .catch(error => console.error("Error:", error));
 
-// Fungsi untuk menampilkan proxy
+// Tampilkan proxy
 function tampilkanProxy() {
   const proxyList = document.getElementById('proxy-list');
   proxyList.innerHTML = '';
-  const awal = (halamanSaatIni - 1) * jumlahProxyPerHalaman;
-  const akhir = awal + jumlahProxyPerHalaman;
-  const proxyYangDitampilkan = proxies.slice(awal, akhir);
-  proxyYangDitampilkan.forEach(proxy => {
-    const proxyElement = document.createElement('div');
-    proxyElement.className = 'proxy';
-    proxyElement.innerHTML = `
-      
-            <p>${proxy.ip}:${proxy.port} 
-            (${proxy.negara}) | ${proxy.penyedia}</p>
-          
+  proxies.forEach(proxy => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${proxy.ip}</td>
+      <td>${proxy.port}</td>
+      <td>${proxy.negara}</td>
+      <td>${proxy.penyedia}</td>
     `;
-    proxyList.appendChild(proxyElement);
+    proxyList.appendChild(row);
   });
-  updatePagination();
+  table = $('#proxy-table').DataTable();
 }
 
-// Fungsi untuk memperbarui pagination
-function updatePagination() {
-  jumlahHalaman = Math.ceil(proxies.length / jumlahProxyPerHalaman);
-  document.getElementById('halaman').innerText = `Halaman ${halamanSaatIni} dari ${jumlahHalaman}`;
-}
-
-// Fungsi untuk mencari proxy
-function cariProxy() {
+// Cari proxy
+document.getElementById('cari').addEventListener('click', () => {
   const search = document.getElementById('search').value.toLowerCase();
-  proxies = proxies.filter(proxy => {
-    return (
-      proxy.ip.toLowerCase().includes(search) ||
-      proxy.port.toLowerCase().includes(search) ||
-      proxy.negara.toLowerCase().includes(search) ||
-      proxy.penyedia.toLowerCase().includes(search)
-    );
+  table.search(search).draw();
+});
+
+// Inisialisasi DataTable
+$(document).ready(() => {
+  table = $('#proxy-table').DataTable({
+    "language": {
+      "url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/id.json"
+    }
   });
-  halamanSaatIni = 1;
-  tampilkanProxy();
-}
-
-// Event listener
-document.getElementById('cari').addEventListener('click', cariProxy);
-document.getElementById('prev').addEventListener('click', () => {
-  if (halamanSaatIni > 1) {
-    halamanSaatIni--;
-    tampilkanProxy();
-  }
 });
-document.getElementById('next').addEventListener('click', () => {
-  if (halamanSaatIni < jumlahHalaman) {
-    halamanSaatIni++;
-    tampilkanProxy();
-  }
-});
+<script>
 
-// Muat proxy awal
-muatProxy();
-  </script>
 </body>
 </html>
