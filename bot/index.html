@@ -35,35 +35,36 @@
   })
   .catch(error => console.error("Error:", error));
 
-    function copyToClipboard(text) {
+    function copyClash(elementId) {
+            const text = document.getElementById(elementId).textContent;
             navigator.clipboard.writeText(text)
-                .then(() => {
-                    const alertBox = document.createElement('div');
-                    alertBox.textContent = "Copied to clipboard!";
-                    alertBox.style.position = 'fixed';
-                    alertBox.style.bottom = '20px';
-                    alertBox.style.right = '20px';
-                    alertBox.style.backgroundColor = 'yellow';
-                    alertBox.style.color = '#000';
-                    alertBox.style.padding = '10px 20px';
-                    alertBox.style.borderRadius = '5px';
-                    alertBox.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-                    alertBox.style.opacity = '0';
-                    alertBox.style.transition = 'opacity 0.5s ease-in-out';
-                    document.body.appendChild(alertBox);
-                    setTimeout(() => {
-                        alertBox.style.opacity = '1';
-                    }, 100);
-                    setTimeout(() => {
-                        alertBox.style.opacity = '0';
-                        setTimeout(() => {
-                            document.body.removeChild(alertBox);
-                        }, 500);
-                    }, 2000);
-                })
-                .catch((err) => {
-                    console.error("Failed to copy to clipboard:", err);
-                });
+            .then(() => {
+            const alertBox = document.createElement('div');
+            alertBox.textContent = "Copied to clipboard!";
+            alertBox.style.position = 'fixed';
+            alertBox.style.bottom = '20px';
+            alertBox.style.right = '20px';
+            alertBox.style.backgroundColor = 'yellow';
+            alertBox.style.color = '#000';
+            alertBox.style.padding = '10px 20px';
+            alertBox.style.borderRadius = '5px';
+            alertBox.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+            alertBox.style.opacity = '0';
+            alertBox.style.transition = 'opacity 0.5s ease-in-out';
+            document.body.appendChild(alertBox);
+            setTimeout(() => {
+                alertBox.style.opacity = '1';
+            }, 100);
+            setTimeout(() => {
+                alertBox.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(alertBox);
+                }, 500);
+            }, 2000);
+        })
+        .catch((err) => {
+            console.error("Failed to copy to clipboard:", err);
+        });
         }
   </script>
 </body>
