@@ -2,77 +2,89 @@
 <html>
 <head>
   <title>Proxy Aktif</title>
-  <link rel="stylesheet" href="style.css">
   <style>
-
-
-*CSS (tambahkan ke style.css)*
-
-.proxy {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.copy-vless, .copy-trojan, .copy-ss {
-  margin: 5px;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
-}
-
-.copy-vless:hover, .copy-trojan:hover, .copy-ss:hover {
-  background-color: #0069d9;
-}
+    /* CSS */
+    .proxy {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .copy-vless, .copy-trojan, .copy-ss {
+      margin: 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+    .copy-vless:hover, .copy-trojan:hover, .copy-ss:hover {
+      background-color: #0069d9;
+    }
   </style>
-  
 </head>
 <body>
   <h1>Proxy Aktif:</h1>
+  <input id="filter" type="text" placeholder="Cari proxy...">
   <div id="proxy-list"></div>
   <script>
-    fetch("proxy_list.txt")
-      .then(response => response.text())
-      .then(data => {
-        const proxyList = document.getElementById('proxy-list');
-        const proxies = data.split("\n");
-        proxies.forEach(proxy => {
-          const [ip, port, negara, penyedia] = proxy.split(",");
-          const proxyElement = document.createElement('div');
-          proxyElement.className = 'proxy';
-          proxyElement.innerHTML = `
-            <span>${ip}:${port} (${negara}, ${penyedia})</span>
-            <button class="copy-vless">Copy VLESS</button>
-            <button class="copy-trojan">Copy TROJAN</button>
-            <button class="copy-ss">Copy SS</button>
-          `;
-          proxyList.appendChild(proxyElement);
-          const copyVlessBtn = proxyElement.querySelector('.copy-vless');
-          const copyTrojanBtn = proxyElement.querySelector('.copy-trojan');
-          const copySsBtn = proxyElement.querySelector('.copy-ss');
-          
-          copyVlessBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(`vless://24851240-c7f0-4e0a-af53-910fe6959492@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-            alert('COPY VLESS SUKSES!');
-          });
-          
-          copyTrojanBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(`trojan://24851240-c7f0-4e0a-af53-910fe6959492@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-            alert('COPY TROJAN SUKSES!');
-          });
-          
-          copySsBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(`ss://bm9uZToyNDg1MTI0MC1jN2YwLTRlMGEtYWY1My05MTBmZTY5NTk0OTI%3D@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-            alert('COPY SS SUKSES!');
-          });
+```
+
+```
+const filterInput = document.getElementById('filter');
+const proxyList = document.getElementById('proxy-list');
+
+fetch("proxy_list.txt")
+  .then(response => response.text())
+  .then(data => {
+    const proxies = data.split("\n");
+    let filteredProxies = proxies;
+
+    filterInput.addEventListener('input', () => {
+      const filterValue = filterInput.value.toLowerCase();
+      filteredProxies = proxies.filter(proxy => proxy.toLowerCase().includes(filterValue));
+      renderProxies(filteredProxies);
+    });
+
+    renderProxies(proxies);
+
+    function renderProxies(proxies) {
+      proxyList.innerHTML = '';
+      proxies.forEach(proxy => {
+        const [ip, port, negara, penyedia] = proxy.split(",");
+        const proxyElement = document.createElement('div');
+        proxyElement.className = 'proxy';
+        proxyElement.innerHTML = `
+          <span>${ip}:${port} (${negara}, ${penyedia})</span>
+          <button class="copy-vless">Copy VLESS</button>
+          <button class="copy-trojan">Copy TROJAN</button>
+          <button class="copy-ss">Copy SS</button>
+        `;
+        proxyList.appendChild(proxyElement);
+        const copyVlessBtn = proxyElement.querySelector('.copy-vless');
+        const copyTrojanBtn = proxyElement.querySelector('.copy-trojan');
+        const copySsBtn = proxyElement.querySelector('.copy-ss');
+
+        copyVlessBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(`vless://24851240-c7f0-4e0a-af53-910fe6959492@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+          alert('COPY VLESS SUKSES!');
         });
-      })
-      .catch(error => console.error("Error:", error));
+
+        copyTrojanBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(`trojan://24851240-c7f0-4e0a-af53-910fe6959492@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+          alert('COPY TROJAN SUKSES!');
+        });
+
+        copySsBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(`ss://bm9uZToyNDg1MTI0MC1jN2YwLTRlMGEtYWY1My05MTBmZTY5NTk0OTI%3D@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+          alert('COPY SS SUKSES!');
+        });
+      });
+    }
+  })
+  .catch(error => console.error("Error:", error));
   </script>
 </body>
 </html>
