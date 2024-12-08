@@ -56,16 +56,12 @@ function tampilkanProxy() {
     const proxyElement = document.createElement('div');
     proxyElement.className = 'proxy';
     proxyElement.innerHTML = `
-      <input type="text" id="search" placeholder="Cari proxy...">
-  <button id="cari">Cari</button>
-  <div class="pagination">
-    <button id="prev">Sebelumnya</button>
-    <span id="halaman">Halaman 1 dari 1</span>
-    <button id="next">Selanjutnya</button>
-  </div>
-
+      
       <table>
+      
         <thead>
+        <input type="text" id="search" placeholder="Cari proxy...">
+  <button id="cari">Cari</button>
           <tr>
             <th>IP : PORT</th>
             <th> COUNTRY | ISP</th>
@@ -76,8 +72,15 @@ function tampilkanProxy() {
             <td>${proxy.ip}:${proxy.port} </td>
             <td>(${proxy.negara}) | ${proxy.penyedia}</td>
           </tr>
+          <div class="pagination">
+    <button id="prev">Sebelumnya</button>
+    <span id="halaman">Halaman 1 dari 1</span>
+    <button id="next">Selanjutnya</button>
+  </div>
         </tbody>
       </table>
+      
+
     `;
     proxyList.appendChild(proxyElement);
   });
