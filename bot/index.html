@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Proxy Aktif</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
 </head>
 <body>
   <h1>Proxy Aktif:</h1>
@@ -21,7 +21,7 @@ fetch("proxy_list.txt")
       const proxyElement = document.createElement('div');
       proxyElement.className = 'proxy';
       proxyElement.innerHTML = `
-       <table>
+       <table id="example" class="display" style="width:100%">      
   <thead>
     <tr>
       <th>IP : PORT</th>
@@ -39,7 +39,13 @@ fetch("proxy_list.txt")
     });
   })
   .catch(error => console.error("Error:", error));
+ 
+  new DataTable('#example');
+
   </script>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 </body>
 </html>
 
