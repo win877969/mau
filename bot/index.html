@@ -64,6 +64,8 @@
 </head>
 <body>
   <h1>Proxy Aktif:</h1>
+  <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+            
   <div id="proxy-list"></div>
   <script>
   function myFunction() {
@@ -94,7 +96,6 @@
           const proxyElement = document.createElement('div');
           proxyElement.className = 'proxy';
           proxyElement.innerHTML = `
-            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
             <ul id="myUL">
   <li><a href="#">${ip}:${port} (${negara}, ${penyedia})</a>
             <button class="copy-vless">Copy VLESS</button>
