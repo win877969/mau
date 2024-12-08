@@ -8,6 +8,30 @@
 <body>
   <h1>Proxy Aktif:</h1>
   <div id="proxy-list"></div>
-  <script src="script.js"></script>
+  <script>
+    fetch("proxy_list.txt")
+  .then(response => response.text())
+  .then(data => {
+    const proxyList = document.getElementById('proxy-list');
+    const proxies = data.split("\n");
+    proxies.forEach(proxy => {
+      const [ip, port, negara, penyedia] = proxy.split(",");
+      const proxyElement = document.createElement('div');
+      proxyElement.className = 'proxy';
+      proxyElement.innerHTML = `
+        <span> wkwkwkwk ${ip}:${port} (${negara}, ${penyedia})</span>
+        <button class="copy-btn">Copy</button>
+      `;
+      proxyList.appendChild(proxyElement);
+      const copyBtn = proxyElement.querySelector('.copy-btn');
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(`${ip}:${port}`);
+        alert('OH ASUUU!');
+      });
+    });
+  })
+  .catch(error => console.error("Error:", error));
+    
+  </script>
 </body>
 </html>
