@@ -15,7 +15,7 @@ fetch("proxy_list.txt")
       const copyBtn = proxyElement.querySelector('.copy-btn');
       copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(`${ip}:${port}`);
-        alert('Proxy copied!');
+        alert('OH ASUUU!');
       });
     });
   })
