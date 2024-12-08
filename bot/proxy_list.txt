@@ -8,11 +8,11 @@
 47.245.95.160:1443 (SG, Alibaba)
 45.77.171.102:3128 (SG, Vultr)
 4.193.111.126:40809 (SG, Microsoft Azure)
-54.169.229.188:443 (SG, Amazoncom) Copy
+54.169.229.188:443 (SG, Amazoncoml)
 158.178.225.124:53618 (SG, Oracle Cloud)
 168.138.183.48:9090 (SG, Oracle Cloud)
 146.235.18.248:45137 (SG, Oracle Cloud)
 43.156.16.213:31528 (SG, Tencent cloud computing)
-8.222.143.82:24245 (SG, Alibaba) 
+8.222.143.82:24245 (SG, Alibabal)
 54.251.167.101:443 (SG, Amazoncom)
 168.138.166.213:10500 (SG, Oracle Cloud)
