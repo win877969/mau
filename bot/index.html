@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,6 +37,7 @@ let halamanSaatIni = 1;
 let jumlahHalaman = 1;
 let jumlahProxyPerHalaman = 10;
 
+// Fungsi untuk memuat proxy
 function muatProxy() {
   fetch("proxy_list.txt")
     .then(response => response.text())
@@ -49,6 +51,7 @@ function muatProxy() {
     .catch(error => console.error("Error:", error));
 }
 
+// Fungsi untuk menampilkan proxy
 function tampilkanProxy() {
   const proxyList = document.getElementById('proxy-list');
   proxyList.innerHTML = '';
@@ -79,49 +82,28 @@ function tampilkanProxy() {
   updatePagination();
 }
 
+// Fungsi untuk memperbarui pagination
 function updatePagination() {
   jumlahHalaman = Math.ceil(proxies.length / jumlahProxyPerHalaman);
   document.getElementById('halaman').innerText = `Halaman ${halamanSaatIni} dari ${jumlahHalaman}`;
 }
 
+// Fungsi untuk mencari proxy
 function cariProxy() {
-  const search = document.getElementById('search').value.trim().toLowerCase();
-  if (search !== '') {
-    const proxyList = document.getElementById('proxy-list');
-    proxyList.innerHTML = '';
-    proxies.forEach(proxy => {
-      if (
-        proxy.ip.toLowerCase().includes(search) ||
-        proxy.port.toString().includes(search) ||
-        proxy.negara.toLowerCase().includes(search) ||
-        proxy.penyedia.toLowerCase().includes(search)
-      ) {
-        const proxyElement = document.createElement('div');
-        proxyElement.className = 'proxy';
-        proxyElement.innerHTML = `
-          <table>
-            <thead>
-              <tr>
-                <th>IP : PORT</th>
-                <th> COUNTRY | ISP</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>${proxy.ip}:${proxy.port} </td>
-                <td>(${proxy.negara}) | ${proxy.penyedia}</td>
-              </tr>
-            </tbody>
-          </table>
-        `;
-        proxyList.appendChild(proxyElement);
-      }
-    });
-  } else {
-    alert('Masukkan kata kunci pencarian');
-  }
+  const search = document.getElementById('search').value.toLowerCase();
+  proxies = proxies.filter(proxy => {
+    return (
+      proxy.ip.toLowerCase().includes(search) ||
+      proxy.port.toLowerCase().includes(search) ||
+      proxy.negara.toLowerCase().includes(search) ||
+      proxy.penyedia.toLowerCase().includes(search)
+    );
+  });
+  halamanSaatIni = 1;
+  tampilkanProxy();
 }
 
+// Event listener
 document.getElementById('cari').addEventListener('click', cariProxy);
 document.getElementById('prev').addEventListener('click', () => {
   if (halamanSaatIni > 1) {
@@ -136,6 +118,8 @@ document.getElementById('next').addEventListener('click', () => {
   }
 });
 
+// Muat proxy awal
 muatProxy();
-</scrpit>
-</body></html>
+  </script>
+</body>
+</html>
