@@ -8,7 +8,7 @@ fetch("proxy_list.txt")
       const proxyElement = document.createElement('div');
       proxyElement.className = 'proxy';
       proxyElement.innerHTML = `
-        <span>${ip}:${port} (${negara}, ${penyedia})</span>
+        <span> wkwkwkwk ${ip}:${port} (${negara}, ${penyedia})</span>
         <button class="copy-btn">Copy</button>
       `;
       proxyList.appendChild(proxyElement);
