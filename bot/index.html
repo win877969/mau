@@ -24,7 +24,9 @@
   <h1>Proxy Aktif:</h1>
   <input type="text" id="search" placeholder="Cari proxy...">
   <button id="cari">Cari</button>
-  <div id="proxy-list"></div>
+  <table>
+        
+         <div id="proxy-list"></div>
   <div class="pagination">
     <button id="prev">Sebelumnya</button>
     <span id="halaman">Halaman 1 dari 1</span>
@@ -62,20 +64,10 @@ function tampilkanProxy() {
     const proxyElement = document.createElement('div');
     proxyElement.className = 'proxy';
     proxyElement.innerHTML = `
-      <table>
-        <thead>
-          <tr>
-            <th>IP : PORT</th>
-            <th> COUNTRY | ISP</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>${proxy.ip}:${proxy.port} </td>
-            <td>(${proxy.negara}) | ${proxy.penyedia}</td>
-          </tr>
-        </tbody>
-      </table>
+      
+            <p>${proxy.ip}:${proxy.port} 
+            (${proxy.negara}) | ${proxy.penyedia}</p>
+          
     `;
     proxyList.appendChild(proxyElement);
   });
