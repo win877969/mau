@@ -20,7 +20,21 @@ fetch("proxy_list.txt")
       const [ip, port, negara, penyedia] = proxy.split(",");
       const proxyElement = document.createElement('div');
       proxyElement.className = 'proxy';
-      proxyElement.innerHTML = `<span>${ip}:${port} (${negara}, ${penyedia})</span>`;
+      proxyElement.innerHTML = `
+       <table>
+  <thead>
+    <tr>
+      <th>IP : PORT</th>
+      <th> COUNTRY | ISP</th>
+    </tr>
+  </thead>
+    <tbody>
+    <tr>
+      <td>${ip}:${port} </td>
+      <td>(${negara}) | ${penyedia}</td>
+    </tr>
+  </tbody>
+</table>`;
       proxyList.appendChild(proxyElement);
     });
   })
