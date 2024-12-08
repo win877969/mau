@@ -45,7 +45,9 @@ fetch("proxy_list.txt")
 // Tampilkan proxy
 function tampilkanProxy() {
   const proxyList = document.getElementById('proxy-list');
-  proxyList.innerHTML = '<td>${proxy.ip}</td>
+  proxyList.innerHTML = '
+    ${ip}:${port}
+      <td>${proxy.ip}</td>
       <td>${proxy.port}</td>
       <td>${proxy.negara}</td>
       <td>${proxy.penyedia}</td>';
