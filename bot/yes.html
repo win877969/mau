@@ -347,14 +347,14 @@
       <h3>Detail Proxy</h3>
       <p><strong>ISP: ${country} | ${provider}</strong></p>
       <p><strong>IP:Port:</strong> ${ip}:${port}</p>
-      <p>
-        <span>vless://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
+      
+        <p class="config">vless://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</p>
         <button class="btn" onclick="copyToClipboard(this)">Copy</button>
-      </p>
-      <p>
-        <span>trojan://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
+      
+      
+        <p class="config">trojan://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</p>
         <button class="btn" onclick="copyToClipboard(this)">Copy</button>
-      </p>
+      
     `;
   }
 
