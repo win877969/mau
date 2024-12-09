@@ -187,31 +187,11 @@
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${negara} | ${penyedia}</td>
-           <td><button class="copy-vless">Copy VLESS 443</button></td>
-          <td><button class="copy-vless1">Copy VLESS 80</button></td>       
-          <td><button class="copy-trojan">Copy TROJAN</button></td>
-          <td><button class="copy-ss">Copy SS</button></td>
-       `;
+           `;
         proxyList.appendChild(row);
 
         // Event listeners for copy buttons
-        row.querySelector('.copy-vless').addEventListener('click', () => {
-          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY VLESS 443 SUKSES!');
-        });
-        row.querySelector('.copy-vless1').addEventListener('click', () => {
-          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
-          alert('COPY VLESS 80 SUKSES!');
-        });
-        row.querySelector('.copy-trojan').addEventListener('click', () => {
-          navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY TROJAN SUKSES!');
-        });
-        row.querySelector('.copy-ss').addEventListener('click', () => {
-          navigator.clipboard.writeText(`ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY SS SUKSES!');
-        });
-      });
+        
 
       renderPagination(proxies, pagination);
     }
