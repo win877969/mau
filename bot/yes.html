@@ -235,8 +235,11 @@
       
       // For simplicity, you can just add a static content for now
       detailsContainer.innerHTML = `
-        <p><strong>ISP: CV. Rumahweb Indonesia (ID)</strong></p>
-        <p>Details for IP: ${ip} and Port: ${port}</p>
+        <p><strong>ISP: ${country} | ${provider}</strong></p>
+        <p class="config">vless://3036c6db-2b74-437d-9c6e-0c95f8482da8@xvp.bmkg.xyz:443?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</p>
+        <p class="config">vless://5de379e4-209c-49e6-8905-55820599cb90@xvp.bmkg.xyz:80?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=none&sni=#${country}+${provider}</p>
+        <p class="config">trojan://5de379e4-209c-49e6-8905-55820599cb90@xvp.bmkg.xyz:443?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</p>
+      
       `;
     }
 
