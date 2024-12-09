@@ -60,52 +60,11 @@
         <h2>ALAAH KINTIL</h2>
       </div>
 
-      <div class="row">
-        <!-- Filter and Table -->
-        <div class="col-12">
-          <div class="filters">
-            <div>
-              <label for="items-per-page">Item Page:</label>
-              <select id="items-per-page" class="form-select form-select-sm">
-                <option value="10">10 Baris</option>
-                <option value="25">25 Baris</option>
-                <option value="50">50 Baris</option>
-                <option value="100">100 Baris</option>
-              </select>
-            </div>
-            <div>
-              <label for="search-bar">Search:</label>
-              <input type="text" id="search-bar" class="form-control form-control-sm" placeholder="Cari...">
-            </div>
-          </div>
-
-          <div class="table-container mt-4">
-            <table class="table table-striped table-dark table-responsive">
-              <thead>
-                <tr>
-                  <th>Negara</th>
-                  <th>Penyedia</th>
-                  <th>Vless 443</th>
-                  <th>Vless 80</th>
-                  <th>Trojan</th>
-                  <th>SS</th>
-                </tr>
-              </thead>
-              <tbody id="proxy-list"></tbody>
-            </table>
-          </div>
-          <div class="pagination1 text-center mt-3" id="pagination"></div>
-        </div>
-      </div>
-    </div>
-
-    <footer>
-      <p>Footer Content</p>
-    </footer>
-
-    <script>
-
-	        <div class="filters">
+      
+    <div class="row">
+  <!-- Bagian kanan -->
+  <div class="col-md-5 order-md-2 mb-4">
+    <div class="filters">
       <div>
         <span class="filter-label">Item Page:</span>
         <select id="items-per-page">
@@ -134,11 +93,22 @@
       </thead>
       <tbody id="proxy-list"></tbody>
     </table>
-    <div class="pagination" id="pagination"></div>
+    <div class="pagination1" id="pagination"></div>
   </div>
 
+  <!-- Bagian kiri -->
+  <div class="col-md-7 order-md-1">
+    <div class="text-center bg-light p-3">
+      KIRI BAWAH
+    </div>
+  </div>
+</div>
 
 
+
+
+
+			
   <script>
     let proxyPerPage = 10;
     let currentPage = 1;
