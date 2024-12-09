@@ -6,10 +6,17 @@
     /* CSS */
     
 .container {
-  padding: 110px;
+  flex: 1;
+      padding-top: 60px; /* To avoid content being hidden under the header */
+      padding-bottom: 40px; /* To avoid content being hidden under the footer */
+      padding-left: 10px;
+      padding-right: 10px;
+      display: flex;
+      flex-direction: column;
+  
   max-width: 960px;
   align-items: center;
-  background-color: ;
+  
 }
     header, footer {
       background-color: #007bff;
