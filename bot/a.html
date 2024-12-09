@@ -8,8 +8,8 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #000;
-      color: #fff;
+      background-color: #f0f0f0;
+      color: #333;
     }
 
     header, footer {
@@ -42,24 +42,14 @@
       gap: 10px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .proxy-list {
       margin-top: 20px;
     }
 
-    table th, table td {
+    .proxy-item {
       padding: 10px;
-      text-align: left;
-      border: 1px solid #ccc;
-    }
-
-    table th {
-      background-color: #333;
-    }
-
-    table tbody tr:nth-child(even) {
-      background-color: #222;
+      margin-bottom: 10px;
+      border-radius: 5px;
     }
 
     .pagination1 {
@@ -137,16 +127,10 @@
           </div>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>ISP | COUNTRY</th>
-            </tr>
-          </thead>
-          <tbody id="proxy-list">
-            <!-- Proxy rows will be dynamically rendered here -->
-          </tbody>
-        </table>
+        <div class="proxy-list" id="proxy-list">
+          <!-- Proxy items will be dynamically rendered here -->
+        </div>
+
         <div class="pagination1" id="pagination"></div>
       </div>
 
@@ -162,96 +146,101 @@
   </footer>
 
   <script>
-  let proxyPerPage = 10;
-  let currentPage = 1;
-  let filteredProxies = [];
-  let allProxies = [];
+    let proxyPerPage = 10;
+    let currentPage = 1;
+    let filteredProxies = [];
+    let allProxies = [];
 
-  // Render proxies
-  function renderProxies(proxies) {
-    const proxyList = document.getElementById("proxy-list");
-    const start = (currentPage - 1) * proxyPerPage;
-    const end = start + proxyPerPage;
-    const currentPageProxies = proxies.slice(start, end);
+    // Render proxies
+    function renderProxies(proxies) {
+      const proxyList = document.getElementById("proxy-list");
+      const start = (currentPage - 1) * proxyPerPage;
+      const end = start + proxyPerPage;
+      const currentPageProxies = proxies.slice(start, end);
 
-    proxyList.innerHTML = ""; // Clear list
-    currentPageProxies.forEach((proxy) => {
-      const [ip, port, country, provider] = proxy.split(",");
-      const row = document.createElement("tr");
-      row.innerHTML = `<td>${country} | ${provider}</td>`;
-      proxyList.appendChild(row);
-    });
+      proxyList.innerHTML = ""; // Clear list
+      currentPageProxies.forEach((proxy, index) => {
+        const [ip, port, country, provider] = proxy.split(",");
+        const row = document.createElement("p");
+        row.classList.add("proxy-item");
 
-    renderPagination(proxies);
-  }
+        // Alternating background colors for each row
+        row.style.backgroundColor = index % 2 === 0 ? "#e0e0e0" : "#c0c0c0";
+        row.textContent = `${country} | ${provider}`;
+        proxyList.appendChild(row);
+      });
 
-  // Render pagination
-  function renderPagination(proxies) {
-    const pagination = document.getElementById("pagination");
-    const totalPages = Math.ceil(proxies.length / proxyPerPage);
-    const maxVisibleButtons = 5;
-    const startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
-    const endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
-
-    pagination.innerHTML = "";
-
-    // Previous button
-    const prevButton = document.createElement("button");
-    prevButton.textContent = "<<";
-    prevButton.disabled = currentPage === 1;
-    prevButton.addEventListener("click", () => updatePage(currentPage - 1, proxies));
-    pagination.appendChild(prevButton);
-
-    // Page buttons
-    for (let i = startPage; i <= endPage; i++) {
-      const pageButton = document.createElement("button");
-      pageButton.textContent = i;
-      pageButton.classList.toggle("active", i === currentPage);
-      pageButton.addEventListener("click", () => updatePage(i, proxies));
-      pagination.appendChild(pageButton);
+      renderPagination(proxies);
     }
 
-    // Next button
-    const nextButton = document.createElement("button");
-    nextButton.textContent = ">>";
-    nextButton.disabled = currentPage === totalPages;
-    nextButton.addEventListener("click", () => updatePage(currentPage + 1, proxies));
-    pagination.appendChild(nextButton);
-  }
+    // Render pagination
+    function renderPagination(proxies) {
+      const pagination = document.getElementById("pagination");
+      const totalPages = Math.ceil(proxies.length / proxyPerPage);
+      const maxVisibleButtons = 5;
+      const startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+      const endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
 
-  // Update page
-  function updatePage(page, proxies) {
-    currentPage = page;
-    renderProxies(filteredProxies);
-  }
+      pagination.innerHTML = "";
 
-  // Filter proxies
-  function filterProxies(searchTerm) {
-    filteredProxies = allProxies.filter((proxy) =>
-      proxy.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    currentPage = 1;
-    renderProxies(filteredProxies);
-  }
+      // Previous button
+      const prevButton = document.createElement("button");
+      prevButton.textContent = "<<";
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener("click", () => updatePage(currentPage - 1, proxies));
+      pagination.appendChild(prevButton);
 
-  // Event listeners
-  document.getElementById("search-bar").addEventListener("input", (e) => {
-    filterProxies(e.target.value);
-  });
+      // Page buttons
+      for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement("button");
+        pageButton.textContent = i;
+        pageButton.classList.toggle("active", i === currentPage);
+        pageButton.addEventListener("click", () => updatePage(i, proxies));
+        pagination.appendChild(pageButton);
+      }
 
-  document.getElementById("items-per-page").addEventListener("change", (e) => {
-    proxyPerPage = parseInt(e.target.value);
-    renderProxies(filteredProxies);
-  });
+      // Next button
+      const nextButton = document.createElement("button");
+      nextButton.textContent = ">>";
+      nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener("click", () => updatePage(currentPage + 1, proxies));
+      pagination.appendChild(nextButton);
+    }
 
-  // Fetch proxies
-  fetch("proxy_list.txt")
-    .then((response) => response.text())
-    .then((data) => {
-      allProxies = data.split("\n").filter((line) => line.trim() !== "");
-      filteredProxies = allProxies;
+    // Update page
+    function updatePage(page, proxies) {
+      currentPage = page;
       renderProxies(filteredProxies);
-    })
-    .catch((error) => console.error("Error fetching proxy data:", error));
-</script>
-</body></html>
+    }
+
+    // Filter proxies
+    function filterProxies(searchTerm) {
+      filteredProxies = allProxies.filter((proxy) =>
+        proxy.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      currentPage = 1;
+      renderProxies(filteredProxies);
+    }
+
+    // Event listeners
+    document.getElementById("search-bar").addEventListener("input", (e) => {
+      filterProxies(e.target.value);
+    });
+
+    document.getElementById("items-per-page").addEventListener("change", (e) => {
+      proxyPerPage = parseInt(e.target.value);
+      renderProxies(filteredProxies);
+    });
+
+    // Fetch proxies
+    fetch("proxy_list.txt")
+      .then((response) => response.text())
+      .then((data) => {
+        allProxies = data.split("\n").filter((line) => line.trim() !== "");
+        filteredProxies = allProxies;
+        renderProxies(filteredProxies);
+      })
+      .catch((error) => console.error("Error fetching proxy data:", error));
+  </script>
+</body>
+</html>
