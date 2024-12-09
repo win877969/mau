@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>Proxy Aktif</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     /* CSS */
     .proxy {
@@ -27,9 +26,10 @@
     
     .pagination {
       margin-top: 20px;
+      text-align: center;
     }
     .pagination button {
-      margin: 5px;
+      margin: 2px;
       padding: 5px 10px;
       border: none;
       border-radius: 5px;
@@ -39,6 +39,10 @@
     }
     .pagination button:hover {
       background-color: #0069d9;
+    }
+    .pagination .active {
+      background-color: #0056b3;
+      color: #fff;
     }
   </style>
 </head>
@@ -98,33 +102,35 @@
 
     function renderPagination(proxies, pagination) {
       const totalPages = Math.ceil(proxies.length / proxyPerPage);
+      const maxButtons = 5; // Jumlah tombol di tengah
+      pagination.innerHTML = ''; // Hapus semua elemen sebelumnya
 
-      pagination.innerHTML = ''; // Clear previous pagination
-
-      // Previous Button
+      // Tombol Previous
       if (currentPage > 1) {
         const prevButton = document.createElement('button');
-        prevButton.textContent = 'Previous';
+        prevButton.textContent = '<< Previous';
         prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
         pagination.appendChild(prevButton);
       }
 
-      // Page Numbers
-      for (let i = 1; i <= totalPages; i++) {
+      // Tombol angka halaman
+      const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+      const endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+      for (let i = startPage; i <= endPage; i++) {
         const pageButton = document.createElement('button');
         pageButton.textContent = i;
         if (i === currentPage) {
-          pageButton.style.backgroundColor = '#007bff';
-          pageButton.style.color = '#fff';
+          pageButton.classList.add('active');
         }
         pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
         pagination.appendChild(pageButton);
       }
 
-      // Next Button
+      // Tombol Next
       if (currentPage < totalPages) {
         const nextButton = document.createElement('button');
-        nextButton.textContent = 'Next';
+        nextButton.textContent = 'Next >>';
         nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
         pagination.appendChild(nextButton);
       }
@@ -136,6 +142,7 @@
       renderProxies(proxies, proxyList, pagination);
     }
 
+    // Fetch daftar proxy dari file eksternal
     fetch("proxy_list.txt")
       .then(response => response.text())
       .then(data => {
