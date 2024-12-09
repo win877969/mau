@@ -137,6 +137,13 @@
       background-color: #555;
     }
 
+    .pagination input {
+      padding: 8px;
+      width: 50px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
     @media (max-width: 768px) {
       .filters {
         flex-direction: column;
@@ -241,13 +248,41 @@
       const totalPages = Math.ceil(proxies.length / proxyPerPage);
       pagination.innerHTML = "";
 
-      for (let i = 1; i <= totalPages; i++) {
+      const prevButton = document.createElement("button");
+      prevButton.textContent = "<<";
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener("click", () => updatePage(1, proxies));
+      pagination.appendChild(prevButton);
+
+      const startPage = Math.max(1, currentPage - 2);
+      const endPage = Math.min(totalPages, currentPage + 2);
+
+      for (let i = startPage; i <= endPage; i++) {
         const pageButton = document.createElement("button");
         pageButton.textContent = i;
         pageButton.classList.toggle("active", i === currentPage);
         pageButton.addEventListener("click", () => updatePage(i, proxies));
         pagination.appendChild(pageButton);
       }
+
+      const nextButton = document.createElement("button");
+      nextButton.textContent = "Next";
+      nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener("click", () => updatePage(totalPages, proxies));
+      pagination.appendChild(nextButton);
+
+      const goToPage = document.createElement("input");
+      goToPage.type = "number";
+      goToPage.min = 1;
+      goToPage.max = totalPages;
+      goToPage.placeholder = "Go to page";
+      goToPage.addEventListener("change", (e) => {
+        const page = parseInt(e.target.value);
+        if (page >= 1 && page <= totalPages) {
+          updatePage(page, proxies);
+        }
+      });
+      pagination.appendChild(goToPage);
     }
 
     function updatePage(page, proxies) {
