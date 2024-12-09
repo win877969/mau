@@ -48,47 +48,105 @@
   <div class="pagination" id="pagination"></div>
 
   <script>
-function renderPagination(proxies, pagination) {
-  const totalPages = Math.ceil(proxies.length / proxyPerPage);
+    const proxyPerPage = 10;
+    let currentPage = 1;
 
-  pagination.innerHTML = ''; // Clear previous pagination
-
-  // Render Previous Button
-  if (currentPage > 1) {
-    const prevButton = document.createElement('button');
-    prevButton.textContent = 'Previous';
-    prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
-    pagination.appendChild(prevButton);
-  }
-
-  // Render Page Numbers
-  for (let i = 1; i <= totalPages; i++) {
-    const pageButton = document.createElement('button');
-    pageButton.textContent = i;
-    if (i === currentPage) {
-      pageButton.style.backgroundColor = '#007bff';
-      pageButton.style.color = '#fff';
+    function uuidv4() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
     }
-    pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
-    pagination.appendChild(pageButton);
-  }
 
-  // Render Next Button
-  if (currentPage < totalPages) {
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next';
-    nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
-    pagination.appendChild(nextButton);
-  }
-}
+    function renderProxies(proxies, proxyList, pagination) {
+      const start = (currentPage - 1) * proxyPerPage;
+      const end = start + proxyPerPage;
+      const currentPageProxies = proxies.slice(start, end);
 
-// Function to Update Page
-function updatePage(page, proxies, pagination) {
-  currentPage = page;
-  const proxyList = document.getElementById('proxy-list');
-  renderProxies(proxies, proxyList, pagination);
-}
-</script>
-    
-    
-  </body></html>
+      proxyList.innerHTML = ''; // Hapus semua elemen sebelumnya
+
+      currentPageProxies.forEach(proxy => {
+        const [ip, port, negara, penyedia] = proxy.split(",");
+        const uuid = uuidv4();
+        const proxyElement = document.createElement('div');
+        proxyElement.className = 'proxy';
+        proxyElement.innerHTML = `
+          <span>ISP - (${negara}) - ${penyedia}</span>
+          <button class="copy-vless">Copy VLESS</button>
+          <button class="copy-trojan">Copy TROJAN</button>
+          <button class="copy-ss">Copy SS</button>
+        `;
+        proxyList.appendChild(proxyElement);
+
+        proxyElement.querySelector('.copy-vless').addEventListener('click', () => {
+          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+          alert('COPY VLESS SUKSES!');
+        });
+
+        proxyElement.querySelector('.copy-trojan').addEventListener('click', () => {
+          navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+          alert('COPY TROJAN SUKSES!');
+        });
+
+        proxyElement.querySelector('.copy-ss').addEventListener('click', () => {
+          navigator.clipboard.writeText(`ss://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+          alert('COPY SS SUKSES!');
+        });
+      });
+
+      renderPagination(proxies, pagination);
+    }
+
+    function renderPagination(proxies, pagination) {
+      const totalPages = Math.ceil(proxies.length / proxyPerPage);
+
+      pagination.innerHTML = ''; // Clear previous pagination
+
+      // Previous Button
+      if (currentPage > 1) {
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Previous';
+        prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
+        pagination.appendChild(prevButton);
+      }
+
+      // Page Numbers
+      for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        if (i === currentPage) {
+          pageButton.style.backgroundColor = '#007bff';
+          pageButton.style.color = '#fff';
+        }
+        pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
+        pagination.appendChild(pageButton);
+      }
+
+      // Next Button
+      if (currentPage < totalPages) {
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
+        pagination.appendChild(nextButton);
+      }
+    }
+
+    function updatePage(page, proxies, pagination) {
+      currentPage = page;
+      const proxyList = document.getElementById('proxy-list');
+      renderProxies(proxies, proxyList, pagination);
+    }
+
+    fetch("proxy_list.txt")
+      .then(response => response.text())
+      .then(data => {
+        const proxies = data.split("\n").filter(line => line.trim() !== ""); // Menghapus baris kosong
+        const proxyList = document.getElementById('proxy-list');
+        const pagination = document.getElementById('pagination');
+        renderProxies(proxies, proxyList, pagination);
+      })
+      .catch(error => {
+        console.error('Error fetching the proxy list:', error);
+      });
+  </script>
+</body>
+</html>
