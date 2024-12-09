@@ -72,7 +72,7 @@
       <tr>
         <th>Negara</th>
         <th>Penyedia</th>
-        <th>Cehck Proxy</th>
+        <th>Cek Proxy</th>
         <th>Vless</th>
         <th>Trojan</th>
         <th>SS</th>
@@ -84,7 +84,7 @@
 
   <script>
     // Fungsi untuk memeriksa status proxy
-    function 2checkProxy(ip, port) {
+    function checkProxy(ip, port) {
       const testUrl = `https://${ip}:${port}`;
       return fetch(testUrl, { method: 'HEAD', mode: 'no-cors' })
         .then(() => true) // Proxy aktif
@@ -114,27 +114,28 @@
         const uuid = uuidv4();
         const row = document.createElement('tr');
         row.innerHTML = `
-        <tr>
           <td>${negara}</td>
           <td>${penyedia}</td>
           <td><button class="check-proxy">Cek Proxy</button></td>
           <td><button class="copy-vless">Copy VLESS</button></td>
           <td><button class="copy-trojan">Copy TROJAN</button></td>
           <td><button class="copy-ss">Copy SS</button></td>
-       </tr>
         `;
         proxyList.appendChild(row);
 
+        // Menambahkan event listener untuk tombol Copy VLESS
         row.querySelector('.copy-vless').addEventListener('click', () => {
           navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
           alert('COPY VLESS SUKSES!');
         });
 
+        // Menambahkan event listener untuk tombol Copy TROJAN
         row.querySelector('.copy-trojan').addEventListener('click', () => {
           navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
           alert('COPY TROJAN SUKSES!');
         });
 
+        // Menambahkan event listener untuk tombol Copy SS
         row.querySelector('.copy-ss').addEventListener('click', () => {
           navigator.clipboard.writeText(`ss://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
           alert('COPY SS SUKSES!');
