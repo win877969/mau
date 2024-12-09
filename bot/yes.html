@@ -11,17 +11,7 @@
       background-color: #f0f0f0;
       color: #333;
     }
-    .config-section {
-        max-width: 100%;
-        background: var(--card-bg);
-        color: #fff;
-        backdrop-filter: blur(10px);
-        border: 0px solid rgba(242, 89, 0, 1);
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: var(--glow);
-        transform-style: preserve-3d;
-        animation: cardFloat 6s ease-in-out infinite;
+
     header, footer {
       background-color: #007bff;
       color: white;
@@ -29,83 +19,29 @@
       padding: 15px;
     }
 
-.container {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  min-width: 100px;
-}
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
 
-.col-md-5, .col-md-7 {
-  flex: 1;
-  min-width: 100px;
-}
+    .col-md-5, .col-md-7 {
+      flex: 1;
+      min-width: 300px;
+    }
 
-
-
-.proxy-item {
-    margin-bottom: 10px; /* Jarak antar item */
-    padding: 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-}
-
-.proxy-item a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-.proxy-item:hover {
-    background-color: #e8e8e8;
-}
-
-
-#v2ray-details {
-  word-wrap: break-word;
-}
-
-.config {
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  margin-top: 5px;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background-color: #0056b3;
-}
-
-.pagination1 {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 5px;
-}
-
-.pagination1 button {
-  background-color: #444;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.pagination1 button.active {
-  background-color: #007bff;
-}
+    .content-box {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
     .filters {
       display: flex;
@@ -114,32 +50,49 @@
     }
 
     .proxy-list {
-      max-width: 100%;
-      min-width: 100px;
       margin-top: 20px;
     }
 
+    .proxy-item {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
 
+    .pagination1 {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 5px;
+    }
 
-    
+    .pagination1 button {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .pagination1 button.active {
+      background-color: #007bff;
+    }
 
     .pagination1 button:hover {
       background-color: #555;
     }
 
-    .search-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px; /* Jarak antara filter dan daftar */
-}
+    .btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
 
-.search-container select, .search-container input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%; /* Memenuhi lebar kolom */
-}
+    .btn:hover {
+      background-color: #0056b3;
+    }
 
     @media (max-width: 768px) {
       .row {
@@ -150,8 +103,6 @@
         gap: 5px;
       }
     }
-    
-
   </style>
 </head>
 <body>
@@ -161,13 +112,14 @@
 
   <div class="container">
     <div class="text-center mb-4">
-        <h2>ALAAH KINTIL</h2>
+      <h2>ALAAH KINTIL</h2>
     </div>
 
-   <div class="row">
-  <div class="col-md-5">
-    <div class="config-section">
-       <div class="filters">
+    <div class="row">
+      <!-- Kolom kiri -->
+      <div class="col-md-5">
+        <div class="content-box">
+          <div class="filters">
             <div>
               <label for="items-per-page">Items per Page:</label>
               <select id="items-per-page">
@@ -193,9 +145,9 @@
 
       <!-- Kolom kanan -->
       <div class="col-md-7">
-    <div class="config-section">
-      <div id="v2ray-details">
-        <!-- Proxy details will be rendered here -->
+        <div class="content-box">
+          <div id="v2ray-details">
+            <!-- Proxy details will be rendered here -->
           </div>
         </div>
       </div>
