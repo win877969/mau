@@ -213,134 +213,150 @@
   </footer>
 
   <script>
-    let proxyPerPage = 10;
-    let currentPage = 1;
-    let filteredProxies = [];
-    let allProxies = [];
+    
+  let proxyPerPage = 10;
+  let currentPage = 1;
+  let filteredProxies = [];
+  let allProxies = [];
 
-    function renderProxies(proxies) {
-      const proxyList = document.getElementById("proxy-list");
-      const start = (currentPage - 1) * proxyPerPage;
-      const end = start + proxyPerPage;
-      const currentPageProxies = proxies.slice(start, end);
+  // Fungsi untuk render proxy ke tabel
+  function renderProxies(proxies) {
+    const proxyList = document.getElementById("proxy-list");
+    const start = (currentPage - 1) * proxyPerPage;
+    const end = start + proxyPerPage;
+    const currentPageProxies = proxies.slice(start, end);
 
-      proxyList.innerHTML = "";
-      currentPageProxies.forEach((proxy) => {
-        const [ip, port, country, provider] = proxy.split(",");
-        const row = document.createElement("tr");
+    proxyList.innerHTML = "";
+    currentPageProxies.forEach((proxy, index) => {
+      const [ip, port, country, provider] = proxy.split(",");
+      const row = document.createElement("tr");
 
-        row.innerHTML = `
-          <td>${ip}:${port}</td>
-          <td>${country}</td>
-          <td>${provider}</td>
-          <td>
-            <button class="btn" onclick="openProxyDetails('${ip}:${port}', '${country}', '${provider}')">Lihat</button>
-          </td>
-        `;
-        proxyList.appendChild(row);
-      });
-
-      renderPagination(proxies);
-    }
-
-    function renderPagination(proxies) {
-      const pagination = document.getElementById("pagination");
-      const totalPages = Math.ceil(proxies.length / proxyPerPage);
-      pagination.innerHTML = "";
-
-      const prevButton = document.createElement("button");
-      prevButton.textContent = "<<";
-      prevButton.disabled = currentPage === 1;
-      prevButton.addEventListener("click", () => updatePage(1, proxies));
-      pagination.appendChild(prevButton);
-
-      const startPage = Math.max(1, currentPage - 2);
-      const endPage = Math.min(totalPages, currentPage + 2);
-
-      for (let i = startPage; i <= endPage; i++) {
-        const pageButton = document.createElement("button");
-        pageButton.textContent = i;
-        pageButton.classList.toggle("active", i === currentPage);
-        pageButton.addEventListener("click", () => updatePage(i, proxies));
-        pagination.appendChild(pageButton);
-      }
-
-      const nextButton = document.createElement("button");
-      nextButton.textContent = "Next";
-      nextButton.disabled = currentPage === totalPages;
-      nextButton.addEventListener("click", () => updatePage(totalPages, proxies));
-      pagination.appendChild(nextButton);
-
-      const goToPage = document.createElement("input");
-      goToPage.type = "number";
-      goToPage.min = 1;
-      goToPage.max = totalPages;
-      goToPage.placeholder = "Go to page";
-      goToPage.addEventListener("change", (e) => {
-        const page = parseInt(e.target.value);
-        if (page >= 1 && page <= totalPages) {
-          updatePage(page, proxies);
-        }
-      });
-      pagination.appendChild(goToPage);
-    }
-
-    function updatePage(page, proxies) {
-      currentPage = page;
-      renderProxies(filteredProxies);
-    }
-
-    function filterProxies(searchTerm) {
-      filteredProxies = allProxies.filter((proxy) =>
-        proxy.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      currentPage = 1;
-      renderProxies(filteredProxies);
-    }
-
-    function openProxyDetails(ipPort, country, provider) {
-      const [ip, port] = ipPort.split(":");
-      const detailsContainer = document.getElementById("v2ray-details");
-
-      detailsContainer.innerHTML = `
-        <h3>Detail Proxy</h3>
-        <p><strong>ISP: ${country} | ${provider}</strong></p>
-        <p><strong>IP:Port:</strong> ${ip}:${port}</p>
-        <p>
-          <span>vless://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
-          <button class="btn" onclick="copyToClipboard(this)">Copy</button>
-        </p>
-        <p>
-          <span>trojan://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
-          <button class="btn" onclick="copyToClipboard(this)">Copy</button>
-        </p>
+      row.innerHTML = `
+        <td>${ip}:${port}</td>
+        <td>${country}</td>
+        <td>${provider}</td>
+        <td>
+          <button class="btn" onclick="openProxyDetails(${index})">Lihat</button>
+        </td>
       `;
-    }
-
-    function copyToClipboard(button) {
-      const text = button.previousElementSibling.textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Copied to clipboard!");
-      });
-    }
-
-    document.getElementById("search-bar").addEventListener("input", (e) => {
-      filterProxies(e.target.value);
+      proxyList.appendChild(row);
     });
 
-    document.getElementById("items-per-page").addEventListener("change", (e) => {
-      proxyPerPage = parseInt(e.target.value);
+    renderPagination(proxies);
+    
+    // Tampilkan detail pertama kali setelah render tabel
+    if (filteredProxies.length > 0) {
+      openProxyDetails(0); // Menampilkan detail pertama kali
+    }
+  }
+
+  // Fungsi untuk render pagination
+  function renderPagination(proxies) {
+    const pagination = document.getElementById("pagination");
+    const totalPages = Math.ceil(proxies.length / proxyPerPage);
+    pagination.innerHTML = "";
+
+    const prevButton = document.createElement("button");
+    prevButton.textContent = "<<";
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener("click", () => updatePage(1, proxies));
+    pagination.appendChild(prevButton);
+
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+
+    for (let i = startPage; i <= endPage; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.textContent = i;
+      pageButton.classList.toggle("active", i === currentPage);
+      pageButton.addEventListener("click", () => updatePage(i, proxies));
+      pagination.appendChild(pageButton);
+    }
+
+    const nextButton = document.createElement("button");
+    nextButton.textContent = "Next";
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener("click", () => updatePage(totalPages, proxies));
+    pagination.appendChild(nextButton);
+
+    const goToPage = document.createElement("input");
+    goToPage.type = "number";
+    goToPage.min = 1;
+    goToPage.max = totalPages;
+    goToPage.placeholder = "Go to page";
+    goToPage.addEventListener("change", (e) => {
+      const page = parseInt(e.target.value);
+      if (page >= 1 && page <= totalPages) {
+        updatePage(page, proxies);
+      }
+    });
+    pagination.appendChild(goToPage);
+  }
+
+  // Fungsi untuk mengupdate halaman
+  function updatePage(page, proxies) {
+    currentPage = page;
+    renderProxies(filteredProxies);
+  }
+
+  // Fungsi untuk menyaring proxy berdasarkan pencarian
+  function filterProxies(searchTerm) {
+    filteredProxies = allProxies.filter((proxy) =>
+      proxy.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    currentPage = 1;
+    renderProxies(filteredProxies);
+  }
+
+  // Fungsi untuk membuka detail proxy
+  function openProxyDetails(index) {
+    const proxy = filteredProxies[index];
+    const [ip, port, country, provider] = proxy.split(",");
+    const detailsContainer = document.getElementById("v2ray-details");
+
+    detailsContainer.innerHTML = `
+      <h3>Detail Proxy</h3>
+      <p><strong>ISP: ${country} | ${provider}</strong></p>
+      <p><strong>IP:Port:</strong> ${ip}:${port}</p>
+      <p>
+        <span>vless://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
+        <button class="btn" onclick="copyToClipboard(this)">Copy</button>
+      </p>
+      <p>
+        <span>trojan://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
+        <button class="btn" onclick="copyToClipboard(this)">Copy</button>
+      </p>
+    `;
+  }
+
+  // Fungsi untuk menyalin teks ke clipboard
+  function copyToClipboard(button) {
+    const text = button.previousElementSibling.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Copied to clipboard!");
+    });
+  }
+
+  // Event listener untuk pencarian proxy
+  document.getElementById("search-bar").addEventListener("input", (e) => {
+    filterProxies(e.target.value);
+  });
+
+  // Event listener untuk memilih jumlah item per halaman
+  document.getElementById("items-per-page").addEventListener("change", (e) => {
+    proxyPerPage = parseInt(e.target.value);
+    renderProxies(filteredProxies);
+  });
+
+  // Ambil data proxy dan render tabel
+  fetch("proxy_list.txt")
+    .then((response) => response.text())
+    .then((data) => {
+      allProxies = data.split("\n").filter((line) => line.trim() !== "");
+      filteredProxies = allProxies;
       renderProxies(filteredProxies);
-    });
+    })
+    .catch((error) => console.error("Error fetching proxy data:", error));
+</script></body></html>
 
-    fetch("proxy_list.txt")
-      .then((response) => response.text())
-      .then((data) => {
-        allProxies = data.split("\n").filter((line) => line.trim() !== "");
-        filteredProxies = allProxies;
-        renderProxies(filteredProxies);
-      })
-      .catch((error) => console.error("Error fetching proxy data:", error));
-  </script>
-</body>
-</html>
+      
