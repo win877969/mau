@@ -23,7 +23,6 @@
     .copy-vless:hover, .copy-trojan:hover, .copy-ss:hover {
       background-color: #0069d9;
     }
-    
     .pagination {
       margin-top: 20px;
       text-align: center;
@@ -44,16 +43,27 @@
       background-color: #0056b3;
       color: #fff;
     }
+    #search-bar {
+      margin-bottom: 20px;
+      padding: 10px;
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
   <h1>Proxy Aktif:</h1>
+  <input type="text" id="search-bar" placeholder="Cari berdasarkan negara, ISP, atau penyedia layanan...">
   <div id="proxy-list"></div>
   <div class="pagination" id="pagination"></div>
 
   <script>
     const proxyPerPage = 10;
     let currentPage = 1;
+    let filteredProxies = []; // Proxies yang telah difilter
+    let allProxies = []; // Semua proxies
 
     function uuidv4() {
       return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -142,14 +152,28 @@
       renderProxies(proxies, proxyList, pagination);
     }
 
+    function filterProxies(searchTerm) {
+      searchTerm = searchTerm.toLowerCase();
+      filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
+      currentPage = 1; // Reset ke halaman pertama setelah filter
+      const proxyList = document.getElementById('proxy-list');
+      const pagination = document.getElementById('pagination');
+      renderProxies(filteredProxies, proxyList, pagination);
+    }
+
+    document.getElementById('search-bar').addEventListener('input', (e) => {
+      filterProxies(e.target.value);
+    });
+
     // Fetch daftar proxy dari file eksternal
     fetch("proxy_list.txt")
       .then(response => response.text())
       .then(data => {
-        const proxies = data.split("\n").filter(line => line.trim() !== ""); // Menghapus baris kosong
+        allProxies = data.split("\n").filter(line => line.trim() !== ""); // Menghapus baris kosong
+        filteredProxies = allProxies; // Awalnya semua proxies
         const proxyList = document.getElementById('proxy-list');
         const pagination = document.getElementById('pagination');
-        renderProxies(proxies, proxyList, pagination);
+        renderProxies(filteredProxies, proxyList, pagination);
       })
       .catch(error => {
         console.error('Error fetching the proxy list:', error);
