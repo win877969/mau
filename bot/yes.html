@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Responsive Proxy List</title>
   <style>
-    /* Styles tetap sama */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -35,6 +34,13 @@
     .col-md-5, .col-md-7 {
       flex: 1;
       min-width: 300px;
+    }
+
+    .content-box {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .filters {
@@ -96,6 +102,7 @@
       .filters {
         gap: 5px;
       }
+    }
   </style>
 </head>
 <body>
@@ -109,33 +116,39 @@
     </div>
 
     <div class="row">
+      <!-- Kolom kiri -->
       <div class="col-md-5">
-        <div class="filters">
-          <div>
-            <label for="items-per-page">Items per Page:</label>
-            <select id="items-per-page">
-              <option value="10">10 Baris</option>
-              <option value="25">25 Baris</option>
-              <option value="50">50 Baris</option>
-              <option value="100">100 Baris</option>
-            </select>
+        <div class="content-box">
+          <div class="filters">
+            <div>
+              <label for="items-per-page">Items per Page:</label>
+              <select id="items-per-page">
+                <option value="10">10 Baris</option>
+                <option value="25">25 Baris</option>
+                <option value="50">50 Baris</option>
+                <option value="100">100 Baris</option>
+              </select>
+            </div>
+            <div>
+              <label for="search-bar">Search:</label>
+              <input type="text" id="search-bar" placeholder="Cari berdasarkan negara, ISP, atau penyedia layanan...">
+            </div>
           </div>
-          <div>
-            <label for="search-bar">Search:</label>
-            <input type="text" id="search-bar" placeholder="Cari berdasarkan negara, ISP, atau penyedia layanan...">
+
+          <div class="proxy-list" id="proxy-list">
+            <!-- Proxy items will be dynamically rendered here -->
           </div>
-        </div>
 
-        <div class="proxy-list" id="proxy-list">
-          <!-- Proxy items will be dynamically rendered here -->
+          <div class="pagination1" id="pagination"></div>
         </div>
-
-        <div class="pagination1" id="pagination"></div>
       </div>
 
+      <!-- Kolom kanan -->
       <div class="col-md-7">
-        <div id="v2ray-details">
-          <!-- Proxy details go here -->
+        <div class="content-box">
+          <div id="v2ray-details">
+            <!-- Proxy details will be rendered here -->
+          </div>
         </div>
       </div>
     </div>
@@ -151,20 +164,18 @@
     let filteredProxies = [];
     let allProxies = [];
 
-    // Render proxies
     function renderProxies(proxies) {
       const proxyList = document.getElementById("proxy-list");
       const start = (currentPage - 1) * proxyPerPage;
       const end = start + proxyPerPage;
       const currentPageProxies = proxies.slice(start, end);
 
-      proxyList.innerHTML = ""; // Clear list
+      proxyList.innerHTML = "";
       currentPageProxies.forEach((proxy, index) => {
         const [ip, port, country, provider] = proxy.split(",");
         const row = document.createElement("div");
         row.classList.add("proxy-item");
 
-        // Alternating background colors for each row
         row.style.backgroundColor = index % 2 === 0 ? "#e0e0e0" : "#c0c0c0";
         row.innerHTML = `
           <p class="tablinks" onclick="openProxyDetails('${ip}:${port}', '${country}', '${provider}')">
@@ -175,15 +186,12 @@
       });
 
       renderPagination(proxies);
-
-      // Tampilkan detail pertama saat halaman dimuat
       if (currentPage === 1 && proxies.length > 0) {
         const [ip, port, country, provider] = proxies[0].split(",");
         openProxyDetails(`${ip}:${port}`, country, provider);
       }
     }
 
-    // Render pagination
     function renderPagination(proxies) {
       const pagination = document.getElementById("pagination");
       const totalPages = Math.ceil(proxies.length / proxyPerPage);
@@ -193,14 +201,12 @@
 
       pagination.innerHTML = "";
 
-      // Previous button
       const prevButton = document.createElement("button");
       prevButton.textContent = "<<";
       prevButton.disabled = currentPage === 1;
       prevButton.addEventListener("click", () => updatePage(currentPage - 1, proxies));
       pagination.appendChild(prevButton);
 
-      // Page buttons
       for (let i = startPage; i <= endPage; i++) {
         const pageButton = document.createElement("button");
         pageButton.textContent = i;
@@ -209,7 +215,6 @@
         pagination.appendChild(pageButton);
       }
 
-      // Next button
       const nextButton = document.createElement("button");
       nextButton.textContent = ">>";
       nextButton.disabled = currentPage === totalPages;
@@ -217,13 +222,11 @@
       pagination.appendChild(nextButton);
     }
 
-    // Update page
     function updatePage(page, proxies) {
       currentPage = page;
       renderProxies(filteredProxies);
     }
 
-    // Filter proxies
     function filterProxies(searchTerm) {
       filteredProxies = allProxies.filter((proxy) =>
         proxy.toLowerCase().includes(searchTerm.toLowerCase())
@@ -232,12 +235,10 @@
       renderProxies(filteredProxies);
     }
 
-    // Show proxy details in the left section
     function openProxyDetails(ipPort, country, provider) {
       const [ip, port] = ipPort.split(":");
       const detailsContainer = document.getElementById("v2ray-details");
 
-      // Replace content with new details
       detailsContainer.innerHTML = `
         <p><strong>ISP: ${country} | ${provider}</strong></p>
         <p class="config">
@@ -245,13 +246,12 @@
           <button class="btn" onclick="copyToClipboard(this)">Copy</button>
         </p>
         <p class="config">
-        <span>trojan://5de379e4-209c-49e6-8905-55820599cb90@BUG.COM:443?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
-            <button class="btn" onclick="copyToClipboard(this)">Copy</button>
+          <span>trojan://5de379e4-209c-49e6-8905-55820599cb90@BUG.COM:443?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
+          <button class="btn" onclick="copyToClipboard(this)">Copy</button>
         </p>
       `;
     }
 
-    // Copy text to clipboard
     function copyToClipboard(button) {
       const text = button.previousElementSibling.textContent;
       navigator.clipboard.writeText(text).then(() => {
@@ -259,7 +259,6 @@
       });
     }
 
-    // Event listeners
     document.getElementById("search-bar").addEventListener("input", (e) => {
       filterProxies(e.target.value);
     });
@@ -269,7 +268,6 @@
       renderProxies(filteredProxies);
     });
 
-    // Fetch proxies
     fetch("proxy_list.txt")
       .then((response) => response.text())
       .then((data) => {
