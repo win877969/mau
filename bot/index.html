@@ -80,122 +80,64 @@
   <div class="pagination" id="pagination"></div>
 
   <script>
-    const proxyPerPage = 10;
-    let currentPage = 1;
-    let filteredProxies = [];
-    let allProxies = [];
+        function checkProxy(ip, port) {
+  const testUrl = `https://${ip}:${port}`; // URL untuk melakukan tes proxy
+  return fetch(testUrl, { method: 'HEAD', mode: 'no-cors' })
+    .then(() => true) // Proxy aktif
+    .catch(() => false); // Proxy tidak aktif
+}
 
-    function uuidv4() {
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      );
-    }
+function renderProxies(proxies, proxyList, pagination) {
+  const start = (currentPage - 1) * proxyPerPage;
+  const end = start + proxyPerPage;
+  const currentPageProxies = proxies.slice(start, end);
 
-    function renderProxies(proxies, proxyList, pagination) {
-      const start = (currentPage - 1) * proxyPerPage;
-      const end = start + proxyPerPage;
-      const currentPageProxies = proxies.slice(start, end);
+  proxyList.innerHTML = ''; // Hapus semua elemen sebelumnya
 
-      proxyList.innerHTML = ''; // Hapus semua elemen sebelumnya
+  currentPageProxies.forEach(async proxy => {
+    const [ip, port, negara, penyedia] = proxy.split(",");
+    const uuid = uuidv4();
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${negara}</td>
+      <td>${penyedia}</td>
+      <td>
+        <button class="copy-vless">Copy VLESS</button>
+        <button class="copy-trojan">Copy TROJAN</button>
+        <button class="copy-ss">Copy SS</button>
+        <button class="check-proxy">Cek Proxy</button>
+      </td>
+    `;
+    proxyList.appendChild(row);
 
-      currentPageProxies.forEach(proxy => {
-        const [ip, port, negara, penyedia] = proxy.split(",");
-        const uuid = uuidv4();
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${negara}</td>
-          <td>${penyedia}</td>
-          <td>
-            <button class="copy-vless">Copy VLESS</button>
-            <button class="copy-trojan">Copy TROJAN</button>
-            <button class="copy-ss">Copy SS</button>
-          </td>
-        `;
-        proxyList.appendChild(row);
-
-        row.querySelector('.copy-vless').addEventListener('click', () => {
-          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY VLESS SUKSES!');
-        });
-
-        row.querySelector('.copy-trojan').addEventListener('click', () => {
-          navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY TROJAN SUKSES!');
-        });
-
-        row.querySelector('.copy-ss').addEventListener('click', () => {
-          navigator.clipboard.writeText(`ss://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY SS SUKSES!');
-        });
-      });
-
-      renderPagination(proxies, pagination);
-    }
-
-    function renderPagination(proxies, pagination) {
-      const totalPages = Math.ceil(proxies.length / proxyPerPage);
-      const maxButtons = 5;
-      pagination.innerHTML = '';
-
-      if (currentPage > 1) {
-        const prevButton = document.createElement('button');
-        prevButton.textContent = '<< Previous';
-        prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
-        pagination.appendChild(prevButton);
-      }
-
-      const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-      const endPage = Math.min(totalPages, startPage + maxButtons - 1);
-
-      for (let i = startPage; i <= endPage; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        if (i === currentPage) {
-          pageButton.classList.add('active');
-        }
-        pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
-        pagination.appendChild(pageButton);
-      }
-
-      if (currentPage < totalPages) {
-        const nextButton = document.createElement('button');
-        nextButton.textContent = 'Next >>';
-        nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
-        pagination.appendChild(nextButton);
-      }
-    }
-
-    function updatePage(page, proxies, pagination) {
-      currentPage = page;
-      const proxyList = document.getElementById('proxy-list');
-      renderProxies(proxies, proxyList, pagination);
-    }
-
-    function filterProxies(searchTerm) {
-      searchTerm = searchTerm.toLowerCase();
-      filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
-      currentPage = 1;
-      const proxyList = document.getElementById('proxy-list');
-      const pagination = document.getElementById('pagination');
-      renderProxies(filteredProxies, proxyList, pagination);
-    }
-
-    document.getElementById('search-bar').addEventListener('input', (e) => {
-      filterProxies(e.target.value);
+    row.querySelector('.copy-vless').addEventListener('click', () => {
+      navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+      alert('COPY VLESS SUKSES!');
     });
 
-    fetch("proxy_list.txt")
-      .then(response => response.text())
-      .then(data => {
-        allProxies = data.split("\n").filter(line => line.trim() !== "");
-        filteredProxies = allProxies;
-        const proxyList = document.getElementById('proxy-list');
-        const pagination = document.getElementById('pagination');
-        renderProxies(filteredProxies, proxyList, pagination);
-      })
-      .catch(error => {
-        console.error('Error fetching the proxy list:', error);
-      });
+    row.querySelector('.copy-trojan').addEventListener('click', () => {
+      navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+      alert('COPY TROJAN SUKSES!');
+    });
+
+    row.querySelector('.copy-ss').addEventListener('click', () => {
+      navigator.clipboard.writeText(`ss://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+      alert('COPY SS SUKSES!');
+    });
+
+    // Cek Proxy
+    const checkButton = row.querySelector('.check-proxy');
+    checkButton.addEventListener('click', async () => {
+      checkButton.textContent = 'Memeriksa...';
+      const isActive = await checkProxy(ip, port);
+      checkButton.textContent = isActive ? 'Proxy Aktif' : 'Proxy Tidak Aktif';
+      alert(isActive ? 'Proxy ini AKTIF!' : 'Proxy ini TIDAK AKTIF!');
+    });
+  });
+
+  renderPagination(proxies, pagination);
+}
+
   </script>
 </body>
 </html>
