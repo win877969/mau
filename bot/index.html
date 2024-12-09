@@ -72,7 +72,10 @@
       <tr>
         <th>Negara</th>
         <th>Penyedia</th>
-        <th>Aksi</th>
+        <th>Cehck Proxy</th>
+        <th>Vless</th>
+        <th>Trojan</th>
+        <th>SS</th>
       </tr>
     </thead>
     <tbody id="proxy-list"></tbody>
@@ -81,7 +84,7 @@
 
   <script>
     // Fungsi untuk memeriksa status proxy
-    function checkProxy(ip, port) {
+    function 2checkProxy(ip, port) {
       const testUrl = `https://${ip}:${port}`;
       return fetch(testUrl, { method: 'HEAD', mode: 'no-cors' })
         .then(() => true) // Proxy aktif
@@ -114,11 +117,14 @@
           <td>${negara}</td>
           <td>${penyedia}</td>
           <td>
-            <button class="copy-vless">Copy VLESS</button>
-            <button class="copy-trojan">Copy TROJAN</button>
+            <button class="check-proxy">Cek Proxy</button></td>
+          <td>
+            <button class="copy-vless">Copy VLESS</button></td>
+          <td>
+            <button class="copy-trojan">Copy TROJAN</button></td>
+          <td>
             <button class="copy-ss">Copy SS</button>
-            <button class="check-proxy">Cek Proxy</button>
-          </td>
+             </td>
         `;
         proxyList.appendChild(row);
 
