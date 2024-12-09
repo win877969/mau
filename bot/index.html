@@ -48,7 +48,7 @@ fetch("proxy_list.txt")
       const proxyElement = document.createElement('div');
       proxyElement.className = 'proxy';
       proxyElement.innerHTML = `
-        <span>${ip}:${port} (${negara}, ${penyedia}) - UUID: ${uuid}</span>
+        <span>ISP : (${negara}) - ${penyedia} </span>
         <button class="copy-vless">Copy VLESS</button>
         <button class="copy-trojan">Copy TROJAN</button>
         <button class="copy-ss">Copy SS</button>
