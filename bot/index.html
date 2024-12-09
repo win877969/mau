@@ -114,17 +114,14 @@
         const uuid = uuidv4();
         const row = document.createElement('tr');
         row.innerHTML = `
+        <tr>
           <td>${negara}</td>
           <td>${penyedia}</td>
-          <td>
-            <button class="check-proxy">Cek Proxy</button></td>
-          <td>
-            <button class="copy-vless">Copy VLESS</button></td>
-          <td>
-            <button class="copy-trojan">Copy TROJAN</button></td>
-          <td>
-            <button class="copy-ss">Copy SS</button>
-             </td>
+          <td><button class="check-proxy">Cek Proxy</button></td>
+          <td><button class="copy-vless">Copy VLESS</button></td>
+          <td><button class="copy-trojan">Copy TROJAN</button></td>
+          <td><button class="copy-ss">Copy SS</button></td>
+       </tr>
         `;
         proxyList.appendChild(row);
 
