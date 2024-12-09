@@ -14,14 +14,17 @@
   
 
     }
-
+.container {
+  max-width: 960px;
+  background-color: #000;
+}
     header, footer {
       background-color: #007bff;
       color: white;
       text-align: center;
       padding: 10px;
       position: fixed;
-      width: 100%;
+      max-width: 960px;
       left: 0;
     }
 
@@ -42,6 +45,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      max-width: 960px;
     }
 
     .filters {
@@ -210,7 +214,7 @@
   <header>
     <h1>FREE PROXY CF BMKG.XYZ</h1>
   </header>
-
+<div class="container">
   <main>
     <div class="filters">
       <div>
@@ -242,7 +246,7 @@
       <tbody id="proxy-list"></tbody>
     </table>
     <div class="pagination" id="pagination"></div>
-  </main>
+  </main></div>
 
   <footer>
     <p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p>
