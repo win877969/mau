@@ -98,8 +98,8 @@
     }
 
     @media (max-width: 768px) {
-      header, footer {
-        padding: 10px;
+      .row {
+        flex-direction: column;
       }
 
       .filters {
@@ -160,120 +160,78 @@
   <footer>
     <p>&copy; 2024 Proxy List Manager</p>
   </footer>
-	  <script>
+
+  <script>
     let proxyPerPage = 10;
     let currentPage = 1;
     let filteredProxies = [];
     let allProxies = [];
 
-    // Function to handle UUID generation
-    function uuidv4() {
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      );
-    }
-
     // Function to render proxies
-    function renderProxies(proxies, proxyList, pagination) {
+    function renderProxies(proxies) {
+      const proxyList = document.getElementById('proxy-list');
+      const pagination = document.getElementById('pagination');
       const start = (currentPage - 1) * proxyPerPage;
       const end = start + proxyPerPage;
       const currentPageProxies = proxies.slice(start, end);
 
       proxyList.innerHTML = ''; // Clear previous list
-
       currentPageProxies.forEach(proxy => {
-        const [ip, port, negara, penyedia] = proxy.split(",");
-        const uuid = uuidv4();
+        const [ip, port, country, provider] = proxy.split(",");
         const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${negara} | ${penyedia}</td>
-           `;
+        row.innerHTML = `<td>${country} | ${provider}</td>`;
         proxyList.appendChild(row);
+      });
 
-        // Event listeners for copy buttons
-        
-
-      renderPagination(proxies, pagination);
+      renderPagination(proxies);
     }
 
     // Function to render pagination
-    function renderPagination(proxies, pagination) {
+    function renderPagination(proxies) {
+      const pagination = document.getElementById('pagination');
       const totalPages = Math.ceil(proxies.length / proxyPerPage);
-      const maxButtons = 5;
+
       pagination.innerHTML = '';
-
-      if (currentPage > 1) {
-        const prevButton = document.createElement('button');
-        prevButton.textContent = '<< Previous';
-        prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
-        pagination.appendChild(prevButton);
+      for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.classList.toggle('active', i === currentPage);
+        button.addEventListener('click', () => {
+          currentPage = i;
+          renderProxies(filteredProxies);
+        });
+        pagination.appendChild(button);
       }
-
-      const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-      const endPage = Math.min(totalPages, startPage + maxButtons - 1);
-
-      for (let i = startPage; i <= endPage; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        if (i === currentPage) {
-          pageButton.classList.add('active');
-        }
-        pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
-        pagination.appendChild(pageButton);
-      }
-
-      if (currentPage < totalPages) {
-        const nextButton = document.createElement('button');
-        nextButton.textContent = 'Next >>';
-        nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
-        pagination.appendChild(nextButton);
-      }
-    }
-
-    // Function to update page
-    function updatePage(page, proxies, pagination) {
-      currentPage = page;
-      const proxyList = document.getElementById('proxy-list');
-      renderProxies(proxies, proxyList, pagination);
     }
 
     // Function to filter proxies
     function filterProxies(searchTerm) {
-      searchTerm = searchTerm.toLowerCase();
-      filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
+      filteredProxies = allProxies.filter(proxy =>
+        proxy.toLowerCase().includes(searchTerm.toLowerCase())
+      );
       currentPage = 1;
-      const proxyList = document.getElementById('proxy-list');
-      const pagination = document.getElementById('pagination');
-      renderProxies(filteredProxies, proxyList, pagination);
+      renderProxies(filteredProxies);
     }
 
-    // Event listener for search bar
-    document.getElementById('search-bar').addEventListener('input', (e) => {
+    // Event listeners
+    document.getElementById('search-bar').addEventListener('input', e => {
       filterProxies(e.target.value);
     });
 
-    // Event listener for items per page dropdown
-    document.getElementById('items-per-page').addEventListener('change', (e) => {
+    document.getElementById('items-per-page').addEventListener('change', e => {
       proxyPerPage = parseInt(e.target.value);
-      const proxyList = document.getElementById('proxy-list');
-      const pagination = document.getElementById('pagination');
-      renderProxies(filteredProxies, proxyList, pagination);
+      renderProxies(filteredProxies);
     });
 
-    // Fetching proxy data
+    // Fetch proxies
     fetch("proxy_list.txt")
       .then(response => response.text())
       .then(data => {
         allProxies = data.split("\n").filter(line => line.trim() !== "");
         filteredProxies = allProxies;
-        const proxyList = document.getElementById('proxy-list');
-        const pagination = document.getElementById('pagination');
-        renderProxies(filteredProxies, proxyList, pagination);
+        renderProxies(filteredProxies);
       })
       .catch(error => console.error("Error fetching proxy data:", error));
-
-      // Include the JS functionality from your original script.
-      // Fetch proxies, handle filtering, pagination, and copy buttons.
-    </script>
+  </script>
 </body>
 </html>
