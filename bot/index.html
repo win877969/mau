@@ -24,7 +24,8 @@
     .copy-vless:hover, .copy-trojan:hover, .copy-ss:hover {
       background-color: #0069d9;
     }
-      .pagination {
+    
+    .pagination {
       margin-top: 20px;
     }
     .pagination button {
@@ -41,78 +42,37 @@
     }
   </style>
 </head>
+``<div class="pagination" id="pagination"></div>
 <body>
-<h1>Proxy Aktif:</h1>
-<div id="proxy-list"></div>
-<div class="pagination" id="pagination"></div>
+  <h1>Proxy Aktif:</h1>
+  <div id="proxy-list"></div>
   <script>
-function uuidv4() {
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  );
-}
+
+
 
 const proxyPerPage = 10;
 let currentPage = 1;
 
-fetch("proxy_list.txt")
-  .then(response => response.text())
-  .then(data => {
-    const proxies = data.split("\n");
-    const proxyList = document.getElementById('proxy-list');
-    const pagination = document.getElementById('pagination');
-
-    renderProxies(proxies, proxyList, pagination);
-  })
-  .catch(error => console.error("Error:", error));
-
-function renderProxies(proxies, proxyList, pagination) {
-  const start = (currentPage - 1) * proxyPerPage;
-  const end = start + proxyPerPage;
-  const currentPageProxies = proxies.slice(start, end);
-
-  proxyList.innerHTML = '';
+function renderPagination(proxies, pagination) {
+  const totalPages = Math.ceil(proxies.length / proxyPerPage);
   pagination.innerHTML = '';
 
-  currentPageProxies.forEach(proxy => {
-    const [ip, port, negara, penyedia] = proxy.split(",");
-    const uuid = uuidv4();
-    const proxyElement = document.createElement('div');
-    proxyElement.className = 'proxy';
-    proxyElement.innerHTML = `
-      <span>${ip}:${port} (${negara}, ${penyedia}) - UUID: ${uuid}</span>
-      <button class="copy-vless">Copy VLESS</button>
-      <button class="copy-trojan">Copy TROJAN</button>
-      <button class="copy-ss">Copy SS</button>
-    `;
-    proxyList.appendChild(proxyElement);
-    const copyVlessBtn = proxyElement.querySelector('.copy-vless');
-    const copyTrojanBtn = proxyElement.querySelector('.copy-trojan');
-    const copySsBtn = proxyElement.querySelector('.copy-ss');
-
-    copyVlessBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-      alert('COPY VLESS SUKSES!');
-    });
-
-    copyTrojanBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-      alert('COPY TROJAN SUKSES!');
-    });
-
-    copySsBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(`ss://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-      alert('COPY SS SUKSES!');
-    });
+  const prevButton = document.createElement('button');
+  prevButton.textContent = 'Previous';
+  prevButton.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderProxies(proxies, document.getElementById('proxy-list'), pagination);
+    }
   });
+  pagination.appendChild(prevButton);
 
-  const totalPages = Math.ceil(proxies.length / proxyPerPage);
   for (let i = 1; i <= totalPages; i++) {
     const pageButton = document.createElement('button');
     pageButton.textContent = i;
     pageButton.addEventListener('click', () => {
       currentPage = i;
-      renderProxies(proxies, proxyList, pagination);
+      renderProxies(proxies, document.getElementById('proxy-list'), pagination);
     });
     if (i == currentPage) {
       pageButton.style.backgroundColor = '#007bff';
@@ -120,7 +80,64 @@ function renderProxies(proxies, proxyList, pagination) {
     }
     pagination.appendChild(pageButton);
   }
+
+  const nextButton = document.createElement('button');
+  nextButton.textContent = 'Next';
+  nextButton.addEventListener('click', () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderProxies(proxies, document.getElementById('proxy-list'), pagination);
+    }
+  });
+  pagination.appendChild(nextButton);
 }
+
+
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
+fetch("proxy_list.txt")
+  .then(response => response.text())
+  .then(data => {
+    const proxyList = document.getElementById('proxy-list');
+    const proxies = data.split("\n");
+    proxies.forEach(proxy => {
+      const [ip, port, negara, penyedia] = proxy.split(",");
+      const uuid = uuidv4();
+      const proxyElement = document.createElement('div');
+      proxyElement.className = 'proxy';
+      proxyElement.innerHTML = `
+        <span>${ip}:${port} (${negara}, ${penyedia}) - UUID: ${uuid}</span>
+        <button class="copy-vless">Copy VLESS</button>
+        <button class="copy-trojan">Copy TROJAN</button>
+        <button class="copy-ss">Copy SS</button>
+      `;
+      proxyList.appendChild(proxyElement);
+      const copyVlessBtn = proxyElement.querySelector('.copy-vless');
+      const copyTrojanBtn = proxyElement.querySelector('.copy-trojan');
+      const copySsBtn = proxyElement.querySelector('.copy-ss');
+
+      copyVlessBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+        alert('COPY VLESS SUKSES!');
+      });
+
+      copyTrojanBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+        alert('COPY TROJAN SUKSES!');
+      });
+
+      copySsBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(`ss://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
+        alert('COPY SS SUKSES!');
+      });
+    });
+  })
+  .catch(error => console.error("Error:", error));
+  
     </script>
     
     
