@@ -187,7 +187,11 @@
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${negara} | ${penyedia}</td>
-           `;
+           <td><button class="copy-vless">Copy VLESS 443</button></td>
+          <td><button class="copy-vless1">Copy VLESS 80</button></td>       
+          <td><button class="copy-trojan">Copy TROJAN</button></td>
+          <td><button class="copy-ss">Copy SS</button></td>
+       `;
         proxyList.appendChild(row);
 
         // Event listeners for copy buttons
