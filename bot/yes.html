@@ -45,21 +45,21 @@
 }
 
 .proxy-item {
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+    margin-bottom: 10px; /* Jarak antar item */
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
 }
 
 .proxy-item a {
-  text-decoration: none;
-  color: #007bff;
+    text-decoration: none;
+    color: #007bff;
 }
 
 .proxy-item:hover {
-  background-color: #e0e0e0;
+    background-color: #e8e8e8;
 }
+
 
 #v2ray-details {
   word-wrap: break-word;
@@ -120,7 +120,19 @@
       background-color: #555;
     }
 
-    
+    .search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px; /* Jarak antara filter dan daftar */
+}
+
+.search-container select, .search-container input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%; /* Memenuhi lebar kolom */
+}
 
     @media (max-width: 768px) {
       .row {
@@ -131,6 +143,8 @@
         gap: 5px;
       }
     }
+    
+
   </style>
 </head>
 <body>
