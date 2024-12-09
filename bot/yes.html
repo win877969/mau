@@ -235,12 +235,12 @@
       detailsContainer.innerHTML = `
         <p><strong>ISP: ${country} | ${provider}</strong></p>
         <p class="config">
-          <span>vless://3036c6db-2b74-437d-9c6e-0c95f8482da8@${ip}:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
+          <span>vless://3036c6db-2b74-437d-9c6e-0c95f8482da8@BUG.COM:444?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
           <button class="btn" onclick="copyToClipboard(this)">Copy</button>
         </p>
         <p class="config">
-          <span>trojan://5de379e4-209c-49e6-8905-55820599cb90@${ip}:${port}?type=ws&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
-          <button class="btn" onclick="copyToClipboard(this)">Copy</button>
+        <span>trojan://5de379e4-209c-49e6-8905-55820599cb90@BUG.COM:443?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
+            <button class="btn" onclick="copyToClipboard(this)">Copy</button>
         </p>
       `;
     }
