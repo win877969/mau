@@ -11,7 +11,17 @@
       background-color: #f0f0f0;
       color: #333;
     }
-
+    .config-section {
+        max-width: 100%;
+        background: var(--card-bg);
+        color: #fff;
+        backdrop-filter: blur(10px);
+        border: 0px solid rgba(242, 89, 0, 1);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--glow);
+        transform-style: preserve-3d;
+        animation: cardFloat 6s ease-in-out infinite;
     header, footer {
       background-color: #007bff;
       color: white;
@@ -151,12 +161,13 @@
 
   <div class="container">
     <div class="text-center mb-4">
+      <div class="config-section">
       <h2>ALAAH KINTIL</h2>
     </div>
 
    <div class="row">
   <div class="col-md-5">
-    <div class="content-box">
+    <div class="config-section">
        <div class="filters">
             <div>
               <label for="items-per-page">Items per Page:</label>
