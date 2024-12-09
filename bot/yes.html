@@ -19,29 +19,88 @@
       padding: 15px;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 
-    .col-md-5, .col-md-7 {
-      flex: 1;
-      min-width: 100px;
-    }
+.col-md-5, .col-md-7 {
+  flex: 1;
+  min-width: 300px;
+}
 
-    .content-box {
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
+.content-box {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.proxy-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.proxy-item a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.proxy-item:hover {
+  background-color: #e0e0e0;
+}
+
+#v2ray-details {
+  word-wrap: break-word;
+}
+
+.config {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.pagination1 {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 5px;
+}
+
+.pagination1 button {
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.pagination1 button.active {
+  background-color: #007bff;
+}
 
     .filters {
       display: flex;
@@ -53,46 +112,15 @@
       margin-top: 20px;
     }
 
-    .proxy-item {
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
 
-    .pagination1 {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      gap: 5px;
-    }
 
-    .pagination1 button {
-      background-color: #444;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-
-    .pagination1 button.active {
-      background-color: #007bff;
-    }
+    
 
     .pagination1 button:hover {
       background-color: #555;
     }
 
-    .btn {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #0056b3;
-    }
+    
 
     @media (max-width: 768px) {
       .row {
@@ -115,11 +143,10 @@
       <h2>ALAAH KINTIL</h2>
     </div>
 
-    <div class="row">
-      <!-- Kolom kiri -->
-      <div class="col-md-5">
-        <div class="content-box">
-          <div class="filters">
+   <div class="row">
+  <div class="col-md-5">
+    <div class="content-box">
+       <div class="filters">
             <div>
               <label for="items-per-page">Items per Page:</label>
               <select id="items-per-page">
@@ -145,9 +172,9 @@
 
       <!-- Kolom kanan -->
       <div class="col-md-7">
-        <div class="content-box">
-          <div id="v2ray-details">
-            <!-- Proxy details will be rendered here -->
+    <div class="content-box">
+      <div id="v2ray-details">
+        <!-- Proxy details will be rendered here -->
           </div>
         </div>
       </div>
