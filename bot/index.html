@@ -15,16 +15,16 @@
       border: 1px solid #ddd;
     }
     table tr:nth-child(even) {
-      background-color: #f9f9f9; /* Warna untuk baris genap */
+      background-color: #f9f9f9;
     }
     table tr:nth-child(odd) {
-      background-color: #fff; /* Warna untuk baris ganjil */
+      background-color: #fff;
     }
     table th {
       background-color: #007bff;
       color: white;
     }
-    .copy-vless, .copy-trojan, .copy-ss {
+    .copy-vless, .copy-trojan, .copy-ss, .check-proxy {
       margin: 5px;
       padding: 5px 10px;
       border: none;
@@ -33,7 +33,7 @@
       color: #fff;
       cursor: pointer;
     }
-    .copy-vless:hover, .copy-trojan:hover, .copy-ss:hover {
+    .copy-vless:hover, .copy-trojan:hover, .copy-ss:hover, .check-proxy:hover {
       background-color: #0069d9;
     }
     .pagination {
@@ -80,12 +80,14 @@
   <div class="pagination" id="pagination"></div>
 
   <script>
+    // Fungsi untuk memeriksa status proxy
     function checkProxy(ip, port) {
-  const testUrl = `https://${ip}:${port}`; // URL untuk melakukan tes proxy
-  return fetch(testUrl, { method: 'HEAD', mode: 'no-cors' })
-    .then(() => true) // Proxy aktif
-    .catch(() => false); // Proxy tidak aktif
-}
+      const testUrl = `https://${ip}:${port}`;
+      return fetch(testUrl, { method: 'HEAD', mode: 'no-cors' })
+        .then(() => true) // Proxy aktif
+        .catch(() => false); // Proxy tidak aktif
+    }
+
     const proxyPerPage = 10;
     let currentPage = 1;
     let filteredProxies = [];
@@ -133,6 +135,15 @@
         row.querySelector('.copy-ss').addEventListener('click', () => {
           navigator.clipboard.writeText(`ss://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
           alert('COPY SS SUKSES!');
+        });
+
+        // Tombol Cek Proxy
+        const checkButton = row.querySelector('.check-proxy');
+        checkButton.addEventListener('click', async () => {
+          checkButton.textContent = 'Memeriksa...';
+          const isActive = await checkProxy(ip, port);
+          checkButton.textContent = isActive ? 'Proxy Aktif' : 'Proxy Tidak Aktif';
+          alert(isActive ? 'Proxy ini AKTIF!' : 'Proxy ini TIDAK AKTIF!');
         });
       });
 
@@ -200,14 +211,6 @@
         const pagination = document.getElementById('pagination');
         renderProxies(filteredProxies, proxyList, pagination);
       })
-      const checkButton = row.querySelector('.check-proxy');
-    checkButton.addEventListener('click', async () => {
-      checkButton.textContent = 'Memeriksa...';
-      const isActive = await checkProxy(ip, port);
-      checkButton.textContent = isActive ? 'Proxy Aktif' : 'Proxy Tidak Aktif';
-      alert(isActive ? 'Proxy ini AKTIF!' : 'Proxy ini TIDAK AKTIF!');
-    });
-  });
       .catch(error => {
         console.error('Error fetching the proxy list:', error);
       });
