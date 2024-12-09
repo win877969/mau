@@ -169,7 +169,7 @@
         // Alternating background colors for each row
         row.style.backgroundColor = index % 2 === 0 ? "#e0e0e0" : "#c0c0c0";
         row.innerHTML = `
-          <p class="tablinks" onclick="openProxyDetails('${ip}:${port}')">
+          <p class="tablinks" onclick="openProxyDetails('${ip}:${port}', '${country}', '${provider}')">
             <a href="#v2ray-${ip}:${port}">${country} | ${provider}</a>
           </p>
         `;
@@ -229,18 +229,28 @@
     }
 
     // Show proxy details in the left section
-    function openProxyDetails(ipPort) {
+    function openProxyDetails(ipPort, country, provider) {
       const [ip, port] = ipPort.split(":");
       const detailsContainer = document.getElementById("v2ray-details");
-      
-      // For simplicity, you can just add a static content for now
       detailsContainer.innerHTML = `
         <p><strong>ISP: ${country} | ${provider}</strong></p>
-        <p class="config">vless://3036c6db-2b74-437d-9c6e-0c95f8482da8@xvp.bmkg.xyz:443?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</p>
-        <p class="config">vless://5de379e4-209c-49e6-8905-55820599cb90@xvp.bmkg.xyz:80?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=none&sni=#${country}+${provider}</p>
-        <p class="config">trojan://5de379e4-209c-49e6-8905-55820599cb90@xvp.bmkg.xyz:443?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</p>
-      
+        <p class="config">
+          <span>vless://3036c6db-2b74-437d-9c6e-0c95f8482da8@${ip}:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
+          <button class="btn" onclick="copyToClipboard(this)">Copy</button>
+        </p>
+        <p class="config">
+          <span>trojan://5de379e4-209c-49e6-8905-55820599cb90@${ip}:${port}?type=ws&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</span>
+          <button class="btn" onclick="copyToClipboard(this)">Copy</button>
+        </p>
       `;
+    }
+
+    // Copy text to clipboard
+    function copyToClipboard(button) {
+      const text = button.previousElementSibling.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to clipboard!");
+      });
     }
 
     // Event listeners
