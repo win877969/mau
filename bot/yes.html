@@ -36,6 +36,17 @@
       text-align: center;
     }
 
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .col {
+      flex: 1;
+      min-width: 300px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -134,6 +145,10 @@
       table th, table td {
         font-size: 14px;
       }
+
+      .row {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -157,24 +172,32 @@
       <input type="text" id="search-bar" placeholder="Cari berdasarkan negara, ISP, atau penyedia layanan...">
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>IP:Port</th>
-          <th>Negara</th>
-          <th>Penyedia</th>
-          <th>Detail</th>
-        </tr>
-      </thead>
-      <tbody id="proxy-list">
-        <!-- Data proxy akan dimasukkan di sini -->
-      </tbody>
-    </table>
+    <div class="row">
+      <!-- Kolom Kiri: Daftar Proxy -->
+      <div class="col">
+        <table>
+          <thead>
+            <tr>
+              <th>IP:Port</th>
+              <th>Negara</th>
+              <th>Penyedia</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody id="proxy-list">
+            <!-- Data proxy akan dimasukkan di sini -->
+          </tbody>
+        </table>
 
-    <div class="pagination" id="pagination"></div>
+        <div class="pagination" id="pagination"></div>
+      </div>
 
-    <div id="v2ray-details" class="details-section">
-      <!-- Detail vless dan trojan akan muncul di sini -->
+      <!-- Kolom Kanan: Detail Proxy -->
+      <div class="col">
+        <div id="v2ray-details" class="details-section">
+          <!-- Detail vless dan trojan akan muncul di sini -->
+        </div>
+      </div>
     </div>
   </div>
 
