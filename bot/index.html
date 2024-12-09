@@ -104,7 +104,7 @@
       background-color: #0056b3;
     }
 
-    #search-bar {
+    #search-bar, #items-per-page {
       margin-bottom: 20px;
       padding: 10px;
       width: 100%;
@@ -132,7 +132,7 @@
         margin-bottom: 10px;
       }
 
-      #search-bar {
+      #search-bar, #items-per-page {
         width: 90%;
         max-width: none;
         margin-bottom: 10px;
@@ -155,7 +155,7 @@
         max-width: 95%;
       }
 
-      #search-bar {
+      #search-bar, #items-per-page {
         width: 80%;
         max-width: 400px;
       }
@@ -177,7 +177,7 @@
         max-width: 100%;
       }
 
-      #search-bar {
+      #search-bar, #items-per-page {
         width: 50%;
         max-width: 600px;
       }
@@ -201,6 +201,12 @@
 
   <main>
     <input type="text" id="search-bar" placeholder="Cari berdasarkan negara, ISP, atau penyedia layanan...">
+    <select id="items-per-page">
+      <option value="10">10 Baris</option>
+      <option value="25">25 Baris</option>
+      <option value="50">50 Baris</option>
+      <option value="100">100 Baris</option>
+    </select>
     <table>
       <thead>
         <tr>
@@ -222,23 +228,25 @@
   </footer>
 
   <script>
-    const proxyPerPage = 10;
+    let proxyPerPage = 10;
     let currentPage = 1;
     let filteredProxies = [];
     let allProxies = [];
 
+    // Function to handle UUID generation
     function uuidv4() {
       return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       );
     }
 
+    // Function to render proxies
     function renderProxies(proxies, proxyList, pagination) {
       const start = (currentPage - 1) * proxyPerPage;
       const end = start + proxyPerPage;
       const currentPageProxies = proxies.slice(start, end);
 
-      proxyList.innerHTML = ''; // Hapus semua elemen sebelumnya
+      proxyList.innerHTML = ''; // Clear previous list
 
       currentPageProxies.forEach(proxy => {
         const [ip, port, negara, penyedia] = proxy.split(",");
@@ -254,24 +262,19 @@
         `;
         proxyList.appendChild(row);
 
-        // Menambahkan event listener untuk tombol Copy VLESS 443
+        // Event listeners for copy buttons
         row.querySelector('.copy-vless').addEventListener('click', () => {
           navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
           alert('COPY VLESS 443 SUKSES!');
         });
-        // Menambahkan event listener untuk tombol Copy VLESS 80
         row.querySelector('.copy-vless1').addEventListener('click', () => {
           navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
           alert('COPY VLESS 80 SUKSES!');
         });
-
-        // Menambahkan event listener untuk tombol Copy TROJAN
         row.querySelector('.copy-trojan').addEventListener('click', () => {
           navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
           alert('COPY TROJAN SUKSES!');
         });
-
-        // Menambahkan event listener untuk tombol Copy SS
         row.querySelector('.copy-ss').addEventListener('click', () => {
           navigator.clipboard.writeText(`ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
           alert('COPY SS SUKSES!');
@@ -281,6 +284,7 @@
       renderPagination(proxies, pagination);
     }
 
+    // Function to render pagination
     function renderPagination(proxies, pagination) {
       const totalPages = Math.ceil(proxies.length / proxyPerPage);
       const maxButtons = 5;
@@ -314,12 +318,14 @@
       }
     }
 
+    // Function to update page
     function updatePage(page, proxies, pagination) {
       currentPage = page;
       const proxyList = document.getElementById('proxy-list');
       renderProxies(proxies, proxyList, pagination);
     }
 
+    // Function to filter proxies
     function filterProxies(searchTerm) {
       searchTerm = searchTerm.toLowerCase();
       filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
@@ -329,10 +335,20 @@
       renderProxies(filteredProxies, proxyList, pagination);
     }
 
+    // Event listener for search bar
     document.getElementById('search-bar').addEventListener('input', (e) => {
       filterProxies(e.target.value);
     });
 
+    // Event listener for items per page dropdown
+    document.getElementById('items-per-page').addEventListener('change', (e) => {
+      proxyPerPage = parseInt(e.target.value);
+      const proxyList = document.getElementById('proxy-list');
+      const pagination = document.getElementById('pagination');
+      renderProxies(filteredProxies, proxyList, pagination);
+    });
+
+    // Fetching proxy data
     fetch("proxy_list.txt")
       .then(response => response.text())
       .then(data => {
