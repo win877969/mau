@@ -4,7 +4,6 @@
   <title>Proxy Aktif</title>
   <style>
     /* CSS */
-    /* Fix the header and footer */
     body {
       margin: 60px;
       padding: 60px;
@@ -38,10 +37,14 @@
       padding-bottom: 40px; /* To avoid content being hidden under the footer */
       padding-left: 10px;
       padding-right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     table {
       width: 100%;
+      max-width: 1200px;
       border-collapse: collapse;
       margin-bottom: 20px;
     }
@@ -108,6 +111,86 @@
       max-width: 400px;
       border: 1px solid #ddd;
       border-radius: 5px;
+    }
+
+    /* Mobile styles */
+    @media (max-width: 600px) {
+      header, footer {
+        padding: 5px;
+      }
+
+      main {
+        padding-top: 50px;
+        padding-bottom: 50px;
+        padding-left: 5px;
+        padding-right: 5px;
+        width: 100%;
+      }
+
+      table {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      #search-bar {
+        width: 90%;
+        max-width: none;
+        margin-bottom: 10px;
+      }
+
+      .pagination button {
+        padding: 5px;
+        font-size: 12px;
+      }
+
+      .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
+        padding: 4px 8px;
+        font-size: 12px;
+      }
+    }
+
+    /* Tablet styles */
+    @media (max-width: 1024px) {
+      table {
+        max-width: 95%;
+      }
+
+      #search-bar {
+        width: 80%;
+        max-width: 400px;
+      }
+
+      .pagination button {
+        padding: 6px;
+        font-size: 14px;
+      }
+
+      .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
+        padding: 6px 12px;
+        font-size: 14px;
+      }
+    }
+
+    /* Desktop styles */
+    @media (min-width: 1025px) {
+      table {
+        max-width: 100%;
+      }
+
+      #search-bar {
+        width: 50%;
+        max-width: 600px;
+      }
+
+      .pagination button {
+        padding: 8px;
+        font-size: 16px;
+      }
+
+      .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
+        padding: 8px 16px;
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -259,9 +342,7 @@
         const pagination = document.getElementById('pagination');
         renderProxies(filteredProxies, proxyList, pagination);
       })
-      .catch(error => {
-        console.error('Error fetching the proxy list:', error);
-      });
+      .catch(error => console.error("Error fetching proxy data:", error));
   </script>
 </body>
 </html>
