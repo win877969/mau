@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Proxy List</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    header, footer {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .col-md-5, .col-md-7 {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .filters {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .proxy-list {
+      margin-top: 20px;
+    }
+
+    .proxy-item {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+
+    .pagination1 {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 5px;
+    }
+
+    .pagination1 button {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .pagination1 button.active {
+      background-color: #007bff;
+    }
+
+    .pagination1 button:hover {
+      background-color: #555;
+    }
+
+    .btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 768px) {
+      .row {
+        flex-direction: column;
+      }
+
+      .filters {
+        gap: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Proxy List Manager</h1>
+  </header>
+
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2>ALAAH KINTIL</h2>
+    </div>
+
+    <div class="row">
+      <!-- Bagian kanan -->
+      <div class="col-md-5">
+        <div class="filters">
+          <div>
+            <label for="items-per-page">Items per Page:</label>
+            <select id="items-per-page">
+              <option value="10">10 Baris</option>
+              <option value="25">25 Baris</option>
+              <option value="50">50 Baris</option>
+              <option value="100">100 Baris</option>
+            </select>
+          </div>
+          <div>
+            <label for="search-bar">Search:</label>
+            <input type="text" id="search-bar" placeholder="Cari berdasarkan negara, ISP, atau penyedia layanan...">
+          </div>
+        </div>
+
+        <div class="proxy-list" id="proxy-list">
+          <!-- Proxy items will be dynamically rendered here -->
+        </div>
+
+        <div class="pagination1" id="pagination"></div>
+      </div>
+
+      <!-- Bagian kiri -->
+      <div class="col-md-7">
+        <div id="v2ray-details">
+          <!-- Proxy details go here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Proxy List Manager</p>
+  </footer>
+
+  <script>
+    let proxyPerPage = 10;
+    let currentPage = 1;
+    let filteredProxies = [];
+    let allProxies = [];
+
+    // Render proxies
+    function renderProxies(proxies) {
+      const proxyList = document.getElementById("proxy-list");
+      const start = (currentPage - 1) * proxyPerPage;
+      const end = start + proxyPerPage;
+      const currentPageProxies = proxies.slice(start, end);
+
+      proxyList.innerHTML = ""; // Clear list
+      currentPageProxies.forEach((proxy, index) => {
+        const [ip, port, country, provider] = proxy.split(",");
+        const row = document.createElement("div");
+        row.classList.add("proxy-item");
+
+        // Alternating background colors for each row
+        row.style.backgroundColor = index % 2 === 0 ? "#e0e0e0" : "#c0c0c0";
+        row.innerHTML = `
+          <p class="tablinks" onclick="openProxyDetails('${ip}:${port}')">
+            <a href="#v2ray-${ip}:${port}">${country} | ${provider}</a>
+          </p>
+        `;
+        proxyList.appendChild(row);
+      });
+
+      renderPagination(proxies);
+    }
+
+    // Render pagination
+    function renderPagination(proxies) {
+      const pagination = document.getElementById("pagination");
+      const totalPages = Math.ceil(proxies.length / proxyPerPage);
+      const maxVisibleButtons = 5;
+      const startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+      const endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+
+      pagination.innerHTML = "";
+
+      // Previous button
+      const prevButton = document.createElement("button");
+      prevButton.textContent = "<<";
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener("click", () => updatePage(currentPage - 1, proxies));
+      pagination.appendChild(prevButton);
+
+      // Page buttons
+      for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement("button");
+        pageButton.textContent = i;
+        pageButton.classList.toggle("active", i === currentPage);
+        pageButton.addEventListener("click", () => updatePage(i, proxies));
+        pagination.appendChild(pageButton);
+      }
+
+      // Next button
+      const nextButton = document.createElement("button");
+      nextButton.textContent = ">>";
+      nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener("click", () => updatePage(currentPage + 1, proxies));
+      pagination.appendChild(nextButton);
+    }
+
+    // Update page
+    function updatePage(page, proxies) {
+      currentPage = page;
+      renderProxies(filteredProxies);
+    }
+
+    // Filter proxies
+    function filterProxies(searchTerm) {
+      filteredProxies = allProxies.filter((proxy) =>
+        proxy.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      currentPage = 1;
+      renderProxies(filteredProxies);
+    }
+
+    // Show proxy details in the left section
+    function openProxyDetails(ipPort) {
+      const [ip, port] = ipPort.split(":");
+      const detailsContainer = document.getElementById("v2ray-details");
+      
+      // For simplicity, you can just add a static content for now
+      detailsContainer.innerHTML = `
+        <p><strong>ISP: CV. Rumahweb Indonesia (ID)</strong></p>
+        <p>Details for IP: ${ip} and Port: ${port}</p>
+      `;
+    }
+
+    // Event listeners
+    document.getElementById("search-bar").addEventListener("input", (e) => {
+      filterProxies(e.target.value);
+    });
+
+    document.getElementById("items-per-page").addEventListener("change", (e) => {
+      proxyPerPage = parseInt(e.target.value);
+      renderProxies(filteredProxies);
+    });
+
+    // Fetch proxies
+    fetch("proxy_list.txt")
+      .then((response) => response.text())
+      .then((data) => {
+        allProxies = data.split("\n").filter((line) => line.trim() !== "");
+        filteredProxies = allProxies;
+        renderProxies(filteredProxies);
+      })
+      .catch((error) => console.error("Error fetching proxy data:", error));
+  </script>
+</body>
+</html>
