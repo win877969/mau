@@ -223,7 +223,6 @@
           
           <th>ISP | COUNTRY</th>
           <th>Status</th>
-          
           <th>WILDCARD</th>
           <th>Vless 443</th>
           <th>Vless 80</th>
@@ -267,12 +266,11 @@
         const uuid = uuidv4();
         const row = document.createElement('tr');
         row.innerHTML = `
-          
           <td>${penyedia} | ${negara}</td>
           <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
                <span class="latency-cell">-</span>
                 </td>
-          <td>  <select class="service-selector">
+          <td> <select class="service-selector">
     <option value="">NO WILDCARD</option>
     <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
     <option value="graph.instagram.com.tp1.bmkg.xyz">graph.instagram.com</option>
