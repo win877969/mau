@@ -68,30 +68,49 @@
       margin-right: 10px;
     }
 
+    /* Memberikan sudut melengkung pada tabel */
     table {
-      width: 100%;
-      max-width: 1200px;
-      border-collapse: collapse;
-      margin-bottom: 20px;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 2px solid #4CAF50; /* Warna border hijau */
+        border-radius: 10px; /* Sudut melengkung */
+        overflow: hidden;
+        width: 100%; /* Membuat tabel lebar penuh */
     }
 
-    table th, table td {
-      padding: 10px;
-      text-align: left;
-      border: 1px solid #ddd;
+    /* Menyesuaikan warna dan tampilan header tabel */
+    th {
+        background-color: #4CAF50; /* Warna hijau */
+        color: white; /* Warna teks putih */
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
     }
 
-    table tr:nth-child(even) {
-      background-color: #f9f9f9;
+    /* Menambahkan efek pada elemen td */
+    td {
+        padding: 10px;
+        text-align: center;
+        background-color: rgba(76, 175, 80, 0.1); /* Warna hijau transparan */
+        color: #333; /* Warna teks */
+        border-bottom: 1px solid #ddd; /* Garis pembatas antar baris */
+        transition: background-color 0.3s ease; /* Efek transisi */
     }
 
-    table tr:nth-child(odd) {
-      background-color: #fff;
+    /* Efek hover pada td */
+    td:hover {
+        background-color: rgba(76, 175, 80, 0.2); /* Warna hijau lebih gelap saat dihover */
     }
 
-    table th {
-      background-color: #007bff;
-      color: white;
+    /* Menambahkan warna pada baris ganjil */
+    tr:nth-child(odd) td {
+        background-color: rgba(240, 240, 240, 0.5); /* Warna abu terang */
+    }
+
+    /* Efek hover pada baris tabel */
+    tr:hover td {
+        background-color: #e0f7fa; /* Warna latar biru muda saat baris dihover */
+        color: #00796b; /* Warna teks saat dihover */
     }
 
     .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
