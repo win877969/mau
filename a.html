@@ -32,7 +32,12 @@
           radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.1) 0, transparent 50%),
           radial-gradient(circle at 100% 100%, rgba(0, 255, 255, 0.1) 0, transparent 50%),
             }
-
+   .quantum-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+        perspective: 1000px;
+      }
     /* CSS */
       .service-selector {
         width: 100%;
@@ -265,6 +270,7 @@ footer {
   </style>
 </head>
 <body>
+  <div class="quantum-container">
   <header>
   <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0, 123, 255, 0.8);">
     FREE PROXY CF BMKG.XYZ
@@ -310,7 +316,7 @@ footer {
   <footer>
     <p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p>
   </footer>
-
+  </div>
   
     <script>
     let proxyPerPage = 10;
