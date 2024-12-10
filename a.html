@@ -286,19 +286,7 @@ footer {
 
   
     <script>
-        let proxyPerPage = 10;
-let currentPage = 1;
-let filteredProxies = [];
-let allProxies = [];
-
-// Function to handle UUID generation
-function uuidv4() {
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  );
-}
-
-// Function to render proxies
+        // Function to render proxies
 function renderProxies(proxies, proxyList, pagination) {
   const start = (currentPage - 1) * proxyPerPage;
   const end = start + proxyPerPage;
@@ -405,18 +393,14 @@ function renderPagination(proxies, pagination) {
     pagination.appendChild(nextButton);
   }
 
-  // Add Go to Page functionality
+  // Add Go to Page input field (without button)
   const goToPageInput = document.createElement('input');
   goToPageInput.type = 'number';
   goToPageInput.placeholder = 'Go to page';
   goToPageInput.min = 1;
   goToPageInput.max = totalPages;
-
-  const goToPageButton = document.createElement('button');
-  goToPageButton.textContent = 'Go';
-
-  goToPageButton.addEventListener('click', () => {
-    const goToPage = parseInt(goToPageInput.value);
+  goToPageInput.addEventListener('input', (e) => {
+    const goToPage = parseInt(e.target.value);
     if (goToPage >= 1 && goToPage <= totalPages) {
       currentPage = goToPage;
       updatePage(currentPage, proxies, pagination);
@@ -424,7 +408,6 @@ function renderPagination(proxies, pagination) {
   });
 
   pagination.appendChild(goToPageInput);
-  pagination.appendChild(goToPageButton);
 }
 
 // Function to update page
@@ -445,18 +428,4 @@ fetch("bot/proxy_list.txt")
     renderProxies(filteredProxies, proxyList, pagination);
   })
   .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
-
-// Event listener for the "Cek Status" button
-document.querySelectorAll('.check-status-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const proxy = button.parentElement.previousElementSibling.querySelector('input').value;
-    checkProxyStatus(proxy, button);
-  });
-});
-
-    
-</script>
-
-  
-</body>
-</html>
+</script></body></html>
