@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,19 +5,16 @@
   <style>
     /* CSS */
     
-.container {
-  flex: 1;
-      padding-top: 115px; /* To avoid content being hidden under the header */
-      padding-bottom: 115px; /* To avoid content being hidden under the footer */
-      padding-left: 10px;
-      padding-right: 10px;
+    .container {
+      flex: 1;
+      padding: 115px 10px; /* Hindari tumpang tindih dengan header/footer */
+      max-width: 960px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-  
-  max-width: 960px;
-  align-items: center;
-  
-}
+      align-items: center;
+    }
+
     header, footer {
       background-color: #007bff;
       color: white;
@@ -37,22 +33,39 @@
       bottom: 0;
     }
 
-    
-
     .filters {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
-      width: 70%;
+      width: 100%;
+      max-width: 960px;
       margin-bottom: 20px;
+      gap: 10px;
     }
 
     .filter-label {
       margin-right: 10px;
+      font-size: 14px;
+    }
+
+    #search-bar, #items-per-page {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    #search-bar {
+      flex-grow: 1;
+      min-width: 200px;
+    }
+
+    #items-per-page {
+      max-width: 150px;
     }
 
     table {
       width: 100%;
-      max-width: 1200px;
+      max-width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
     }
@@ -92,6 +105,7 @@
 
     .pagination {
       text-align: center;
+      margin: 20px 0;
     }
 
     .pagination button {
@@ -112,35 +126,25 @@
       background-color: #0056b3;
     }
 
-    #search-bar, #items-per-page {
-      padding: 10px;
-      width: 150px;
-      max-width: 100px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-
     /* Mobile styles */
     @media (max-width: 600px) {
       header, footer {
-        padding: 5px;
+        padding: 10px;
+        font-size: 14px;
       }
 
-      
-
-      table {
-        width: 100%;
-        margin-bottom: 10px;
+      .filters {
+        flex-direction: column;
+        align-items: stretch;
       }
 
-      #search-bar, #items-per-page {
-        width: 60px;
-        max-width: none;
-        margin-bottom: 10px;
+      table th, table td {
+        padding: 8px;
+        font-size: 12px;
       }
 
       .pagination button {
-        padding: 5px;
+        padding: 4px;
         font-size: 12px;
       }
 
@@ -152,13 +156,13 @@
 
     /* Tablet styles */
     @media (max-width: 1024px) {
-      table {
-        max-width: 95%;
+      table th, table td {
+        padding: 10px;
+        font-size: 14px;
       }
 
       #search-bar, #items-per-page {
-        width: 80px;
-        max-width: 400px;
+        padding: 8px;
       }
 
       .pagination button {
@@ -174,13 +178,8 @@
 
     /* Desktop styles */
     @media (min-width: 1025px) {
-      table {
-        max-width: 100%;
-      }
-
-      #search-bar, #items-per-page {
-        width: 30%;
-        max-width: 100px;
+      table th, table td {
+        font-size: 16px;
       }
 
       .pagination button {
@@ -188,7 +187,7 @@
         font-size: 16px;
       }
 
-      .copy-vless, .cekproxy,  .copy-vless1, .copy-trojan, .copy-ss {
+      .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
         padding: 8px 16px;
         font-size: 16px;
       }
@@ -199,8 +198,8 @@
   <header>
     <h1>FREE PROXY CF BMKG.XYZ</h1>
   </header>
-<div class="container">
-
+  
+  <div class="container">
     <div class="filters">
       <div>
         <span class="filter-label">Item Page:</span>
@@ -220,7 +219,6 @@
     <table>
       <thead>
         <tr>
-          
           <th>ISP | COUNTRY</th>
           <th>Status</th>
           <th>Latency (ms)</th>
@@ -232,182 +230,12 @@
       </thead>
       <tbody id="proxy-list"></tbody>
     </table>
+    
     <div class="pagination" id="pagination"></div>
   </div>
 
   <footer>
     <p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p>
   </footer>
-
-  
-    <script>
-    let proxyPerPage = 10;
-    let currentPage = 1;
-    let filteredProxies = [];
-    let allProxies = [];
-
-    // Function to handle UUID generation
-    function uuidv4() {
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      );
-    }
-
-    // Function to render proxies
-    function renderProxies(proxies, proxyList, pagination) {
-      const start = (currentPage - 1) * proxyPerPage;
-      const end = start + proxyPerPage;
-      const currentPageProxies = proxies.slice(start, end);
-
-      proxyList.innerHTML = ''; // Clear previous list
-
-      currentPageProxies.forEach(proxy => {
-        const [ip, port, negara, penyedia] = proxy.split(",");
-        const uuid = uuidv4();
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          
-          <td>${penyedia} | ${negara}</td>
-          <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
-                        </td>
-                        <td></td>
-          <td><button class="copy-vless">Copy VLESS 443</button></td>
-          <td><button class="copy-vless1">Copy VLESS 80</button></td>       
-          <td><button class="copy-trojan">Copy TROJAN</button></td>
-          <td><button class="copy-ss">Copy SS</button></td>
-          
-        `;
-        proxyList.appendChild(row);
-
-        // Event listeners for copy buttons
-        row.querySelector('.copy-vless').addEventListener('click', () => {
-          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY VLESS 443 SUKSES!');
-        });
-        row.querySelector('.copy-vless1').addEventListener('click', () => {
-          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
-          alert('COPY VLESS 80 SUKSES!');
-        });
-        row.querySelector('.copy-trojan').addEventListener('click', () => {
-          navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY TROJAN SUKSES!');
-        });
-        row.querySelector('.copy-ss').addEventListener('click', () => {
-          navigator.clipboard.writeText(`ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY SS SUKSES!');
-        });
-      });
-
-      renderPagination(proxies, pagination);
-    }
-
-    // Function to render pagination
-    function renderPagination(proxies, pagination) {
-      const totalPages = Math.ceil(proxies.length / proxyPerPage);
-      const maxButtons = 5;
-      pagination.innerHTML = '';
-
-      if (currentPage > 1) {
-        const prevButton = document.createElement('button');
-        prevButton.textContent = '<< Previous';
-        prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
-        pagination.appendChild(prevButton);
-      }
-
-      const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-      const endPage = Math.min(totalPages, startPage + maxButtons - 1);
-
-      for (let i = startPage; i <= endPage; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        if (i === currentPage) {
-          pageButton.classList.add('active');
-        }
-        pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
-        pagination.appendChild(pageButton);
-      }
-
-      if (currentPage < totalPages) {
-        const nextButton = document.createElement('button');
-        nextButton.textContent = 'Next >>';
-        nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
-        pagination.appendChild(nextButton);
-      }
-    }
-
-    // Function to update page
-    function updatePage(page, proxies, pagination) {
-      currentPage = page;
-      const proxyList = document.getElementById('proxy-list');
-      renderProxies(proxies, proxyList, pagination);
-    }
-
-    // Function to filter proxies
-    function filterProxies(searchTerm) {
-      searchTerm = searchTerm.toLowerCase();
-      filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
-      currentPage = 1;
-      const proxyList = document.getElementById('proxy-list');
-      const pagination = document.getElementById('pagination');
-      renderProxies(filteredProxies, proxyList, pagination);
-    }
-
-    // Event listener for search bar
-    document.getElementById('search-bar').addEventListener('input', (e) => {
-      filterProxies(e.target.value);
-    });
-
-    // Event listener for items per page dropdown
-    document.getElementById('items-per-page').addEventListener('change', (e) => {
-      proxyPerPage = parseInt(e.target.value);
-      const proxyList = document.getElementById('proxy-list');
-      const pagination = document.getElementById('pagination');
-      renderProxies(filteredProxies, proxyList, pagination);
-    });
-
-    // Fetching proxy data
-    fetch("bot/proxy_list.txt")
-      .then(response => response.text())
-      .then(data => {
-        allProxies = data.split("\n").filter(line => line.trim() !== "");
-        filteredProxies = allProxies;
-        const proxyList = document.getElementById('proxy-list');
-        const pagination = document.getElementById('pagination');
-        renderProxies(filteredProxies, proxyList, pagination);
-      })
-      .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
-    
-    // Check Proxy status function
-    function checkProxyStatus(proxy, button) {
-        button.textContent = 'Memeriksa...';
-        const latencyCell = button.parentElement.nextElementSibling;
-
-        const startTime = performance.now();
-        fetch('https://httpbin.org/ip', {
-            method: 'GET',
-            headers: {
-                'Proxy': `http://${proxy}`,
-            },
-            timeout: 5000
-        })
-            .then(response => {
-                const endTime = performance.now();
-                const latency = (endTime - startTime).toFixed(2);
-
-                if (response.ok) {
-                    button.textContent = 'Ngacengan';
-                    latencyCell.textContent = `${latency} ms`;
-                } else {
-                    throw new Error('Tidak Aktif');
-                }
-            })
-            .catch(() => {
-                button.textContent = 'Tidak Aktif';
-                latencyCell.textContent = '-';
-            });
-    }
-</script>
-
-  
 </body>
 </html>
