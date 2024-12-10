@@ -4,7 +4,12 @@
   <title>Proxy Aktif</title>
   <style>
 
-    
+    body {
+    background-color: #000; /* Hitam pekat (dark mode) */
+    color: white; /* Teks putih agar kontras dengan background */
+    margin: 0;
+    font-family: Arial, sans-serif; /* Font sederhana dan bersih */
+  }
     /* CSS */
       .service-selector {
         width: 100%;
@@ -39,7 +44,7 @@
   
 }
     header, footer {
-  background-color: #4CAF50;
+  background-color: rgba(0, 0, 0, 0.8); /* Hitam dengan transparansi 80% */
   color: white;
   text-align: center;
   padding: 15px;
@@ -276,7 +281,6 @@ footer {
       </thead>
       <tbody id="proxy-list"></tbody>
     </table>
-    <div id="total-proxy"></div>
     <div class="pagination" id="pagination"></div>
   </div>
 
@@ -286,169 +290,172 @@ footer {
 
   
     <script>
+    let proxyPerPage = 10;
+    let currentPage = 1;
+    let filteredProxies = [];
+    let allProxies = [];
+
+    // Function to handle UUID generation
+    function uuidv4() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+    }
+
+    // Function to render proxies
+    function renderProxies(proxies, proxyList, pagination) {
+      const start = (currentPage - 1) * proxyPerPage;
+      const end = start + proxyPerPage;
+      const currentPageProxies = proxies.slice(start, end);
+
+      proxyList.innerHTML = ''; // Clear previous list
+
+      currentPageProxies.forEach(proxy => {
+        const [ip, port, negara, penyedia] = proxy.split(",");
+        const uuid = uuidv4();
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${penyedia} | ${negara}</td>
+          <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
+               </td>
+          <td> <select class="service-selector">
+    <option value="">NO WILDCARD</option>
+    <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
+    <option value="graph.instagram.com.tp1.bmkg.xyz">graph.instagram.com</option>
+    <option value="quiz.int.vidio.com.tp1.bmkg.xyz">quiz.int.vidio.com</option>
+    <option value="live.iflix.com">live.iflix.com</option>
+    <option value="support.zoom.us.tp1.bmkg.xyz">support.zoom.us</option>
+    <option value="blog.webex.com.tp1.bmkg.xyz">blog.webex.com</option>
+    <option value="investors.spotify.com.tp1.bmkg.xyz">investors.spotify.com</option>
+    <option value="cache.netflix.com.tp1.bmkg.xyz">cache.netflix.com</option>
+    <option value="zaintest.vuclip.com.tp1.bmkg.xyz">zaintest.vuclip.com</option>
+    <option value="io.ruangguru.com.tp1.bmkg.xyz">io.ruangguru.com</option>
+    <option value="api.midtrans.com.tp1.bmkg.xyz">api.midtrans.com</option>
+          </select></td>
+          <td> <button class="copy-vless">Copy VLESS 443</button></td>
+          <td><button class="copy-vless1">Copy VLESS 80</button></td>       
+          <td><button class="copy-trojan">Copy TROJAN</button></td>
+          <td><button class="copy-ss">Copy SHADOWSOCK</button></td>
+          
+        `;
+        proxyList.appendChild(row);
+
+        // Event listeners for copy buttons
+
+         // Event listeners for copy buttons
+  row.querySelector('.copy-vless').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+    navigator.clipboard.writeText(VLESS);
+    alert('COPY VLESS 443 SUKSES!');
+  });
+
+  row.querySelector('.copy-trojan').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+    navigator.clipboard.writeText(TROJAN);
+    alert('COPY TROJAN SUKSES!');
+  });
+
+  row.querySelector('.copy-ss').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+    navigator.clipboard.writeText(SS);
+    alert('COPY SHADOWSOCK SUKSES!');
+  });
+
         
+
+        row.querySelector('.copy-vless1').addEventListener('click', () => {
+          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
+          alert('COPY VLESS 80 SUKSES!');
+        });
+        
+       
+        
+      });
+
+      renderPagination(proxies, pagination);
+    }
+
+    // Function to render pagination
+    function renderPagination(proxies, pagination) {
+      const totalPages = Math.ceil(proxies.length / proxyPerPage);
+      const maxButtons = 5;
+      pagination.innerHTML = '';
+
+      if (currentPage > 1) {
+        const prevButton = document.createElement('button');
+        prevButton.textContent = '<< Previous';
+        prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
+        pagination.appendChild(prevButton);
+      }
+
+      const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+      const endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+      for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        if (i === currentPage) {
+          pageButton.classList.add('active');
+        }
+        pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
+        pagination.appendChild(pageButton);
+      }
+
+      if (currentPage < totalPages) {
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next >>';
+        nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
+        pagination.appendChild(nextButton);
+      }
+    }
+
+    // Function to update page
+    function updatePage(page, proxies, pagination) {
+      currentPage = page;
+      const proxyList = document.getElementById('proxy-list');
+      renderProxies(proxies, proxyList, pagination);
+    }
+
+    // Function to filter proxies
+    function filterProxies(searchTerm) {
+      searchTerm = searchTerm.toLowerCase();
+      filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
+      currentPage = 1;
+      const proxyList = document.getElementById('proxy-list');
+      const pagination = document.getElementById('pagination');
+      renderProxies(filteredProxies, proxyList, pagination);
+    }
+
+    // Event listener for search bar
+    document.getElementById('search-bar').addEventListener('input', (e) => {
+      filterProxies(e.target.value);
+    });
+
+    // Event listener for items per page dropdown
+    document.getElementById('items-per-page').addEventListener('change', (e) => {
+      proxyPerPage = parseInt(e.target.value);
+      const proxyList = document.getElementById('proxy-list');
+      const pagination = document.getElementById('pagination');
+      renderProxies(filteredProxies, proxyList, pagination);
+    });
+
+    // Fetching proxy data
+    fetch("bot/proxy_list.txt")
+      .then(response => response.text())
+      .then(data => {
+        allProxies = data.split("\n").filter(line => line.trim() !== "");
+        filteredProxies = allProxies;
+        const proxyList = document.getElementById('proxy-list');
+        const pagination = document.getElementById('pagination');
+        renderProxies(filteredProxies, proxyList, pagination);
+      })
+      .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
     
-let proxyPerPage = 10;
-let currentPage = 1;
-let filteredProxies = [];
-let allProxies = [];
-
-// Function to handle UUID generation
-function uuidv4() {
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  );
-}
-
-// Function to render proxies
-function renderProxies(proxies, proxyList, pagination) {
-  const start = (currentPage - 1) * proxyPerPage;
-  const end = start + proxyPerPage;
-  const currentPageProxies = proxies.slice(start, end);
-
-  proxyList.innerHTML = ''; // Clear previous list
-
-  currentPageProxies.forEach(proxy => {
-    const [ip, port, negara, penyedia] = proxy.split(",");
-    const uuid = uuidv4();
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${penyedia} | ${negara}</td>
-      <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
-             </td>
-      <td> <select class="service-selector">
-<option value="">NO WILDCARD</option>
-<option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
-<option value="graph.instagram.com.tp1.bmkg.xyz">graph.instagram.com</option>
-<option value="quiz.int.vidio.com.tp1.bmkg.xyz">quiz.int.vidio.com</option>
-<option value="live.iflix.com">live.iflix.com</option>
-<option value="support.zoom.us.tp1.bmkg.xyz">support.zoom.us</option>
-<option value="blog.webex.com.tp1.bmkg.xyz">blog.webex.com</option>
-<option value="investors.spotify.com.tp1.bmkg.xyz">investors.spotify.com</option>
-<option value="cache.netflix.com.tp1.bmkg.xyz">cache.netflix.com</option>
-<option value="zaintest.vuclip.com.tp1.bmkg.xyz">zaintest.vuclip.com</option>
-<option value="io.ruangguru.com.tp1.bmkg.xyz">io.ruangguru.com</option>
-<option value="api.midtrans.com.tp1.bmkg.xyz">api.midtrans.com</option>
-      </select></td>
-      <td> <button class="copy-vless">Copy VLESS 443</button></td>
-      <td><button class="copy-vless1">Copy VLESS 80</button></td>       
-      <td><button class="copy-trojan">Copy TROJAN</button></td>
-      <td><button class="copy-ss">Copy SHADOWSOCK</button></td>
-    `;
-    proxyList.appendChild(row);
-
-    // Event listeners for copy buttons
-    row.querySelector('.copy-vless').addEventListener('click', () => {
-      const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-      const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
-      navigator.clipboard.writeText(VLESS);
-      alert('COPY VLESS 443 SUKSES!');
-    });
-
-    row.querySelector('.copy-trojan').addEventListener('click', () => {
-      const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-      const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
-      navigator.clipboard.writeText(TROJAN);
-      alert('COPY TROJAN SUKSES!');
-    });
-
-    row.querySelector('.copy-ss').addEventListener('click', () => {
-      const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-      const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
-      navigator.clipboard.writeText(SS);
-      alert('COPY SHADOWSOCK SUKSES!');
-    });
-
-    row.querySelector('.copy-vless1').addEventListener('click', () => {
-      navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
-      alert('COPY VLESS 80 SUKSES!');
-    });
-  });
-
-  // Display total proxy count
-  const totalProxies = proxies.length;
-  const totalProxyElement = document.getElementById('total-proxy');
-  totalProxyElement.textContent = `Total Proxies: ${totalProxies}`;
-
-  renderPagination(proxies, pagination);
-}
-
-// Function to render pagination
-function renderPagination(proxies, pagination) {
-  const totalPages = Math.ceil(proxies.length / proxyPerPage);
-  const maxButtons = 5;
-  pagination.innerHTML = '';
-
-  if (currentPage > 1) {
-    const prevButton = document.createElement('button');
-    prevButton.textContent = '<< Previous';
-    prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
-    pagination.appendChild(prevButton);
-  }
-
-  const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-  const endPage = Math.min(totalPages, startPage + maxButtons - 1);
-
-  for (let i = startPage; i <= endPage; i++) {
-    const pageButton = document.createElement('button');
-    pageButton.textContent = i;
-    if (i === currentPage) {
-      pageButton.classList.add('active');
-    }
-    pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
-    pagination.appendChild(pageButton);
-  }
-
-  if (currentPage < totalPages) {
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next >>';
-    nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
-    pagination.appendChild(nextButton);
-  }
-
-  // Add Go to Page functionality
-  const goToPageInput = document.createElement('input');
-  goToPageInput.type = 'number';
-  goToPageInput.placeholder = 'Go to page';
-  goToPageInput.min = 1;
-  goToPageInput.max = totalPages;
-
-  const goToPageButton = document.createElement('button');
-  goToPageButton.textContent = 'Go';
-
-  goToPageButton.addEventListener('click', () => {
-    const goToPage = parseInt(goToPageInput.value);
-    if (goToPage >= 1 && goToPage <= totalPages) {
-      currentPage = goToPage;
-      updatePage(currentPage, proxies, pagination);
-    }
-  });
-
-  pagination.appendChild(goToPageInput);
-  pagination.appendChild(goToPageButton);
-}
-
-// Function to update page
-function updatePage(page, proxies, pagination) {
-  currentPage = page;
-  const proxyList = document.getElementById('proxy-list');
-  renderProxies(proxies, proxyList, pagination);
-}
-
-// Fetching proxy data
-fetch("bot/proxy_list.txt")
-  .then(response => response.text())
-  .then(data => {
-    allProxies = data.split("\n").filter(line => line.trim() !== "");
-    filteredProxies = allProxies;
-    const proxyList = document.getElementById('proxy-list');
-    const pagination = document.getElementById('pagination');
-    renderProxies(filteredProxies, proxyList, pagination);
-  })
-  .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
-
-// Event listener for the "Cek Status" button
-function checkProxyStatus(proxy, button) {
+    // Check Proxy status function
+    function checkProxyStatus(proxy, button) {
     button.textContent = 'Loading';
     button.style.backgroundColor = 'yellow'; // Set background color to yellow when loading
     button.style.color = 'black'; // Set text color to black during loading
@@ -491,9 +498,8 @@ document.querySelectorAll('.check-status-btn').forEach(button => {
     });
 });
 
+</script>
 
   
-
-</script>
 </body>
 </html>
