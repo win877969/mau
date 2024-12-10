@@ -287,7 +287,7 @@
           <td> <button class="copy-vless">Copy VLESS 443</button></td>
           <td><button class="copy-vless1">Copy VLESS 80</button></td>       
           <td><button class="copy-trojan">Copy TROJAN</button></td>
-          <td><button class="copy-ss">Copy SS</button></td>
+          <td><button class="copy-ss">Copy Shadowsock</button></td>
           
         `;
         proxyList.appendChild(row);
@@ -313,7 +313,7 @@
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
     const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${selectedService}.tp1.bmkg.xyz#${negara}+${penyedia}`;
     navigator.clipboard.writeText(SS);
-    alert('COPY SS SUKSES!');
+    alert('COPY SHADOWSOCK SUKSES!');
   });
 
         
