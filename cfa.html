@@ -1,45 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cek Keaktifan Proxy</title>
+    <title>Info IP Anda</title>
 </head>
 <body>
-    <h1>Cek Keaktifan Proxy Menggunakan</h1>
-    <form id="proxyForm">
-        <label for="proxyIp">Alamat IP Proxy:</label>
-        <input type="text" id="proxyIp" name="proxyIp" required>
-        <br>
-        <label for="proxyPort">Port Proxy:</label>
-        <input type="number" id="proxyPort" name="proxyPort" required>
-        <br>
-        <button type="button" onclick="cekProxy()">Cek Proxy</button>
-    </form>
-    <div id="result"></div>
+    <div id="ip-info"></div>
 
     <script>
-        
-                    async function cekProxy(proxyList) {
-  const formData = new FormData();
-  formData.append('proxies', proxyList.join('\n'));
-
-  try {
-    const response = await fetch('https://proxy-seller.com/id/tools/proxy-checker/', {
-      method: 'POST',
-      body: formData
-    });
-
-    const data = await response.text();
-    // Parsing data untuk mendapatkan hasil
-    console.log(data); // Anda perlu memproses data ini untuk mendapatkan informasi yang Anda inginkan
-
-  } catch (error) {
-    console.error('Terjadi kesalahan:', error);
-  }
-}
-
-// Contoh penggunaan:
-const proxyList = ['1.2.3.4:8080', '5.6.7.8:9090'];
-cekProxy(proxyList);
+        fetch('https://ipinfo.io/json')
+            .then(response => response.json())
+            .then(data => {
+                const ipInfoDiv = document.getElementById('ip-info');
+                ipInfoDiv.textContent = `
+                    IP: ${data.ip}
+                    Kota: ${data.city}
+                    Negara: ${data.country}
+                    Lokasi: ${data.loc}
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                ipInfoDiv.textContent = 'Terjadi kesalahan dalam mengambil data IP.';
+            });
     </script>
 </body>
 </html>
