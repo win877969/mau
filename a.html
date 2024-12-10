@@ -429,7 +429,10 @@
                 button.textContent = 'Ngacengan';
                 button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
                 button.style.color = 'white'; // Set text color to white for active proxy
-                latencyCell.textContent = ''; // Clear latency cell text
+                // Make sure to clear the latency value properly
+                if (latencyCell) {
+                    latencyCell.textContent = ''; // Clear latency cell text if exists
+                }
             } else {
                 throw new Error('Turu');
             }
@@ -438,7 +441,10 @@
             button.textContent = 'Turu';
             button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
             button.style.color = 'white'; // Set text color to white for failed proxy
-            latencyCell.textContent = ''; // Clear latency cell text
+            // Clear latency cell text if it exists
+            if (latencyCell) {
+                latencyCell.textContent = ''; // Clear latency cell text
+            }
         });
 }
 
