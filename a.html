@@ -270,7 +270,7 @@
           <td>${penyedia} | ${negara}</td>
           <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
                         </td>
-                        <td></td>
+                        
           <td>  <select class="service-selector">
     <option value="ava.game.naver.com">ava.game.naver.com</option>
     <option value="graph.instagram.com">graph.instagram.com</option>
@@ -311,12 +311,13 @@
           navigator.clipboard.writeText(`TROJAN);
           alert('COPY TROJAN SUKSES!');
         });
+       
         row.querySelector('.copy-ss').addEventListener('click', () => {
          const selectedService = row.querySelector('.service-selector').value;
           const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${selectedService}.tp1.bmkg.xyz#${negara}+${penyedia}`;
           navigator.clipboard.writeText(`SS);
           alert('COPY SS SUKSES!');
-        });
+      });
       });
 
       renderPagination(proxies, pagination);
