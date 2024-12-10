@@ -273,17 +273,17 @@
                      </td><td></td>
           <td>  <select class="service-selector">
     <option value="">NO WILDCARD</option>
-    <option value="ava.game.naver.com">ava.game.naver.com</option>
-    <option value="graph.instagram.com">graph.instagram.com</option>
-    <option value="quiz.int.vidio.com">quiz.int.vidio.com</option>
+    <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
+    <option value="graph.instagram.com.tp1.bmkg.xyz">graph.instagram.com</option>
+    <option value="quiz.int.vidio.com.tp1.bmkg.xyz">quiz.int.vidio.com</option>
     <option value="live.iflix.com">live.iflix.com</option>
-    <option value="support.zoom.us">support.zoom.us</option>
-    <option value="blog.webex.com">blog.webex.com</option>
-    <option value="investors.spotify.com">investors.spotify.com</option>
-    <option value="cache.netflix.com">cache.netflix.com</option>
-    <option value="zaintest.vuclip.com">zaintest.vuclip.com</option>
-    <option value="io.ruangguru.com">io.ruangguru.com</option>
-    <option value="api.midtrans.com">api.midtrans.com</option>
+    <option value="support.zoom.us.tp1.bmkg.xyz">support.zoom.us</option>
+    <option value="blog.webex.com.tp1.bmkg.xyz">blog.webex.com</option>
+    <option value="investors.spotify.com.tp1.bmkg.xyz">investors.spotify.com</option>
+    <option value="cache.netflix.com.tp1.bmkg.xyz">cache.netflix.com</option>
+    <option value="zaintest.vuclip.com.tp1.bmkg.xyz">zaintest.vuclip.com</option>
+    <option value="io.ruangguru.com.tp1.bmkg.xyz">io.ruangguru.com</option>
+    <option value="api.midtrans.com.tp1.bmkg.xyz">api.midtrans.com</option>
           </select></td>
           <td> <button class="copy-vless">Copy VLESS 443</button></td>
           <td><button class="copy-vless1">Copy VLESS 80</button></td>       
@@ -298,21 +298,21 @@
          // Event listeners for copy buttons
   row.querySelector('.copy-vless').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${selectedService}.tp1.bmkg.xyz#${negara}+${penyedia}`;
+    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
     navigator.clipboard.writeText(VLESS);
     alert('COPY VLESS 443 SUKSES!');
   });
 
   row.querySelector('.copy-trojan').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${selectedService}.tp1.bmkg.xyz#${negara}+${penyedia}`;
+    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
     navigator.clipboard.writeText(TROJAN);
     alert('COPY TROJAN SUKSES!');
   });
 
   row.querySelector('.copy-ss').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${selectedService}.tp1.bmkg.xyz#${negara}+${penyedia}`;
+    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
     navigator.clipboard.writeText(SS);
     alert('COPY SHADOWSOCK SUKSES!');
   });
