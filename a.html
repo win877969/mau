@@ -1,45 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proxy Aktif</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
   <style>
 
-          :root {
-        --primary: #00ff88;
-        --secondary: #00ffff;
-        --accent: #ff00ff;
-        --dark: #080c14;
-        --darker: #040608;
-        --light: #e0ffff;
-        --card-bg: rgba(8, 12, 20, 0.95);
-        --glow: 0 0 20px rgba(0, 255, 136, 0.3);
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Space Grotesk', sans-serif;
-      }
-
-      body {
-        background: var(--darker);
-        color: var(--light);
-        min-height: 85vh;
-        background-image: 
-          radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.1) 0, transparent 50%),
-          radial-gradient(circle at 100% 100%, rgba(0, 255, 255, 0.1) 0, transparent 50%),
-            }
-   .quantum-container {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 2rem;
-        perspective: 1000px;
-      }
+    body {
+    background-color: #000; /* Hitam pekat (dark mode) */
+    color: white; /* Teks putih agar kontras dengan background */
+    margin: 0;
+    font-family: Arial, sans-serif; /* Font sederhana dan bersih */
+  }
     /* CSS */
       .service-selector {
         width: 100%;
@@ -107,35 +77,32 @@ footer {
 
     /* Memberikan sudut melengkung pada tabel */
     table {
-        width: 100%;
-        min-width: 800px;
         border-collapse: separate;
-        border-spacing: 0 8px;
+        border-spacing: 0;
+        border: 2px solid #4CAF50; /* Warna border hijau */
+        border-radius: 10px; /* Sudut melengkung */
+        overflow: hidden;
+        width: 100%; /* Membuat tabel lebar penuh */
     }
+
     /* Menyesuaikan warna dan tampilan header tabel */
     th {
-        background: rgba(0, 255, 136, 0.1);
-        color: var(--primary);
-        padding: 1.2rem;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 600;
-        font-size: 1.1rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        border-bottom: 2px solid var(--primary);
-        white-space: nowrap;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-      }
+        background-color: #4CAF50; /* Warna hijau */
+        color: white; /* Warna teks putih */
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+    }
 
     /* Menambahkan efek pada elemen td */
     td {
-        padding: 1rem;
-        background: rgba(0, 255, 136, 0.03);
-        border: none;
-        transition: all 0.3s ease;
-      }
+        padding: 10px;
+        text-align: center;
+        background-color: rgba(76, 175, 80, 0.1); /* Warna hijau transparan */
+        color: #333; /* Warna teks */
+        border-bottom: 1px solid #ddd; /* Garis pembatas antar baris */
+        transition: background-color 0.3s ease; /* Efek transisi */
+    }
 
     /* Efek hover pada td */
     td:hover {
@@ -275,14 +242,13 @@ footer {
   </style>
 </head>
 <body>
-<header>
+  <header>
   <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0, 123, 255, 0.8);">
     FREE PROXY CF BMKG.XYZ
   </h1>
 </header>
 
-  <div class="quantum-container">
-  
+<div class="container">
 
     <div class="filters">
       <div>
@@ -321,7 +287,7 @@ footer {
   <footer>
     <p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p>
   </footer>
-  
+
   
     <script>
     let proxyPerPage = 10;
