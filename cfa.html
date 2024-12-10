@@ -32,7 +32,7 @@
                 .then(response => response.json())
                 .then(data => {
                     const ip = data.origin;
-                    document.getElementById('status').innerText = `Proxy Aktif. IP Anda: ${ip}`;
+                    document.getElementById('status').innerText = `Proxy Aktif. IP Anda: ${ip}:${port}`;
                 })
                 .catch(error => {
                     document.getElementById('status').innerText = 'Proxy tidak dapat dijangkau atau tidak aktif.';
