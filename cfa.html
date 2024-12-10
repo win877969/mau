@@ -1,162 +1,230 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Proxy Aktif</title>
-  <style>
-    /* (CSS tetap sama seperti yang Anda berikan) */
-  </style>
+    <title>Cek Proxy & Copy Configuration</title>
+    <style>
+        /* CSS Styles */
+        header, footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            width: 100%;
+            left: 0;
+        }
+        header {
+            top: 0;
+        }
+        footer {
+            bottom: 0;
+        }
+        .container {
+            flex: 1;
+            padding-top: 115px; /* Avoid hidden under header */
+            padding-bottom: 115px; /* Avoid hidden under footer */
+            padding-left: 10px;
+            padding-right: 10px;
+            max-width: 960px;
+            margin: auto;
+        }
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+        button {
+            padding: 5px 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+        button.copy-vless, button.copy-vless1, button.copy-trojan, button.copy-ss, button.check-status {
+            background-color: #007bff;
+        }
+        button.copy-vless:hover, button.copy-vless1:hover, button.copy-trojan:hover, button.copy-ss:hover, button.check-status:hover {
+            background-color: #0069d9;
+        }
+        button.active {
+            background-color: #0056b3;
+        }
+        @media (max-width: 600px) {
+            .filters {
+                flex-direction: column;
+            }
+            .filters input, .filters select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>FREE PROXY CF BMKG.XYZ</h1>
-  </header>
-  <div class="container">
-    <div class="filters">
-      <div>
-        <span class="filter-label">Item Page:</span>
-        <select id="items-per-page">
-          <option value="10">10 Baris</option>
-          <option value="25">25 Baris</option>
-          <option value="50">50 Baris</option>
-          <option value="100">100 Baris</option>
-        </select>
-      </div>
-      <div>
-        <span class="filter-label">Search:</span>
-        <input type="text" id="search-bar" placeholder="Cari berdasarkan negara, ISP, atau penyedia layanan...">
-      </div>
+    <header>
+        <h1>Cek Proxy & Copy Configuration</h1>
+    </header>
+    <div class="container">
+        <div class="filters">
+            <input type="text" id="search-bar" placeholder="Cari berdasarkan negara atau penyedia layanan...">
+            <select id="items-per-page">
+                <option value="10">10 Baris</option>
+                <option value="25">25 Baris</option>
+                <option value="50">50 Baris</option>
+                <option value="100">100 Baris</option>
+            </select>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Negara</th>
+                    <th>Penyedia</th>
+                    <th>Proxy</th>
+                    <th>Status</th>
+                    <th>Latency (ms)</th>
+                    <th>Copy VLESS</th>
+                    <th>Copy Trojan</th>
+                </tr>
+            </thead>
+            <tbody id="proxy-list"></tbody>
+        </table>
+        <div class="pagination" id="pagination"></div>
     </div>
-    
-    <table>
-      <thead>
-        <tr>
-          <th>Negara</th>
-          <th>Penyedia</th>
-          <th>Vless 443</th>
-          <th>Vless 80</th>
-          <th>Trojan</th>
-          <th>SS</th>
-          <th>Status</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="proxy-list"></tbody>
-    </table>
-    <div class="pagination" id="pagination"></div>
-  </div>
+    <footer>
+        <p>&copy; 2024 Free Proxy</p>
+    </footer>
 
-  <footer>
-    <p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p>
-  </footer>
+    <script>
+        let proxies = [];
+        let currentPage = 1;
+        let rowsPerPage = 10;
 
-  <script>
-    let allProxies = [];
-    let filteredProxies = [];
-    let proxyPerPage = 10;
-    let currentPage = 1;
-
-    function uuidv4() {
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      );
-    }
-
-    async function checkProxyStatus(ip, port, statusElement) {
-      statusElement.textContent = "Memeriksa...";
-      try {
-        const response = await fetch(`https://${ip}:${port}`, { method: "HEAD", mode: "no-cors" });
-        if (response.ok || response.status === 0) {
-          statusElement.textContent = "Aktif";
-          statusElement.style.color = "green";
-        } else {
-          statusElement.textContent = "Tidak Aktif";
-          statusElement.style.color = "red";
+        function fetchProxies() {
+            fetch('bot/proxy_list.txt')
+                .then(response => response.text())
+                .then(data => {
+                    proxies = data.split('\n').filter(line => line.trim());
+                    renderTable();
+                    renderPagination();
+                });
         }
-      } catch (error) {
-        statusElement.textContent = "Tidak Aktif";
-        statusElement.style.color = "red";
-      }
-    }
 
-    function renderProxies(proxies, proxyList, pagination) {
-      const start = (currentPage - 1) * proxyPerPage;
-      const end = start + proxyPerPage;
-      const currentPageProxies = proxies.slice(start, end);
+        function renderTable() {
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const filteredProxies = proxies.slice(start, end);
 
-      proxyList.innerHTML = '';
+            const tbody = document.getElementById('proxy-list');
+            tbody.innerHTML = '';
 
-      currentPageProxies.forEach(proxy => {
-        const [ip, port, negara, penyedia] = proxy.split(",");
-        const uuid = uuidv4();
-        const row = document.createElement('tr');
-        const statusId = `status-${ip.replace(/\./g, "-")}-${port}`;
-        row.innerHTML = `
-          <td>${negara}</td>
-          <td>${penyedia}</td>
-          <td><button class="copy-vless">Copy VLESS 443</button></td>
-          <td><button class="copy-vless1">Copy VLESS 80</button></td>
-          <td><button class="copy-trojan">Copy TROJAN</button></td>
-          <td><button class="copy-ss">Copy SS</button></td>
-          <td id="${statusId}">Belum Diperiksa</td>
-          <td><button class="cek-status">Cek Status</button></td>
-        `;
-        proxyList.appendChild(row);
+            filteredProxies.forEach(proxy => {
+                const [ip, port, country, provider] = proxy.split(',');
+                const row = document.createElement('tr');
 
-        const statusElement = row.querySelector(`#${statusId}`);
-        row.querySelector('.cek-status').addEventListener('click', () => {
-          checkProxyStatus(ip, port, statusElement);
+                const uuid = generateUUID();
+                row.innerHTML = `
+                    <td>${country}</td>
+                    <td>${provider}</td>
+                    <td>${ip}:${port}</td>
+                    <td><button class="check-status">Cek Status</button></td>
+                    <td class="latency"></td>
+                    <td><button class="copy-vless">Copy VLESS</button></td>
+                    <td><button class="copy-trojan">Copy Trojan</button></td>
+                `;
+
+                // Event listeners for buttons
+                row.querySelector('.check-status').addEventListener('click', () => checkProxyStatus(ip, port, row));
+                row.querySelector('.copy-vless').addEventListener('click', () => {
+                    const vlessLink = `vless://${uuid}@proxy.com:443?security=tls&country=${country}&provider=${provider}`;
+                    navigator.clipboard.writeText(vlessLink);
+                    alert('VLESS Copied!');
+                });
+                row.querySelector('.copy-trojan').addEventListener('click', () => {
+                    const trojanLink = `trojan://${uuid}@proxy.com:443?security=tls&country=${country}&provider=${provider}`;
+                    navigator.clipboard.writeText(trojanLink);
+                    alert('Trojan Copied!');
+                });
+
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(proxies.length / rowsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                if (i === currentPage) button.classList.add('active');
+                button.addEventListener('click', () => {
+                    currentPage = i;
+                    renderTable();
+                    renderPagination();
+                });
+                pagination.appendChild(button);
+            }
+        }
+
+        function checkProxyStatus(ip, port, row) {
+            const latencyCell = row.querySelector('.latency');
+            const button = row.querySelector('.check-status');
+            button.textContent = 'Checking...';
+
+            const startTime = performance.now();
+            fetch(`https://${ip}:${port}`, { mode: 'no-cors' })
+                .then(() => {
+                    const latency = performance.now() - startTime;
+                    button.textContent = 'Active';
+                    latencyCell.textContent = `${latency.toFixed(2)} ms`;
+                })
+                .catch(() => {
+                    button.textContent = 'Inactive';
+                    latencyCell.textContent = 'N/A';
+                });
+        }
+
+        function generateUUID() {
+            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            );
+        }
+
+        document.getElementById('items-per-page').addEventListener('change', e => {
+            rowsPerPage = parseInt(e.target.value);
+            currentPage = 1;
+            renderTable();
+            renderPagination();
         });
 
-        row.querySelector('.copy-vless').addEventListener('click', () => {
-          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY VLESS 443 SUKSES!');
+        document.getElementById('search-bar').addEventListener('input', e => {
+            const term = e.target.value.toLowerCase();
+            proxies = proxies.filter(proxy => proxy.toLowerCase().includes(term));
+            currentPage = 1;
+            renderTable();
+            renderPagination();
         });
-        row.querySelector('.copy-vless1').addEventListener('click', () => {
-          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
-          alert('COPY VLESS 80 SUKSES!');
-        });
-        row.querySelector('.copy-trojan').addEventListener('click', () => {
-          navigator.clipboard.writeText(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY TROJAN SUKSES!');
-        });
-        row.querySelector('.copy-ss').addEventListener('click', () => {
-          navigator.clipboard.writeText(`ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY SS SUKSES!');
-        });
-      });
 
-      renderPagination(proxies, pagination);
-    }
-
-    function renderPagination(proxies, pagination) {
-      // Pagination tetap sama
-    }
-
-    function filterProxies(searchTerm) {
-      // Filtering tetap sama
-    }
-
-    document.getElementById('search-bar').addEventListener('input', (e) => {
-      filterProxies(e.target.value);
-    });
-
-    document.getElementById('items-per-page').addEventListener('change', (e) => {
-      proxyPerPage = parseInt(e.target.value);
-      const proxyList = document.getElementById('proxy-list');
-      const pagination = document.getElementById('pagination');
-      renderProxies(filteredProxies, proxyList, pagination);
-    });
-
-    fetch("bot/proxy_list.txt")
-      .then(response => response.text())
-      .then(data => {
-        allProxies = data.split("\n").filter(line => line.trim() !== "");
-        filteredProxies = allProxies;
-        const proxyList = document.getElementById('proxy-list');
-        const pagination = document.getElementById('pagination');
-        renderProxies(filteredProxies, proxyList, pagination);
-      })
-      .catch(error => console.error("Error fetching proxy data:", error));
-  </script>
+        fetchProxies();
+    </script>
 </body>
 </html>
