@@ -9,6 +9,7 @@
             <tr>
                 <th>Proxy</th>
                 <th>Status</th>
+                <th>Latency (ms)</th>
             </tr>
         </thead>
         <tbody id="proxy-list"></tbody>
@@ -25,38 +26,52 @@
                     const row = document.createElement('tr');
                     const proxyCell = document.createElement('td');
                     const statusCell = document.createElement('td');
+                    const latencyCell = document.createElement('td');
                     const statusButton = document.createElement('button');
 
                     proxyCell.textContent = proxy;
                     statusButton.textContent = 'Cek Status';
                     statusButton.onclick = () => {
-                        // Fungsi untuk mengecek status proxy
-                        checkProxyStatus(proxy, statusButton);
+                        checkProxyStatus(proxy, statusButton, latencyCell);
                     };
                     statusCell.appendChild(statusButton);
 
                     row.appendChild(proxyCell);
                     row.appendChild(statusCell);
+                    row.appendChild(latencyCell);
                     proxyTableBody.appendChild(row);
                 });
             });
 
-        function checkProxyStatus(proxy, button) {
-            // Ganti dengan logika pengecekan status proxy yang sesuai
-            // Contoh sederhana:
-            button.textContent = 'Mengirim permintaan...';
+        function checkProxyStatus(proxy, statusButton, latencyCell) {
+            if (!proxy) {
+                statusButton.textContent = 'Proxy tidak valid';
+                return;
+            }
+
+            statusButton.textContent = 'Mengirim permintaan...';
+
+            const startTime = performance.now();
             fetch('https://httpbin.org/ip', {
-                proxy: `http://${proxy}`
+                proxy: `http://${proxy}`,
+                timeout: 5000 // Timeout 5 detik
             })
             .then(response => {
-                if (response.ok) {
-                    button.textContent = 'Aktif';
-                } else {
-                    button.textContent = 'Tidak Aktif';
+                if (!response.ok) {
+                    statusButton.textContent = 'Tidak Aktif';
+                    return;
                 }
+                return response.json();
+            })
+            .then(data => {
+                const endTime = performance.now();
+                const latency = endTime - startTime;
+                statusButton.textContent = 'Aktif';
+                latencyCell.textContent = `${latency.toFixed(2)} ms`;
             })
             .catch(error => {
-                button.textContent = 'Error';
+                statusButton.textContent = 'Error';
+                console.error('Error:', error);
             });
         }
     </script>
