@@ -317,7 +317,8 @@ footer {
         row.innerHTML = `
           <td>${penyedia} | ${negara}</td>
           <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
-               </td>
+               <span class="latency-cell"></span>
+                </td>
           <td> <select class="service-selector">
     <option value="">NO WILDCARD</option>
     <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
