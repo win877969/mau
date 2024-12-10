@@ -1,44 +1,39 @@
-
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cek Proxy Aktif</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        #status {
-            font-size: 1.5em;
-            margin-top: 20px;
-        }
-    </style>
+    <title>Cek Proxy:Port Aktif atau Tidak</title>
 </head>
 <body>
-    <h1>Cek Proxy Aktif</h1>
-    <button onclick="checkProxy()">Cek Proxy</button>
-    <div id="status"></div>
-
+    <h1>Cek Proxy:Port Aktif atau Tidak</h1>
+    
+    <form id="proxy-checker">
+        Proxy: <input type="text" id="proxy" placeholder="Masukkan Proxy Address" required>
+        Port: <input type="text" id="port" placeholder="Masukkan Port Number" required>
+        <button type="submit">Cek Koneksi</button>
+    </form>
+    
+    <p id="result"></p>
+    
     <script>
-        function checkProxy() {
-            const url = 'https://httpbin.org/ip'; // URL target untuk cek IP
-            document.getElementById('status').innerText = 'Memeriksa...';
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const ip = data.origin;
-                    document.getElementById('status').innerText = `Proxy Aktif. IP Anda: ${ip}:${port}`;
-                })
-                .catch(error => {
-                    document.getElementById('status').innerText = 'Proxy tidak dapat dijangkau atau tidak aktif.';
-                });
-        }
+        document.getElementById('proxy-checker').addEventListener('submit', function(e){
+            e.preventDefault();
+            
+            var proxy = document.getElementById('proxy').value;
+            var port = document.getElementById('port').value;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://' + proxy + ':' + port, true);
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4){
+                    if(xhr.status == 200){
+                        document.getElementById('result').innerText = 'Proxy:Port Aktif';
+                    } else {
+                        document.getElementById('result').innerText = 'Proxy:Port Tidak Aktif';
+                    }
+                }
+            };
+            xhr.send();
+        });
     </script>
 </body>
 </html>
-
