@@ -276,6 +276,7 @@ footer {
       </thead>
       <tbody id="proxy-list"></tbody>
     </table>
+    <div id="total-proxy"></div>
     <div class="pagination" id="pagination"></div>
   </div>
 
@@ -285,8 +286,19 @@ footer {
 
   
     <script>
-        
-    // Function to render proxies
+        let proxyPerPage = 10;
+let currentPage = 1;
+let filteredProxies = [];
+let allProxies = [];
+
+// Function to handle UUID generation
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
+// Function to render proxies
 function renderProxies(proxies, proxyList, pagination) {
   const start = (currentPage - 1) * proxyPerPage;
   const end = start + proxyPerPage;
@@ -415,10 +427,34 @@ function renderPagination(proxies, pagination) {
   pagination.appendChild(goToPageButton);
 }
 
-// Add an element to display total proxies
-document.body.insertAdjacentHTML('beforeend', '<div id="total-proxy"></div>');
+// Function to update page
+function updatePage(page, proxies, pagination) {
+  currentPage = page;
+  const proxyList = document.getElementById('proxy-list');
+  renderProxies(proxies, proxyList, pagination);
+}
 
+// Fetching proxy data
+fetch("bot/proxy_list.txt")
+  .then(response => response.text())
+  .then(data => {
+    allProxies = data.split("\n").filter(line => line.trim() !== "");
+    filteredProxies = allProxies;
+    const proxyList = document.getElementById('proxy-list');
+    const pagination = document.getElementById('pagination');
+    renderProxies(filteredProxies, proxyList, pagination);
+  })
+  .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
 
+// Event listener for the "Cek Status" button
+document.querySelectorAll('.check-status-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const proxy = button.parentElement.previousElementSibling.querySelector('input').value;
+    checkProxyStatus(proxy, button);
+  });
+});
+
+    
 </script>
 
   
