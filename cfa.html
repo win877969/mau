@@ -4,7 +4,7 @@
     <title>Cek Keaktifan Proxy</title>
 </head>
 <body>
-    <h1>Cek Keaktifan Proxy Menggunakan ProxyScrape.com</h1>
+    <h1>Cek Keaktifan Proxy Menggunakan Ping.eu</h1>
     <form id="proxyForm">
         <label for="proxyIp">Alamat IP Proxy:</label>
         <input type="text" id="proxyIp" name="proxyIp" required>
@@ -21,16 +21,16 @@
             const proxyIp = document.getElementById('proxyIp').value;
             const proxyPort = document.getElementById('proxyPort').value;
 
-            // URL ProxyScrape dengan parameter IP dan port
-            const url = `https://proxyscrape.com/check?proxy=${proxyIp}:${proxyPort}`;
+            // URL Ping.eu dengan parameter IP dan port
+            const url = `https://ping.eu/proxy/${proxyIp}:${proxyPort}`;
 
             const xhr = new XMLHttpRequest();
             xhr.open('GET', url);
 
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.err === 0) {
+                    const response = xhr.responseText;
+                    if (response.includes("Proxy is active")) {
                         document.getElementById('result').textContent = `Proxy ${proxyIp}:${proxyPort} aktif!`;
                     } else {
                         document.getElementById('result').textContent = `Proxy ${proxyIp}:${proxyPort} tidak aktif atau terjadi kesalahan.`;
