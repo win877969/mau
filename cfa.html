@@ -1,141 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proxy Checker</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-    }
-    header, footer {
-      background-color: #007bff;
-      color: white;
-      text-align: center;
-      padding: 10px;
-    }
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table th, table td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-    table th {
-      background-color: #007bff;
-      color: white;
-    }
-    .btn {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background-color: #0056b3;
-    }
-    .status-active {
-      color: green;
-      font-weight: bold;
-    }
-    .status-inactive {
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #proxy-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+        #check-proxy-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        #proxy-status {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-  <header>
     <h1>Proxy Checker</h1>
-  </header>
+    <input type="text" id="proxy-input" placeholder="Enter proxy IP:Port">
+    <button id="check-proxy-btn">Check Proxy</button>
+    <div id="proxy-status"></div>
 
-  <div class="container">
-    <button class="btn" onclick="checkProxies()">Cek Proxy Aktif</button>
-    <table>
-      <thead>
-        <tr>
-          <th>IP:Port</th>
-          <th>Negara</th>
-          <th>Penyedia</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="proxy-list">
-        <!-- Data proxy akan dimasukkan di sini -->
-      </tbody>
-    </table>
-  </div>
+    <script>
+        const proxyInput = document.getElementById('proxy-input');
+        const checkProxyBtn = document.getElementById('check-proxy-btn');
+        const proxyStatusDiv = document.getElementById('proxy-status');
 
-  <footer>
-    <p>&copy; 2024 Proxy Checker</p>
-  </footer>
+        checkProxyBtn.addEventListener('click', async () => {
+            const proxy = proxyInput.value;
+            if (!proxy) return;
 
-  <script>
-    const proxies = [
-      "192.168.0.1,8080,Indonesia,ISP1",
-      "192.168.0.2,9090,USA,ISP2",
-      "192.168.0.3,7070,Germany,ISP3"
-    ];
-
-    function renderProxies() {
-      const proxyList = document.getElementById("proxy-list");
-      proxyList.innerHTML = "";
-      proxies.forEach((proxy, index) => {
-        const [ip, port, country, provider] = proxy.split(",");
-        const row = `
-          <tr id="proxy-${index}">
-            <td>${ip}:${port}</td>
-            <td>${country}</td>
-            <td>${provider}</td>
-            <td id="status-${index}" class="status">Pending</td>
-          </tr>
-        `;
-        proxyList.innerHTML += row;
-      });
-    }
-
-    function checkProxy(ip, port, index) {
-      const testImage = new Image();
-      const proxyUrl = `http://${ip}:${port}`;
-
-      testImage.onload = () => {
-        document.getElementById(`status-${index}`).textContent = "Active";
-        document.getElementById(`status-${index}`).classList.add("status-active");
-      };
-
-      testImage.onerror = () => {
-        document.getElementById(`status-${index}`).textContent = "Inactive";
-        document.getElementById(`status-${index}`).classList.add("status-inactive");
-      };
-
-      testImage.src = `${proxyUrl}/favicon.ico?${Date.now()}`; // Add timestamp to bypass cache.
-    }
-
-    function checkProxies() {
-      proxies.forEach((proxy, index) => {
-        const [ip, port] = proxy.split(",");
-        document.getElementById(`status-${index}`).textContent = "Checking...";
-        checkProxy(ip, port, index);
-      });
-    }
-
-    renderProxies();
-  </script>
+            try {
+                const response = await fetch(`http://${proxy}`);
+                if (response.ok) {
+                    proxyStatusDiv.textContent = 'Proxy is working!';
+                    proxyStatusDiv.style.color = 'green';
+                } else {
+                    proxyStatusDiv.textContent = 'Proxy is not working!';
+                    proxyStatusDiv.style.color = 'red';
+                }
+            } catch (error) {
+                proxyStatusDiv.textContent = 'Error checking proxy!';
+                proxyStatusDiv.style.color = 'red';
+            }
+        });
+    </script>
 </body>
 </html>
