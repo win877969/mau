@@ -4,13 +4,88 @@
 <head>
   <title>Proxy Aktif</title>
   <style>
+/* Warna dasar body */
+body {
+  background-color: #1e1e2f; /* Abu-abu gelap */
+  color: #e0e0e0; /* Teks abu-abu terang */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-    background-color: #121212; /* Hitam pekat (dark mode) */
-    color: white; /* Teks putih agar kontras dengan background */
-    margin: 0;
-    font-family: Arial, sans-serif; /* Font sederhana dan bersih */
-  }
+/* Header */
+header {
+  background-color: #282c34; /* Abu-abu kebiruan */
+  color: #00d4ff; /* Teks biru cerah */
+  text-align: center;
+  padding: 15px;
+  text-shadow: 2px 2px 4px #000; /* Bayangan teks */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Tetap di atas elemen lainnya */
+}
+
+/* Footer */
+footer {
+  background-color: #282c34; /* Sama dengan header */
+  color: #e0e0e0; /* Abu terang */
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Tabel */
+table {
+  border-collapse: collapse;
+  width: 95%;
+  margin: 80px auto; /* Jarak dari header dan konten */
+  border: 1px solid #5cdb95; /* Hijau pastel */
+}
+
+th, td {
+  border: 1px solid #5cdb95; /* Hijau pastel */
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #007bff; /* Biru */
+  color: #fff; /* Putih */
+}
+
+td {
+  background-color: #2e2e4d; /* Abu-abu kebiruan */
+  color: #dcdcdc; /* Abu terang */
+}
+
+/* Tombol */
+button {
+  background: linear-gradient(45deg, #007bff, #0056b3); /* Gradasi biru */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: linear-gradient(45deg, #0056b3, #003d80); /* Gradasi lebih gelap */
+  transition: 0.3s;
+}
+
+/* Konten setelah header */
+.content {
+  padding: 100px 15px 60px; /* Menyesuaikan jarak dari header dan footer */
+}
+
+    
     /* CSS */
       .service-selector {
         width: 100%;
@@ -44,24 +119,7 @@
   align-items: center;
   
 }
-    header, footer {
-  background-color: rgba(0, 0, 0, 0.8); /* Hitam dengan transparansi 80% */
-  color: white;
-  text-align: center;
-  padding: 15px;
-  position: fixed;
-  width: 100%;
-  left: 0;
-}
-
-header {
-  top: 0;
-}
-
-footer {
-  bottom: 0;
-}
-
+    
 
     
 
@@ -77,49 +135,13 @@ footer {
     }
 
     /* Memberikan sudut melengkung pada tabel */
-    table {
-        border-collapse: separate;
-        border-spacing: 0;
-        border: 2px solid #4CAF50; /* Warna border hijau */
-        border-radius: 10px; /* Sudut melengkung */
-        overflow: hidden;
-        width: 100%; /* Membuat tabel lebar penuh */
-    }
-
-    /* Menyesuaikan warna dan tampilan header tabel */
-    th {
-        background-color: #4CAF50; /* Warna hijau */
-        color: white; /* Warna teks putih */
-        font-weight: bold;
-        padding: 10px;
-        text-align: center;
-    }
+    
 
     /* Menambahkan efek pada elemen td */
-    td {
-        padding: 10px;
-        text-align: center;
-        background-color: rgba(76, 175, 80, 0.1); /* Warna hijau transparan */
-        color: #333; /* Warna teks */
-        border-bottom: 1px solid #ddd; /* Garis pembatas antar baris */
-        transition: background-color 0.3s ease; /* Efek transisi */
-    }
-
-    /* Efek hover pada td */
-    td:hover {
-        background-color: rgba(76, 175, 80, 0.2); /* Warna hijau lebih gelap saat dihover */
-    }
-
-    /* Menambahkan warna pada baris ganjil */
-    tr:nth-child(odd) td {
-        background-color: rgba(240, 240, 240, 0.5); /* Warna abu terang */
-    }
+    
 
     /* Efek hover pada baris tabel */
-    tr:hover td {
-        background-color: #e0f7fa; /* Warna latar biru muda saat baris dihover */
-        color: #00796b; /* Warna teks saat dihover */
-    }
+    
 
     .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
       margin: 5px;
@@ -173,10 +195,7 @@ footer {
 
       
 
-      table {
-        width: 100%;
-        margin-bottom: 10px;
-      }
+      
 
       #search-bar, #items-per-page {
         width: 60px;
@@ -198,10 +217,8 @@ footer {
     }
 
     /* Tablet styles */
-    @media (max-width: 1024px) {
-      table {
-        max-width: 95%;
-      }
+    @media (max-width: 500px) {
+      
 
       #search-bar, #items-per-page {
         width: 80px;
@@ -220,10 +237,8 @@ footer {
     }
 
     /* Desktop styles */
-    @media (min-width: 1025px) {
-      table {
-        max-width: 100%;
-      }
+    @media (min-width: 500px) {
+      
 
       #search-bar, #items-per-page {
         width: 30%;
@@ -249,7 +264,7 @@ footer {
   </h1>
 </header>
 
-<div class="container">
+<div class="content">
 
     <div class="filters">
       <div>
