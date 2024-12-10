@@ -1,63 +1,44 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy Checker</title>
+    <title>Cek Proxy Aktif</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            margin-top: 50px;
         }
-        #proxy-input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-        }
-        #check-proxy-btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        #proxy-status {
-            font-size: 18px;
-            font-weight: bold;
+
+        #status {
+            font-size: 1.5em;
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Proxy Checker</h1>
-    <input type="text" id="proxy-input" placeholder="Enter proxy IP:Port">
-    <button id="check-proxy-btn">Check Proxy</button>
-    <div id="proxy-status"></div>
+    <h1>Cek Proxy Aktif</h1>
+    <button onclick="checkProxy()">Cek Proxy</button>
+    <div id="status"></div>
 
     <script>
-        const proxyInput = document.getElementById('proxy-input');
-        const checkProxyBtn = document.getElementById('check-proxy-btn');
-        const proxyStatusDiv = document.getElementById('proxy-status');
+        function checkProxy() {
+            const url = 'https://httpbin.org/ip'; // URL target untuk cek IP
+            document.getElementById('status').innerText = 'Memeriksa...';
 
-        checkProxyBtn.addEventListener('click', async () => {
-            const proxy = proxyInput.value;
-            if (!proxy) return;
-
-            try {
-                const response = await fetch(`http://${proxy}`);
-                if (response.ok) {
-                    proxyStatusDiv.textContent = 'Proxy is working!';
-                    proxyStatusDiv.style.color = 'green';
-                } else {
-                    proxyStatusDiv.textContent = 'Proxy is not working!';
-                    proxyStatusDiv.style.color = 'red';
-                }
-            } catch (error) {
-                proxyStatusDiv.textContent = 'Error checking proxy!';
-                proxyStatusDiv.style.color = 'red';
-            }
-        });
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const ip = data.origin;
+                    document.getElementById('status').innerText = `Proxy Aktif. IP Anda: ${ip}`;
+                })
+                .catch(error => {
+                    document.getElementById('status').innerText = 'Proxy tidak dapat dijangkau atau tidak aktif.';
+                });
+        }
     </script>
 </body>
 </html>
+
