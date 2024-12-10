@@ -1,27 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Info IP Anda</title>
+    <title>Cek Status Proxy</title>
 </head>
 <body>
-    <div id="ip-info"></div>
+    <table id="proxy-table">
+        <thead>
+            <tr>
+                <th>Proxy</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="proxy-list"></tbody>
+    </table>
 
     <script>
-        fetch('https://ipinfo.io/json')
-            .then(response => response.json())
+        fetch('https://bmkg.xyz/bot/proxy_list.txt')
+            .then(response => response.text())
             .then(data => {
-                const ipInfoDiv = document.getElementById('ip-info');
-                ipInfoDiv.textContent = `
-                    IP: ${data.ip}
-                    Kota: ${data.city}
-                    Negara: ${data.country}
-                    Lokasi: ${data.loc}
-                `;
+                const proxyList = data.split('\n');
+                const proxyTableBody = document.getElementById('proxy-list');
+
+                proxyList.forEach(proxy => {
+                    const row = document.createElement('tr');
+                    const proxyCell = document.createElement('td');
+                    const statusCell = document.createElement('td');
+                    const statusButton = document.createElement('button');
+
+                    proxyCell.textContent = proxy;
+                    statusButton.textContent = 'Cek Status';
+                    statusButton.onclick = () => {
+                        // Fungsi untuk mengecek status proxy
+                        checkProxyStatus(proxy, statusButton);
+                    };
+                    statusCell.appendChild(statusButton);
+
+                    row.appendChild(proxyCell);
+                    row.appendChild(statusCell);
+                    proxyTableBody.appendChild(row);
+                });
+            });
+
+        function checkProxyStatus(proxy, button) {
+            // Ganti dengan logika pengecekan status proxy yang sesuai
+            // Contoh sederhana:
+            button.textContent = 'Mengirim permintaan...';
+            fetch('https://httpbin.org/ip', {
+                proxy: `http://${proxy}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    button.textContent = 'Aktif';
+                } else {
+                    button.textContent = 'Tidak Aktif';
+                }
             })
             .catch(error => {
-                console.error('Error:', error);
-                ipInfoDiv.textContent = 'Terjadi kesalahan dalam mengambil data IP.';
+                button.textContent = 'Error';
             });
+        }
     </script>
 </body>
 </html>
