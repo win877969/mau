@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cek Proxy:Port Aktif atau Tidak</title>
+    <title>Cek Proxy</title>
 </head>
 <body>
-    <h1>Cek Proxy:Port Aktif atau Tidak</h1>
-    
-    <form id="proxy-checker">
-        Proxy: <input type="text" id="proxy" placeholder="Masukkan Proxy Address" required>
-        Port: <input type="text" id="port" placeholder="Masukkan Port Number" required>
-        <button type="submit">Cek Koneksi</button>
+    <h1>Cek Keaktifan Proxy</h1>
+    <form id="proxyForm">
+        <label for="proxyIp">Alamat IP Proxy:</label>
+        <input type="text" id="proxyIp" name="proxyIp" required>
+        <br>
+        <label for="proxyPort">Port Proxy:</label>
+        <input type="number" id="proxyPort" name="proxyPort" required>
+        <br>
+        <button type="button" onclick="cekProxy()">Cek Proxy</button>
     </form>
-    
-    <p id="result"></p>
-    
+    <div id="result"></div>
+
     <script>
-        document.getElementById('proxy-checker').addEventListener('submit', function(e){
-            e.preventDefault();
-            
-            var proxy = document.getElementById('proxy').value;
-            var port = document.getElementById('port').value;
-            
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://' + proxy + ':' + port, true);
-            xhr.onreadystatechange = function(){
-                if(xhr.readyState == 4){
-                    if(xhr.status == 200){
-                        document.getElementById('result').innerText = 'Proxy:Port Aktif';
-                    } else {
-                        document.getElementById('result').innerText = 'Proxy:Port Tidak Aktif';
-                    }
+        function cekProxy() {
+            // Ambil nilai input dari form
+            const proxyIp = document.getElementById('proxyIp').value;
+            const proxyPort = document.getElementById('proxyPort').value;
+
+            // Buat objek XMLHttpRequest
+            const xhr = new XMLHttpRequest();
+
+            // URL yang akan diakses (ganti dengan URL yang sesuai untuk cek proxy)
+            const url = 'https://proxyip.edtunnel.best/' + proxyIp + ':' + proxyPort;
+
+            xhr.open('GET', url);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Proxy aktif
+                    document.getElementById('result').textContent = 'Proxy aktif!';
+                } else {
+                    // Proxy tidak aktif
+                    document.getElementById('result').textContent = 'Proxy tidak aktif.';
                 }
             };
+
             xhr.send();
-        });
+        }
     </script>
 </body>
 </html>
