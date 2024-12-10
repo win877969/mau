@@ -270,7 +270,8 @@
           
           <td>${penyedia} | ${negara}</td>
           <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
-                     </td><td></td>
+               <span class="latency-cell">-</span>
+                </td>
           <td>  <select class="service-selector">
     <option value="">NO WILDCARD</option>
     <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
@@ -412,7 +413,7 @@
     button.textContent = 'Loading';
     button.style.backgroundColor = 'yellow'; // Set background color to yellow when loading
     button.style.color = 'black'; // Set text color to black during loading
-    const latencyCell = button.parentElement.nextElementSibling;
+    const latencyCell = button.parentElement.querySelector('.latency-cell'); // Find the latency span in the same cell
 
     const startTime = performance.now();
     fetch('https://httpbin.org/ip', {
@@ -430,10 +431,7 @@
                 button.textContent = 'Ngacengan';
                 button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
                 button.style.color = 'white'; // Set text color to white for active proxy
-                // Make sure to clear the latency value properly
-                if (latencyCell) {
-                    latencyCell.textContent = ''; // Clear latency cell text if exists
-                }
+                latencyCell.textContent = `${latency} ms`; // Display latency in the same column
             } else {
                 throw new Error('Turu');
             }
@@ -442,12 +440,17 @@
             button.textContent = 'Turu';
             button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
             button.style.color = 'white'; // Set text color to white for failed proxy
-            // Clear latency cell text if it exists
-            if (latencyCell) {
-                latencyCell.textContent = ''; // Clear latency cell text
-            }
+            latencyCell.textContent = ''; // Clear latency cell text on failure
         });
 }
+
+// Event listener for the "Cek Status" button
+document.querySelectorAll('.check-status-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        const proxy = button.parentElement.previousElementSibling.querySelector('input').value;
+        checkProxyStatus(proxy, button);
+    });
+});
 
 </script>
 
