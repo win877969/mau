@@ -1,230 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cek Proxy & Copy Configuration</title>
-    <style>
-        /* CSS Styles */
-        header, footer {
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            position: fixed;
-            width: 100%;
-            left: 0;
-        }
-        header {
-            top: 0;
-        }
-        footer {
-            bottom: 0;
-        }
-        .container {
-            flex: 1;
-            padding-top: 115px; /* Avoid hidden under header */
-            padding-bottom: 115px; /* Avoid hidden under footer */
-            padding-left: 10px;
-            padding-right: 10px;
-            max-width: 960px;
-            margin: auto;
-        }
-        .filters {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        table th, table td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        table th {
-            background-color: #007bff;
-            color: white;
-        }
-        button {
-            padding: 5px 10px;
-            margin: 2px;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
-        }
-        button.copy-vless, button.copy-vless1, button.copy-trojan, button.copy-ss, button.check-status {
-            background-color: #007bff;
-        }
-        button.copy-vless:hover, button.copy-vless1:hover, button.copy-trojan:hover, button.copy-ss:hover, button.check-status:hover {
-            background-color: #0069d9;
-        }
-        button.active {
-            background-color: #0056b3;
-        }
-        @media (max-width: 600px) {
-            .filters {
-                flex-direction: column;
-            }
-            .filters input, .filters select {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-        }
-    </style>
+    <title>Cek Status Proxy</title>
 </head>
 <body>
-    <header>
-        <h1>Cek Proxy & Copy Configuration</h1>
-    </header>
-    <div class="container">
-        <div class="filters">
-            <input type="text" id="search-bar" placeholder="Cari berdasarkan negara atau penyedia layanan...">
-            <select id="items-per-page">
-                <option value="10">10 Baris</option>
-                <option value="25">25 Baris</option>
-                <option value="50">50 Baris</option>
-                <option value="100">100 Baris</option>
-            </select>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Negara</th>
-                    <th>Penyedia</th>
-                    <th>Proxy</th>
-                    <th>Status</th>
-                    <th>Latency (ms)</th>
-                    <th>Copy VLESS</th>
-                    <th>Copy Trojan</th>
-                </tr>
-            </thead>
-            <tbody id="proxy-list"></tbody>
-        </table>
-        <div class="pagination" id="pagination"></div>
-    </div>
-    <footer>
-        <p>&copy; 2024 Free Proxy</p>
-    </footer>
+    <table id="proxy-table">
+        <thead>
+            <tr>
+                <th>Proxy</th>
+                <th>Status</th>
+                <th>Latency (ms)</th>
+            </tr>
+        </thead>
+        <tbody id="proxy-list"></tbody>
+    </table>
 
     <script>
-        let proxies = [];
-        let currentPage = 1;
-        let rowsPerPage = 10;
+        fetch('bot/proxy_list.txt')
+            .then(response => response.text())
+            .then(data => {
+                const proxyList = data.split('\n');
+                const proxyTableBody = document.getElementById('proxy-list');
 
-        function fetchProxies() {
-            fetch('bot/proxy_list.txt')
-                .then(response => response.text())
-                .then(data => {
-                    proxies = data.split('\n').filter(line => line.trim());
-                    renderTable();
-                    renderPagination();
+                proxyList.forEach(proxy => {
+                    const row = document.createElement('tr');
+                    const proxyCell = document.createElement('td');
+                    const statusCell = document.createElement('td');
+                    const latencyCell = document.createElement('td');
+                    const statusButton = document.createElement('button');
+
+                    proxyCell.textContent = proxy;
+                    statusButton.textContent = 'Cek Status';
+                    statusButton.onclick = () => {
+                        checkProxyStatus(proxy, statusButton, latencyCell);
+                    };
+                    statusCell.appendChild(statusButton);
+
+                    row.appendChild(proxyCell);
+                    row.appendChild(statusCell);
+                    row.appendChild(latencyCell);
+                    proxyTableBody.appendChild(row);
                 });
-        }
-
-        function renderTable() {
-            const start = (currentPage - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-            const filteredProxies = proxies.slice(start, end);
-
-            const tbody = document.getElementById('proxy-list');
-            tbody.innerHTML = '';
-
-            filteredProxies.forEach(proxy => {
-                const [ip, port, country, provider] = proxy.split(',');
-                const row = document.createElement('tr');
-
-                const uuid = generateUUID();
-                row.innerHTML = `
-                    <td>${country}</td>
-                    <td>${provider}</td>
-                    <td>${ip}:${port}</td>
-                    <td><button class="check-status">Cek Status</button></td>
-                    <td class="latency"></td>
-                    <td><button class="copy-vless">Copy VLESS</button></td>
-                    <td><button class="copy-trojan">Copy Trojan</button></td>
-                `;
-
-                // Event listeners for buttons
-                row.querySelector('.check-status').addEventListener('click', () => checkProxyStatus(ip, port, row));
-                row.querySelector('.copy-vless').addEventListener('click', () => {
-                    const vlessLink = `vless://${uuid}@proxy.com:443?security=tls&country=${country}&provider=${provider}`;
-                    navigator.clipboard.writeText(vlessLink);
-                    alert('VLESS Copied!');
-                });
-                row.querySelector('.copy-trojan').addEventListener('click', () => {
-                    const trojanLink = `trojan://${uuid}@proxy.com:443?security=tls&country=${country}&provider=${provider}`;
-                    navigator.clipboard.writeText(trojanLink);
-                    alert('Trojan Copied!');
-                });
-
-                tbody.appendChild(row);
             });
-        }
 
-        function renderPagination() {
-            const totalPages = Math.ceil(proxies.length / rowsPerPage);
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-
-            for (let i = 1; i <= totalPages; i++) {
-                const button = document.createElement('button');
-                button.textContent = i;
-                if (i === currentPage) button.classList.add('active');
-                button.addEventListener('click', () => {
-                    currentPage = i;
-                    renderTable();
-                    renderPagination();
-                });
-                pagination.appendChild(button);
+        function checkProxyStatus(proxy, statusButton, latencyCell) {
+            if (!proxy) {
+                statusButton.textContent = 'Proxy tidak valid';
+                return;
             }
-        }
 
-        function checkProxyStatus(ip, port, row) {
-            const latencyCell = row.querySelector('.latency');
-            const button = row.querySelector('.check-status');
-            button.textContent = 'Checking...';
+            statusButton.textContent = 'Mengirim permintaan...';
 
             const startTime = performance.now();
-            fetch(`https://${ip}:${port}`, { mode: 'no-cors' })
-                .then(() => {
-                    const latency = performance.now() - startTime;
-                    button.textContent = 'Active';
-                    latencyCell.textContent = `${latency.toFixed(2)} ms`;
-                })
-                .catch(() => {
-                    button.textContent = 'Inactive';
-                    latencyCell.textContent = 'N/A';
-                });
+            fetch('https://httpbin.org/ip', {
+                proxy: `http://${proxy}`,
+                timeout: 5000 // Timeout 5 detik
+            })
+            .then(response => {
+                if (!response.ok) {
+                    statusButton.textContent = 'Tidak Aktif';
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                const endTime = performance.now();
+                const latency = endTime - startTime;
+                statusButton.textContent = 'Aktif';
+                latencyCell.textContent = `${latency.toFixed(2)} ms`;
+            })
+            .catch(error => {
+                statusButton.textContent = 'Error';
+                console.error('Error:', error);
+            });
         }
-
-        function generateUUID() {
-            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-            );
-        }
-
-        document.getElementById('items-per-page').addEventListener('change', e => {
-            rowsPerPage = parseInt(e.target.value);
-            currentPage = 1;
-            renderTable();
-            renderPagination();
-        });
-
-        document.getElementById('search-bar').addEventListener('input', e => {
-            const term = e.target.value.toLowerCase();
-            proxies = proxies.filter(proxy => proxy.toLowerCase().includes(term));
-            currentPage = 1;
-            renderTable();
-            renderPagination();
-        });
-
-        fetchProxies();
     </script>
 </body>
 </html>
