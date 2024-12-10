@@ -105,32 +105,35 @@ footer {
 
     /* Memberikan sudut melengkung pada tabel */
     table {
+        width: 100%;
+        min-width: 800px;
         border-collapse: separate;
-        border-spacing: 0;
-        border: 2px solid #4CAF50; /* Warna border hijau */
-        border-radius: 10px; /* Sudut melengkung */
-        overflow: hidden;
-        width: 100%; /* Membuat tabel lebar penuh */
+        border-spacing: 0 8px;
     }
-
     /* Menyesuaikan warna dan tampilan header tabel */
     th {
-        background-color: #4CAF50; /* Warna hijau */
-        color: white; /* Warna teks putih */
-        font-weight: bold;
-        padding: 10px;
-        text-align: center;
-    }
+        background: rgba(0, 255, 136, 0.1);
+        color: var(--primary);
+        padding: 1.2rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-bottom: 2px solid var(--primary);
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
 
     /* Menambahkan efek pada elemen td */
     td {
-        padding: 10px;
-        text-align: center;
-        background-color: rgba(76, 175, 80, 0.1); /* Warna hijau transparan */
-        color: #333; /* Warna teks */
-        border-bottom: 1px solid #ddd; /* Garis pembatas antar baris */
-        transition: background-color 0.3s ease; /* Efek transisi */
-    }
+        padding: 1rem;
+        background: rgba(0, 255, 136, 0.03);
+        border: none;
+        transition: all 0.3s ease;
+      }
 
     /* Efek hover pada td */
     td:hover {
@@ -270,14 +273,14 @@ footer {
   </style>
 </head>
 <body>
-  <div class="quantum-container">
-  <header>
+<header>
   <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0, 123, 255, 0.8);">
     FREE PROXY CF BMKG.XYZ
   </h1>
 </header>
 
-<div class="container">
+  <div class="quantum-container">
+  
 
     <div class="filters">
       <div>
@@ -316,7 +319,7 @@ footer {
   <footer>
     <p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p>
   </footer>
-  </div>
+  
   
     <script>
     let proxyPerPage = 10;
