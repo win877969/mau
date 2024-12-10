@@ -413,6 +413,7 @@
     function checkProxyStatus(proxy, button) {
     button.textContent = 'Loading';
     button.style.backgroundColor = 'yellow'; // Set background color to yellow when loading
+    button.style.color = 'black'; // Set text color to black during loading
     const latencyCell = button.parentElement.nextElementSibling;
 
     const startTime = performance.now();
