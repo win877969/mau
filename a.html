@@ -239,7 +239,8 @@
     <p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p>
   </footer>
 
-  <script>
+  
+    <script>
     let proxyPerPage = 10;
     let currentPage = 1;
     let filteredProxies = [];
@@ -374,37 +375,39 @@
         const pagination = document.getElementById('pagination');
         renderProxies(filteredProxies, proxyList, pagination);
       })
-      
-      
+      .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
+    
+    // Check Proxy status function
     function checkProxyStatus(proxy, button) {
-            button.textContent = 'Memeriksa...';
-            const latencyCell = button.parentElement.nextElementSibling;
+        button.textContent = 'Memeriksa...';
+        const latencyCell = button.parentElement.nextElementSibling;
 
-            const startTime = performance.now();
-            fetch('https://httpbin.org/ip', {
-                method: 'GET',
-                headers: {
-                    'Proxy': `http://${proxy}`,
-                },
-                timeout: 5000
+        const startTime = performance.now();
+        fetch('https://httpbin.org/ip', {
+            method: 'GET',
+            headers: {
+                'Proxy': `http://${proxy}`,
+            },
+            timeout: 5000
+        })
+            .then(response => {
+                const endTime = performance.now();
+                const latency = (endTime - startTime).toFixed(2);
+
+                if (response.ok) {
+                    button.textContent = 'Aktif';
+                    latencyCell.textContent = `${latency} ms`;
+                } else {
+                    throw new Error('Tidak Aktif');
+                }
             })
-                .then(response => {
-                    const endTime = performance.now();
-                    const latency = (endTime - startTime).toFixed(2);
+            .catch(() => {
+                button.textContent = 'Tidak Aktif';
+                latencyCell.textContent = '-';
+            });
+    }
+</script>
 
-                    if (response.ok) {
-                        button.textContent = 'Aktif';
-                        latencyCell.textContent = `${latency} ms`;
-                    } else {
-                        throw new Error('Tidak Aktif');
-                    }
-                })
-                .catch(() => {
-                    button.textContent = 'Tidak Aktif';
-                    latencyCell.textContent = '-';
-                });
-        }
-      .catch(error => console.error("Error fetching proxy data:", error));
-  </script>
+  
 </body>
 </html>
