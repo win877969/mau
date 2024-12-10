@@ -17,31 +17,29 @@
     <div id="result"></div>
 
     <script>
-        function cekProxy() {
-            const proxyIp = document.getElementById('proxyIp').value;
-            const proxyPort = document.getElementById('proxyPort').value;
+        
+                    async function cekProxy(proxyList) {
+  const formData = new FormData();
+  formData.append('proxies', proxyList.join('\n'));
 
-            // URL Ping.eu dengan parameter IP dan port
-            const url = `https://ping.eu/proxy/${proxyIp}:${proxyPort}`;
+  try {
+    const response = await fetch('https://proxy-seller.com/id/tools/proxy-checker/', {
+      method: 'POST',
+      body: formData
+    });
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', url);
+    const data = await response.text();
+    // Parsing data untuk mendapatkan hasil
+    console.log(data); // Anda perlu memproses data ini untuk mendapatkan informasi yang Anda inginkan
 
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const response = xhr.responseText;
-                    if (response.includes("Proxy is active")) {
-                        document.getElementById('result').textContent = `Proxy ${proxyIp}:${proxyPort} aktif!`;
-                    } else {
-                        document.getElementById('result').textContent = `Proxy ${proxyIp}:${proxyPort} tidak aktif atau terjadi kesalahan.`;
-                    }
-                } else {
-                    document.getElementById('result').textContent = 'Terjadi kesalahan dalam permintaan.';
-                }
-            };
+  } catch (error) {
+    console.error('Terjadi kesalahan:', error);
+  }
+}
 
-            xhr.send();
-        }
+// Contoh penggunaan:
+const proxyList = ['1.2.3.4:8080', '5.6.7.8:9090'];
+cekProxy(proxyList);
     </script>
 </body>
 </html>
