@@ -5,19 +5,18 @@
   <style>
     /* CSS */
     
-.container {
-  flex: 1;
+    .container {
+      flex: 1;
       padding-top: 115px; /* To avoid content being hidden under the header */
       padding-bottom: 115px; /* To avoid content being hidden under the footer */
       padding-left: 10px;
       padding-right: 10px;
       display: flex;
       flex-direction: column;
-  
-  max-width: 960px;
-  align-items: center;
-  
-}
+      max-width: 960px;
+      align-items: center;
+    }
+
     header, footer {
       background-color: #007bff;
       color: white;
@@ -35,8 +34,6 @@
     footer {
       bottom: 0;
     }
-
-    
 
     .filters {
       display: flex;
@@ -125,8 +122,6 @@
         padding: 5px;
       }
 
-      
-
       table {
         width: 100%;
         margin-bottom: 10px;
@@ -198,8 +193,7 @@
   <header>
     <h1>FREE PROXY CF BMKG.XYZ</h1>
   </header>
-<div class="container">
-
+  <div class="container">
     <div class="filters">
       <div>
         <span class="filter-label">Item Page:</span>
@@ -218,15 +212,15 @@
     
     <table>
       <thead>
-  <tr>
-    <th>Negara</th>
-    <th>Penyedia</th>
-    <th>Vless 443</th>
-    <th>Vless 80</th>
-    <th>Trojan</th>
-    <th>SS</th>
-    <th>Status</th>
-  </tr>
+        <tr>
+          <th>Negara</th>
+          <th>Penyedia</th>
+          <th>Vless 443</th>
+          <th>Vless 80</th>
+          <th>Trojan</th>
+          <th>SS</th>
+          <th>Status</th>
+        </tr>
       </thead>
       <tbody id="proxy-list"></tbody>
     </table>
@@ -238,75 +232,10 @@
   </footer>
 
   <script>
- const allProxies = data.split("\n").filter(line => line.trim() !== "").map(proxyString => {
-  const [ip, port, negara, penyedia] = proxyString.split(",");
-  return {
-    ip,
-    port,
-    negara,
-    penyedia,
-    status: "Belum Diperiksa" // Initially set status to unchecked
-  };
-});
-
-function checkProxyStatus(proxy) {
-  const url = `https://httpbin.org/ip?proxy=${proxy.ip}:${proxy.port}`;
-  const statusCell = document.getElementById(`status-${proxy.ip}`); // Assuming a unique ID for each status cell
-
-  if (statusCell) {
-    statusCell.textContent = "Memeriksa..."; // Show loading indicator
-  }
-
-  fetch(url, {
-    method: 'GET'
-  })
-  .then(response => {
-    if (response.ok) {
-      proxy.status = "Aktif";
-    } else {
-      proxy.status = "Tidak Aktif";
-    }
-    if (statusCell) {
-      statusCell.textContent = proxy.status; // Update status cell value
-    }
-  })
-  .catch(error => {
-    console.error("Error checking proxy status:", error);
-    if (statusCell) {
-      statusCell.textContent = "Error"; // Display error message
-    }
-  });
-}
-
-      function renderProxies(proxies, proxyList, pagination) {
-  // ... existing code ...
-
-  proxies.forEach(proxy => {
-    const row = document.createElement('tr');
-    const [ip, port, negara, penyedia] = proxy.split(",");
-    // ... existing code to populate other cells ...
-
-    const statusCell = document.createElement('td');
-    statusCell.id = `status-${ip}`;
-    statusCell.textContent = proxy.status;
-    row.appendChild(statusCell);
-
-    // Optionally add a button to trigger status check
-    const checkButton = document.createElement('button');
-    checkButton.textContent = "Cek Status";
-    checkButton.addEventListener('click', () => checkProxyStatus(proxy));
-    row.appendChild(checkButton);
-
-    proxyList.appendChild(row);
-  });
-
-  // ... existing code for pagination ...
-}
-      
+    let allProxies = [];
+    let filteredProxies = [];
     let proxyPerPage = 10;
     let currentPage = 1;
-    let filteredProxies = [];
-    let allProxies = [];
 
     // Function to handle UUID generation
     function uuidv4() {
@@ -334,6 +263,7 @@ function checkProxyStatus(proxy) {
           <td><button class="copy-vless1">Copy VLESS 80</button></td>       
           <td><button class="copy-trojan">Copy TROJAN</button></td>
           <td><button class="copy-ss">Copy SS</button></td>
+          <td id="status-${ip}">Belum Diperiksa</td>
         `;
         proxyList.appendChild(row);
 
