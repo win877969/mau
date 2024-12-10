@@ -271,7 +271,13 @@
           <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
                         </td>
                         <td></td>
-          <td><button class="copy-vless">Copy VLESS 443</button></td>
+          <td>  <select class="service-selector">
+    <option value="ruangguru">ruangguru</option>
+    <option value="vidio">vidio</option>
+    <option value="viu">viu</option>
+    <option value="edukasi">edukasi</option>
+  </select>
+  <button class="copy-vless">Copy VLESS 443</button></td>
           <td><button class="copy-vless1">Copy VLESS 80</button></td>       
           <td><button class="copy-trojan">Copy TROJAN</button></td>
           <td><button class="copy-ss">Copy SS</button></td>
@@ -281,9 +287,12 @@
 
         // Event listeners for copy buttons
         row.querySelector('.copy-vless').addEventListener('click', () => {
-          navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}`);
-          alert('COPY VLESS 443 SUKSES!');
-        });
+  const selectedService = row.querySelector('.service-selector').value;
+  const url = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${selectedService}.tp1.bmkg.xyz#${negara}+${penyedia}`;
+  navigator.clipboard.writeText(url);
+  alert('URL berhasil disalin!');
+});
+
         row.querySelector('.copy-vless1').addEventListener('click', () => {
           navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
           alert('COPY VLESS 80 SUKSES!');
