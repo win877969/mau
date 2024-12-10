@@ -431,7 +431,8 @@
             if (response.ok) {
                 button.textContent = 'Ngacengan';
                 button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
-                latencyCell.textContent = `${latency} ms`;
+                button.style.color = 'white'; // Set text color to white for active proxy
+                latencyCell.textContent = ''; // Clear latency cell text
             } else {
                 throw new Error('Turu');
             }
@@ -439,7 +440,8 @@
         .catch(() => {
             button.textContent = 'Turu';
             button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
-            latencyCell.textContent = '-';
+            button.style.color = 'white'; // Set text color to white for failed proxy
+            latencyCell.textContent = ''; // Clear latency cell text
         });
 }
 
