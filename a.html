@@ -411,33 +411,37 @@
     
     // Check Proxy status function
     function checkProxyStatus(proxy, button) {
-        button.textContent = 'Memeriksa...';
-        const latencyCell = button.parentElement.nextElementSibling;
+    button.textContent = 'Loading';
+    button.style.backgroundColor = 'yellow'; // Set background color to yellow when loading
+    const latencyCell = button.parentElement.nextElementSibling;
 
-        const startTime = performance.now();
-        fetch('https://httpbin.org/ip', {
-            method: 'GET',
-            headers: {
-                'Proxy': `http://${proxy}`,
-            },
-            timeout: 5000
+    const startTime = performance.now();
+    fetch('https://httpbin.org/ip', {
+        method: 'GET',
+        headers: {
+            'Proxy': `http://${proxy}`,
+        },
+        timeout: 5000
+    })
+        .then(response => {
+            const endTime = performance.now();
+            const latency = (endTime - startTime).toFixed(2);
+
+            if (response.ok) {
+                button.textContent = 'Ngacengan';
+                button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
+                latencyCell.textContent = `${latency} ms`;
+            } else {
+                throw new Error('Turu');
+            }
         })
-            .then(response => {
-                const endTime = performance.now();
-                const latency = (endTime - startTime).toFixed(2);
+        .catch(() => {
+            button.textContent = 'Turu';
+            button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
+            latencyCell.textContent = '-';
+        });
+}
 
-                if (response.ok) {
-                    button.textContent = 'Ngacengan';
-                    latencyCell.textContent = `${latency} ms`;
-                } else {
-                    throw new Error('Tidak Aktif');
-                }
-            })
-            .catch(() => {
-                button.textContent = 'Tidak Aktif';
-                latencyCell.textContent = '-';
-            });
-    }
 </script>
 
   
