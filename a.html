@@ -5,49 +5,7 @@
   <title>Proxy Aktif</title>
   <style>
     /* CSS */
-    /* Dropdown styles */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropbtn {
-  background-color: #007bff;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  min-width: 120px;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 8px 12px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: #0069d9;
-}
-
+    
 .container {
   flex: 1;
       padding-top: 115px; /* To avoid content being hidden under the header */
@@ -307,59 +265,18 @@
         const [ip, port, negara, penyedia] = proxy.split(",");
         const uuid = uuidv4();
         const row = document.createElement('tr');
-        
+        row.innerHTML = `
           
-          // Tambahan kode menu dropdown di dalam renderProxies
-row.innerHTML = `
-  <td>${penyedia} | ${negara}</td>
-  <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button></td>
-  <td></td>
-  <td>
-    <div class="dropdown">
-      <button class="dropbtn">VLESS 443</button>
-      <div class="dropdown-content">
-        <a href="#" onclick="copyToClipboard('vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}')">Copy Link</a>
-        <a href="#">Option 2</a>
-      </div>
-    </div>
-  </td>
-  <td>
-    <div class="dropdown">
-      <button class="dropbtn">VLESS 80</button>
-      <div class="dropdown-content">
-        <a href="#" onclick="copyToClipboard('vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}')">Copy Link</a>
-        <a href="#">Option 2</a>
-      </div>
-    </div>
-  </td>
-  <td>
-    <div class="dropdown">
-      <button class="dropbtn">TROJAN</button>
-      <div class="dropdown-content">
-        <a href="#" onclick="copyToClipboard('trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}')">Copy Link</a>
-        <a href="#">Option 2</a>
-      </div>
-    </div>
-  </td>
-  <td>
-    <div class="dropdown">
-      <button class="dropbtn">SS</button>
-      <div class="dropdown-content">
-        <a href="#" onclick="copyToClipboard('ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${negara}+${penyedia}')">Copy Link</a>
-        <a href="#">Option 2</a>
-      </div>
-    </div>
-  </td>
-      `;
-      
-        
-
-
-// Fungsi untuk menyalin teks ke clipboard
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => alert('Link copied successfully!'));
-}
-
+          <td>${penyedia} | ${negara}</td>
+          <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
+                        </td>
+                        <td></td>
+          <td><button class="copy-vless">Copy VLESS 443</button></td>
+          <td><button class="copy-vless1">Copy VLESS 80</button></td>       
+          <td><button class="copy-trojan">Copy TROJAN</button></td>
+          <td><button class="copy-ss">Copy SS</button></td>
+          
+        `;
         proxyList.appendChild(row);
 
         // Event listeners for copy buttons
