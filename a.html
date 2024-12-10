@@ -5,7 +5,25 @@
   <title>Proxy Aktif</title>
   <style>
     /* CSS */
-    
+      .service-selector {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #4CAF50; /* Border warna hijau */
+        border-radius: 5px; /* Sudut membulat */
+        background-color: #f9f9f9; /* Warna latar belakang */
+        color: #333; /* Warna teks */
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .service-selector:hover {
+        background-color: #e0f7fa; /* Warna latar belakang saat hover */
+        border-color: #00796b; /* Warna border saat hover */
+    }
+
+    .service-selector option {
+        padding: 10px;
+    }  
 .container {
   flex: 1;
       padding-top: 115px; /* To avoid content being hidden under the header */
