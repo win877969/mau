@@ -448,12 +448,49 @@ fetch("bot/proxy_list.txt")
   .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
 
 // Event listener for the "Cek Status" button
+function checkProxyStatus(proxy, button) {
+    button.textContent = 'Loading';
+    button.style.backgroundColor = 'yellow'; // Set background color to yellow when loading
+    button.style.color = 'black'; // Set text color to black during loading
+    const latencyCell = button.parentElement.querySelector('.latency-cell'); // Find the latency span in the same cell
+
+    const startTime = performance.now();
+    fetch('https://httpbin.org/ip', {
+        method: 'GET',
+        headers: {
+            'Proxy': `http://${proxy}`,
+        },
+        timeout: 5000
+    })
+        .then(response => {
+            const endTime = performance.now();
+            const latency = (endTime - startTime).toFixed(2);
+
+            if (response.ok) {
+                button.textContent = 'Ngacengan';
+                button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
+                button.style.color = 'white'; // Set text color to white for active proxy
+                latencyCell.textContent = `${latency} ms`; // Display latency in the same column
+            } else {
+                throw new Error('Turu');
+            }
+        })
+        .catch(() => {
+            button.textContent = 'Turu';
+            button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
+            button.style.color = 'white'; // Set text color to white for failed proxy
+            latencyCell.textContent = ''; // Clear latency cell text on failure
+        });
+}
+
+// Event listener for the "Cek Status" button
 document.querySelectorAll('.check-status-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const proxy = button.parentElement.previousElementSibling.querySelector('input').value;
-    checkProxyStatus(proxy, button);
-  });
+    button.addEventListener('click', () => {
+        const proxy = button.parentElement.previousElementSibling.querySelector('input').value;
+        checkProxyStatus(proxy, button);
+    });
 });
+
 
   
 
