@@ -1,28 +1,139 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akun Vless Gratis - bmkg</title>
-    <meta name="description" content="Akun Vless Gratis.">
-    <meta name="keywords" content="bmkg, Vless Gratis, Free Vless, Vless CF, Trojan CF, Cloudflare">
-    <meta name="author" content="bmkg">
-    <meta name="robots" content="index, follow">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxy Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    header, footer {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    table th {
+      background-color: #007bff;
+      color: white;
+    }
+    .btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    .status-active {
+      color: green;
+      font-weight: bold;
+    }
+    .status-inactive {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Proxy Checker</h1>
+  </header>
 
-    <!-- Open Graph Meta Tags untuk SEO Media Sosial -->
-    <meta property="og:title" content="Akun Vless Gratis - Akun Vless Cloudflare">
-    <meta property="og:description" content="bmkg, Vless Gratis, Free Vless, Vless CF, Trojan CF, Cloudflare.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/win877969/NS1/refs/heads/main/img/icon.png"> <!-- Ganti dengan URL gambar yang sesuai -->
-    <meta property="og:url" content="https://raw.githubusercontent.com/win877969/NS1/refs/heads/main/img/icon.png">
-    <meta property="og:type" content="website">
+  <div class="container">
+    <button class="btn" onclick="checkProxies()">Cek Proxy Aktif</button>
+    <table>
+      <thead>
+        <tr>
+          <th>IP:Port</th>
+          <th>Negara</th>
+          <th>Penyedia</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="proxy-list">
+        <!-- Data proxy akan dimasukkan di sini -->
+      </tbody>
+    </table>
+  </div>
 
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Akun Vless Gratis - Akun Vless Cloudflare">
-    <meta name="twitter:description" content="bmkg, Vless Gratis, Free Vless, Vless CF, Trojan CF, Cloudflare.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/win877969/NS1/refs/heads/main/img/icon.png"> <!-- Ganti dengan URL gambar yang sesuai -->
-    <link href="https://raw.githubusercontent.com/win877969/NS1/refs/heads/main/img/icon.png" rel="icon" type="image/png">
-  </head>
-  <body>
-    TES TES TES  </body>
+  <footer>
+    <p>&copy; 2024 Proxy Checker</p>
+  </footer>
+
+  <script>
+    const proxies = [
+      "192.168.0.1:8080,Indonesia,ISP1",
+      "192.168.0.2:9090,USA,ISP2",
+      "192.168.0.3:7070,Germany,ISP3"
+    ];
+
+    function renderProxies() {
+      const proxyList = document.getElementById("proxy-list");
+      proxyList.innerHTML = "";
+      proxies.forEach((proxy, index) => {
+        const [ip, port, country, provider] = proxy.split(",");
+        const row = `
+          <tr id="proxy-${index}">
+            <td>${ip}:${port}</td>
+            <td>${country}</td>
+            <td>${provider}</td>
+            <td id="status-${index}" class="status">Pending</td>
+          </tr>
+        `;
+        proxyList.innerHTML += row;
+      });
+    }
+
+    async function checkProxy(ip, port, index) {
+      try {
+        const response = await fetch(`http://${ip}:${port}`, { method: "HEAD", mode: "no-cors" });
+        if (response.ok || response.status === 0) {
+          document.getElementById(`status-${index}`).textContent = "Active";
+          document.getElementById(`status-${index}`).classList.add("status-active");
+        } else {
+          throw new Error("Inactive");
+        }
+      } catch {
+        document.getElementById(`status-${index}`).textContent = "Inactive";
+        document.getElementById(`status-${index}`).classList.add("status-inactive");
+      }
+    }
+
+    function checkProxies() {
+      proxies.forEach((proxy, index) => {
+        const [ip, port] = proxy.split(",");
+        document.getElementById(`status-${index}`).textContent = "Checking...";
+        checkProxy(ip, port, index);
+      });
+    }
+
+    renderProxies();
+  </script>
+</body>
 </html>
