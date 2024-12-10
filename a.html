@@ -307,7 +307,7 @@
         const [ip, port, negara, penyedia] = proxy.split(",");
         const uuid = uuidv4();
         const row = document.createElement('tr');
-        row.innerHTML = `
+        
           
           // Tambahan kode menu dropdown di dalam renderProxies
 row.innerHTML = `
@@ -355,7 +355,10 @@ row.innerHTML = `
         
 
 
-
+// Fungsi untuk menyalin teks ke clipboard
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => alert('Link copied successfully!'));
+}
 
         proxyList.appendChild(row);
 
