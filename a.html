@@ -288,8 +288,7 @@ footer {
     <script>
         
     
-
-  let proxyPerPage = 10;
+let proxyPerPage = 10;
 let currentPage = 1;
 let filteredProxies = [];
 let allProxies = [];
@@ -316,8 +315,7 @@ function renderProxies(proxies, proxyList, pagination) {
     row.innerHTML = `
       <td>${penyedia} | ${negara}</td>
       <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
-           <span class="latency-cell"></span>
-            </td>
+             </td>
       <td> <select class="service-selector">
 <option value="">NO WILDCARD</option>
 <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
@@ -408,14 +406,18 @@ function renderPagination(proxies, pagination) {
     pagination.appendChild(nextButton);
   }
 
-  // Add Go to Page input field (without button)
+  // Add Go to Page functionality
   const goToPageInput = document.createElement('input');
   goToPageInput.type = 'number';
   goToPageInput.placeholder = 'Go to page';
   goToPageInput.min = 1;
   goToPageInput.max = totalPages;
-  goToPageInput.addEventListener('input', (e) => {
-    const goToPage = parseInt(e.target.value);
+
+  const goToPageButton = document.createElement('button');
+  goToPageButton.textContent = 'Go';
+
+  goToPageButton.addEventListener('click', () => {
+    const goToPage = parseInt(goToPageInput.value);
     if (goToPage >= 1 && goToPage <= totalPages) {
       currentPage = goToPage;
       updatePage(currentPage, proxies, pagination);
@@ -423,6 +425,7 @@ function renderPagination(proxies, pagination) {
   });
 
   pagination.appendChild(goToPageInput);
+  pagination.appendChild(goToPageButton);
 }
 
 // Function to update page
@@ -443,6 +446,16 @@ fetch("bot/proxy_list.txt")
     renderProxies(filteredProxies, proxyList, pagination);
   })
   .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
+
+// Event listener for the "Cek Status" button
+document.querySelectorAll('.check-status-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const proxy = button.parentElement.previousElementSibling.querySelector('input').value;
+    checkProxyStatus(proxy, button);
+  });
+});
+
+  
 
 </script>
 </body>
