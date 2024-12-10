@@ -1,3 +1,4 @@
+  
 <!DOCTYPE html>
 <html>
 <head>
@@ -281,7 +282,7 @@ footer {
       </thead>
       <tbody id="proxy-list"></tbody>
     </table>
-  <div id="total-proxy"></div>
+    <div id="total-proxy"></div>
 
     <div class="pagination" id="pagination"></div>
   </div>
@@ -303,9 +304,6 @@ footer {
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       );
     }
-const totalProxies = proxies.length;
-const totalProxyElement = document.getElementById('total-proxy');
-totalProxyElement.textContent = `Total Proxies: ${totalProxies}`;
 
     // Function to render proxies
     function renderProxies(proxies, proxyList, pagination) {
@@ -376,10 +374,15 @@ totalProxyElement.textContent = `Total Proxies: ${totalProxies}`;
           navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
           alert('COPY VLESS 80 SUKSES!');
         });
-        
-       
+         
         
       });
+
+const totalProxies = proxies.length;
+const totalProxyElement = document.getElementById('total-proxy');
+totalProxyElement.textContent = `Total Proxies: ${totalProxies}`;
+
+
 
       renderPagination(proxies, pagination);
     }
