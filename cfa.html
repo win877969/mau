@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cek Proxy</title>
+    <title>Cek Keaktifan Proxy</title>
 </head>
 <body>
-    <h1>Cek Keaktifan Proxy</h1>
+    <h1>Cek Keaktifan Proxy Menggunakan ProxyScrape.com</h1>
     <form id="proxyForm">
         <label for="proxyIp">Alamat IP Proxy:</label>
         <input type="text" id="proxyIp" name="proxyIp" required>
@@ -18,25 +18,25 @@
 
     <script>
         function cekProxy() {
-            // Ambil nilai input dari form
             const proxyIp = document.getElementById('proxyIp').value;
             const proxyPort = document.getElementById('proxyPort').value;
 
-            // Buat objek XMLHttpRequest
+            // URL ProxyScrape dengan parameter IP dan port
+            const url = `https://proxyscrape.com/check?proxy=${proxyIp}:${proxyPort}`;
+
             const xhr = new XMLHttpRequest();
-
-            // URL yang akan diakses (ganti dengan URL yang sesuai untuk cek proxy)
-            const url = 'https://proxyscrape.com/online-proxy-checker/' + proxyIp + ':' + proxyPort;
-
             xhr.open('GET', url);
 
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    // Proxy aktif
-                    document.getElementById('result').textContent = 'Proxy aktif!';
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.err === 0) {
+                        document.getElementById('result').textContent = `Proxy ${proxyIp}:${proxyPort} aktif!`;
+                    } else {
+                        document.getElementById('result').textContent = `Proxy ${proxyIp}:${proxyPort} tidak aktif atau terjadi kesalahan.`;
+                    }
                 } else {
-                    // Proxy tidak aktif
-                    document.getElementById('result').textContent = 'Proxy tidak aktif.';
+                    document.getElementById('result').textContent = 'Terjadi kesalahan dalam permintaan.';
                 }
             };
 
