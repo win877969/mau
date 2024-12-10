@@ -88,9 +88,9 @@
 
   <script>
     const proxies = [
-      "192.168.0.1,8080,Indonesia,ISP1",
-      "192.168.0.2,9090,USA,ISP2",
-      "192.168.0.3,7070,Germany,ISP3"
+      "192.168.0.1:8080,Indonesia,ISP1",
+      "192.168.0.2:9090,USA,ISP2",
+      "192.168.0.3:7070,Germany,ISP3"
     ];
 
     function renderProxies() {
@@ -110,19 +110,21 @@
       });
     }
 
-    async function checkProxy(ip, port, index) {
-      try {
-        const response = await fetch(`http://${ip}:${port}`, { method: "HEAD", mode: "no-cors" });
-        if (response.ok || response.status === 0) {
-          document.getElementById(`status-${index}`).textContent = "Active";
-          document.getElementById(`status-${index}`).classList.add("status-active");
-        } else {
-          throw new Error("Inactive");
-        }
-      } catch {
+    function checkProxy(ip, port, index) {
+      const testImage = new Image();
+      const proxyUrl = `http://${ip}:${port}`;
+
+      testImage.onload = () => {
+        document.getElementById(`status-${index}`).textContent = "Active";
+        document.getElementById(`status-${index}`).classList.add("status-active");
+      };
+
+      testImage.onerror = () => {
         document.getElementById(`status-${index}`).textContent = "Inactive";
         document.getElementById(`status-${index}`).classList.add("status-inactive");
-      }
+      };
+
+      testImage.src = `${proxyUrl}/favicon.ico?${Date.now()}`; // Add timestamp to bypass cache.
     }
 
     function checkProxies() {
