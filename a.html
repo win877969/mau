@@ -76,7 +76,7 @@
       color: white;
     }
 
-    .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
+    .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
       margin: 5px;
       padding: 5px 10px;
       border: none;
@@ -86,7 +86,7 @@
       cursor: pointer;
     }
 
-    .copy-vless:hover, .copy-vless1:hover, .copy-trojan:hover, .copy-ss:hover {
+    .copy-vless:hover, .cekproxy:hover, .copy-vless1:hover, .copy-trojan:hover, .copy-ss:hover {
       background-color: #0069d9;
     }
 
@@ -166,7 +166,7 @@
         font-size: 14px;
       }
 
-      .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
+      .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
         padding: 6px 12px;
         font-size: 14px;
       }
@@ -188,7 +188,7 @@
         font-size: 16px;
       }
 
-      .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
+      .copy-vless, .cekproxy,  .copy-vless1, .copy-trojan, .copy-ss {
         padding: 8px 16px;
         font-size: 16px;
       }
@@ -268,7 +268,7 @@
         row.innerHTML = `
           
           <td>${penyedia} | ${negara}</td>
-          <td><button onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
+          <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
                         </td>
                         <td></td>
           <td><button class="copy-vless">Copy VLESS 443</button></td>
