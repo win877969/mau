@@ -25,12 +25,33 @@
     <link href="https://wallpapers.com/images/featured-full/green-and-white-background-dds1fzx7f10m7hw9.jpg" rel="icon" type="image/png">
   <style>
 
+
     body {
-      background-color: #000; /* Hitam pekat (dark mode) */
-      color: red; /* Teks hijau agar kontras dengan background */
-      margin: 0;
-      font-family: Arial, sans-serif; /* Font sederhana dan bersih */
-    }
+  background-color: #000; /* Hitam pekat (dark mode) */
+  color: red; /* Teks merah agar kontras dengan background */
+  margin: 0;
+  font-family: Arial, sans-serif; /* Font sederhana dan bersih */
+  
+  /* Menambahkan latar belakang bergerak */
+  background: linear-gradient(45deg, #ff6b6b, #f0c27b, #4b79a1, #283e51);
+  background-size: 400% 400%; /* Menentukan ukuran latar belakang */
+  animation: gradientAnimation 10s ease infinite; /* Menerapkan animasi */
+}
+
+/* Menambahkan animasi gradasi */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+    
     .rounded-popup {
   border-radius: 15px; /* Sudut melengkung */
   box-shadow: 0 4px 8px rgba(0, 66, 255, 0.72), 
