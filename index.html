@@ -35,13 +35,6 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh; /* Menyediakan tinggi penuh layar */
-  text-shadow: 
-                0 0 2px rgba(0, 123, 255, 0.8),
-                0 0 10px rgba(0, 123, 255, 0.8),
-                0 0 10px rgba(0, 123, 255, 0.8),
-                0 0 15px rgba(0, 123, 255, 0.8),
-                0 0 20px rgba(0, 123, 255, 0.8);
-    
 }
   /* Menambahkan gambar latar belakang */
   
@@ -86,12 +79,8 @@ i.fa-check-circle {
                 0 0 20px rgba(0, 123, 255, 0.8),
                 0 0 30px rgba(0, 123, 255, 0.8),
                 0 0 40px rgba(0, 123, 255, 0.8);
-            border: 1px solid rgba(0, 123, 255, 0.8);
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.8);
-        }
-    h887 {
+            }
+    h2 {
             color: red;
             text-align: center;
             font-size: 4vw;
@@ -146,24 +135,36 @@ i.fa-check-circle {
         font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
         width: 100%;
         padding: 10px;
-        font-size: 16px;
-        border: 2px solid #4CAF50; /* Border warna hijau */
-        border-radius: 5px; /* Sudut membulat */
+        font-size: 16px; /* Sudut membulat */
+        border: 1px solid rgba(0, 123, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.8);
         background-color: orange;  /* Warna latar belakang oren */
         color: red; /* Warna teks */
         transition: background-color 0.3s, border-color 0.3s;
-    }
+        
+   }
 
     .service-selector:hover {
         background-color: orange;  /* Warna latar belakang oren */
         color: red; /* Warna latar belakang saat hover */
         border-color: #00796b; /* Warna border saat hover */
-    }
+        border: 1px solid rgba(0, 123, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.8);
+       }
 
     .service-selector option {
         background-color: orange;  /* Warna latar belakang oren */
         color: red;
         padding: 10px;
+        border: 1px solid rgba(0, 123, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.8);
+       
     }  
     
 
@@ -201,12 +202,52 @@ i.fa-check-circle {
     transform: translateY(-10px); /* Gerakan naik pada tengah animasi */
   }
 }
+
+  .total-proxy  {
+  font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
+  display: flex; /* Gunakan flexbox untuk memudahkan pemosisian */
+  justify-content: center; /* Posisikan secara horizontal di tengah */
+  align-items: center; /* Posisikan secara vertikal di tengah */
+  height: 100%; /* Sesuaikan tinggi elemen sesuai kebutuhan */
+  text-align: center; /* Untuk memastikan teks rata tengah jika ada beberapa baris */
+  font-size: 18px; /* Sesuaikan ukuran font */
+  font-weight: bold; /* Opsi: untuk membuat teks lebih menonjol */
+  color: #fff; /* Sesuaikan warna teks */
+  text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+
+}
+    .total-proxy1 {
+      font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
+      display: flex;
+      text-align: center;
+      justify-content: space-between;
+      width: 70%;
+      margin-bottom: 20px;
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+    }
+    
     .filters {
       font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
       display: flex;
       justify-content: space-between;
       width: 70%;
       margin-bottom: 20px;
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
     }
 
     .filter-label {
@@ -218,10 +259,17 @@ i.fa-check-circle {
       font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
       border-collapse: separate;
       border-spacing: 0;
-      border: 2px solid rgba(132, 0, 0, 0.86);
+      border: 1px solid rgba(132, 0, 0, 0.86);
       border-radius: 10px; /* Sudut melengkung */
       overflow: hidden;
       width: 100%; /* Membuat tabel lebar penuh */
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+    
     }
 
     /* Membungkus tabel dalam elemen scroll */
@@ -229,6 +277,13 @@ i.fa-check-circle {
       width: 100%;
       overflow-x: auto; /* Mengaktifkan scroll horizontal */
       margin-bottom: 20px;
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+    
     }
 
     th {
@@ -238,6 +293,13 @@ i.fa-check-circle {
       font-weight: bold;
       padding: 10px;
       text-align: center;
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+    
     }
 
     td {
@@ -248,6 +310,13 @@ i.fa-check-circle {
       color: #fff; /* Warna teks */
       border-bottom: 1px solid #ddd; /* Garis pembatas antar baris */
       transition: background-color 0.3s ease; /* Efek transisi */
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+    
     }
 
     td:hover {
@@ -272,6 +341,17 @@ i.fa-check-circle {
       background-color: rgba(242, 91, 0, 0.85);
       color: #fff;
       cursor: pointer;
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+            border: 1px solid rgba(0, 123, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.8);
+       
     }
 
     .copy-vless:hover, .cekproxy:hover, .copy-vless1:hover, .copy-trojan:hover, .copy-ss:hover {
@@ -287,16 +367,33 @@ i.fa-check-circle {
       background-color: rgba(0, 192, 176, 0.81);
       color: #fff;
       cursor: pointer;
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+            border: 1px solid rgba(0, 123, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.8);
+       
     }
 
     .copy-vless-clash:hover, .copy-vless2:hover, .copy-trojan-clash:hover, .copy-ss1:hover {
       background-color: #4CAF50;
     }
-
+  
     .pagination {
       font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
       text-align: center;
-    }
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+                }
 
     .pagination button {
       margin: 5px;
@@ -306,6 +403,17 @@ i.fa-check-circle {
       background-color: rgba(2, 1, 45, 0.83);
       color: #fff;
       cursor: pointer;
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+            border: 1px solid rgba(0, 123, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.8);
+       
     }
 
     .pagination button:hover {
@@ -326,8 +434,12 @@ i.fa-check-circle {
       padding: 10px;
       width: 150px;
       max-width: 100px;
-      border: 1px solid rgba(0, 192, 176, 0.81);
-      border-radius: 5px; 
+      border: 1px solid rgba(0, 123, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.8);
+       
+      
     }
 
     /* Responsif */
@@ -340,6 +452,13 @@ i.fa-check-circle {
         font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
         width: 100%;
         margin-bottom: 10px;
+        text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+    
       }
 
       #search-bar, #items-per-page {
@@ -350,6 +469,7 @@ i.fa-check-circle {
         max-width: none;
         margin-bottom: 10px;
         border-radius: 5px; 
+        
       }
 
       .pagination button {
@@ -360,6 +480,7 @@ i.fa-check-circle {
       .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
         padding: 4px 8px;
         font-size: 12px;
+        
       }
     }
   </style>
@@ -402,13 +523,13 @@ i.fa-check-circle {
       </thead>
       <tbody id="proxy-list"></tbody>
     </table></div>
-    <p id="total-proxy"></p>
+    <div class="total-proxy" id="total-proxy"></div>
 
     <div class="pagination" id="pagination"></div>
   </div>  
 
   <footer>
-    <h887><p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p></h887>
+    <h2><p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p></h2>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -441,9 +562,8 @@ function renderProxies(proxies, proxyList, pagination) {
     row.innerHTML = `
       <td>${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
-      <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>
-           <span class="latency-cell"></span>
-      </td>
+      <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>          
+      <span class="latency-cell"></span></td>
       <td>
         <select class="service-selector">
           <option value="">NO WILDCARD</option>
@@ -666,12 +786,18 @@ function renderProxies(proxies, proxyList, pagination) {
 }
 
 // Function to render pagination
+// Function to render pagination
 function renderPagination(proxies, pagination) {
   const totalPages = Math.ceil(proxies.length / proxyPerPage);
   const maxButtons = 6;
   pagination.innerHTML = '';
 
   if (currentPage > 1) {
+    const firstButton = document.createElement('button');
+    firstButton.textContent = '<< First';
+    firstButton.addEventListener('click', () => updatePage(1, proxies, pagination));
+    pagination.appendChild(firstButton);
+
     const prevButton = document.createElement('button');
     prevButton.textContent = '<< Previous';
     prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
@@ -696,8 +822,14 @@ function renderPagination(proxies, pagination) {
     nextButton.textContent = 'Next >>';
     nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
     pagination.appendChild(nextButton);
+
+    const lastButton = document.createElement('button');
+    lastButton.textContent = 'Last >>';
+    lastButton.addEventListener('click', () => updatePage(totalPages, proxies, pagination));
+    pagination.appendChild(lastButton);
   }
 }
+
 
 // Function to update page
 function updatePage(page, proxies, pagination) {
@@ -730,7 +862,7 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 });
 
 // Fetching proxy data
-fetch("bot/proxy_list.txt")
+fetch("proxy_list.txt")
   .then(response => response.text())
   .then(data => {
     allProxies = data.split("\n").filter(line => line.trim() !== "");
@@ -750,32 +882,59 @@ function checkProxyStatus(proxy, button) {
 
   const startTime = performance.now();
   fetch('https://httpbin.org/ip', {
-      method: 'GET',
-      headers: {
-          'Proxy': `http://${proxy}`,
-      },
-      timeout: 5000
+    method: 'GET',
+    headers: {
+      'Proxy': `http://${proxy}`,
+    },
+    timeout: 5000
   })
-      .then(response => {
-          const endTime = performance.now();
-          const latency = (endTime - startTime).toFixed(2);
+    .then(response => {
+      const endTime = performance.now();
+      const latency = (endTime - startTime).toFixed(2); // Calculate latency
 
-          if (response.ok) {
-              button.textContent = 'Ngacengan';
-              button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
-              button.style.color = 'white'; // Set text color to white for active proxy
-              latencyCell.textContent = ``; // Display latency in the same column
-          } else {
-              throw new Error('Turu');
-          }
-      })
-      .catch(() => {
-          button.textContent = 'Turu';
-          button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
-          button.style.color = 'white'; // Set text color to white for failed proxy
-          latencyCell.textContent = ''; // Clear latency cell text on failure
+      if (response.ok) {
+        button.textContent = 'NGACENG';
+        button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
+        button.style.color = 'white'; // Set text color to white for active proxy
+        latencyCell.textContent = `${latency} ms`; // Display latency in the same column
+
+        // Display latency in a popup
+        Swal.fire({
+          title: 'Proxy Status: NGACENG',
+          text: `${latency} ms.`,
+          icon: 'success',
+          background: 'rgba(6, 18, 67, 0.89)', // Background color
+          color: 'white', // Text color
+          customClass: {
+            popup: 'rounded-popup',
+          },
+          confirmButtonColor: '#3085d6',
+        });
+      } else {
+        throw new Error('TURU');
+      }
+    })
+    .catch(() => {
+      button.textContent = 'TURU';
+      button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
+      button.style.color = 'white'; // Set text color to white for failed proxy
+      latencyCell.textContent = ''; // Clear latency cell text on failure
+
+      // Display error in a popup
+      Swal.fire({
+        title: 'Proxy Status: TURU',
+        text: ``,
+        icon: 'error',
+        background: 'rgba(6, 18, 67, 0.89)', // Background color
+        color: 'white', // Text color
+        customClass: {
+          popup: 'rounded-popup',
+        },
+        confirmButtonColor: '#d33',
       });
+    });
 }
+
 
 
 </script>
