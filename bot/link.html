@@ -434,8 +434,7 @@ function renderProxies(proxies, proxyList, pagination) {
     const uuid = uuidv4();
     const row = document.createElement('tr');
     row.innerHTML = `
-      
-        <td>${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
+      <td>${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
       <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>
            <span class="latency-cell"></span>
@@ -464,18 +463,128 @@ function renderProxies(proxies, proxyList, pagination) {
       <button class="copy-trojan-clash">COPY CLASH</button></td>
       <td><button class="copy-ss">COPY SHADOWSOCK</button>
       <button class="copy-ss1">COPY CLASH</button></td>
-    `;
+        `;
     proxyList.appendChild(row);
 
-    // Event listeners for copy buttons
-    
-    
-      
-    
+    addCopyButtonListeners(row, uuid, ip, port, negara, penyedia);
+  });
 
-      
-    
-  row.querySelector('.copy-vless').addEventListener('click', () => {
+  // Update total proxies
+  const totalProxies = proxies.length;
+  document.getElementById('total-proxy').textContent = `Total Proxies: ${totalProxies}`;
+
+  renderPagination(proxies, pagination);
+}
+
+// Function to render pagination
+function renderPagination(proxies, pagination) {
+  const totalPages = Math.ceil(proxies.length / proxyPerPage);
+  pagination.innerHTML = '';
+
+  // Generate pagination buttons
+  const startPage = Math.max(1, currentPage - Math.floor(6 / 2));
+  const endPage = Math.min(totalPages, startPage + 6 - 1);
+
+  if (currentPage > 1) {
+    pagination.appendChild(createPaginationButton('<<< First', 1, proxies, pagination));
+    pagination.appendChild(createPaginationButton('<< Previous', currentPage - 1, proxies, pagination));
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    pagination.appendChild(createPaginationButton(i, i, proxies, pagination, i === currentPage));
+  }
+
+  if (currentPage < totalPages) {
+    pagination.appendChild(createPaginationButton('Next >>', currentPage + 1, proxies, pagination));
+    pagination.appendChild(createPaginationButton('>>> Last', totalPages, proxies, pagination));
+  }
+}
+
+// Helper function to create pagination buttons
+function createPaginationButton(text, pageNumber, proxies, pagination, isActive = false) {
+  const button = document.createElement('button');
+  button.textContent = text;
+  if (isActive) {
+    button.classList.add('active');
+  }
+  button.addEventListener('click', () => updatePage(pageNumber, proxies, pagination));
+  return button;
+}
+
+// Function to update page number
+function updatePage(pageNumber, proxies, pagination) {
+  currentPage = pageNumber;
+  renderProxies(filteredProxies, document.getElementById('proxy-list'), pagination);
+}
+
+// Function to filter proxies
+function filterProxies(searchTerm) {
+  searchTerm = searchTerm.toLowerCase();
+  filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
+  currentPage = 1;
+  renderProxies(filteredProxies, document.getElementById('proxy-list'), document.getElementById('pagination'));
+}
+
+// Event listener for search bar
+document.getElementById('search-bar').addEventListener('input', (e) => {
+  filterProxies(e.target.value);
+});
+
+// Event listener for items per page dropdown
+document.getElementById('items-per-page').addEventListener('change', (e) => {
+  proxyPerPage = parseInt(e.target.value);
+  renderProxies(filteredProxies, document.getElementById('proxy-list'), document.getElementById('pagination'));
+});
+
+// Fetch proxy data
+fetch("proxy_list.txt")
+  .then(response => response.text())
+  .then(data => {
+    allProxies = data.split("\n").filter(line => line.trim() !== "");
+    filteredProxies = allProxies;
+    renderProxies(filteredProxies, document.getElementById('proxy-list'), document.getElementById('pagination'));
+  })
+  .catch(error => console.error("Error fetching proxy data:", error));
+
+// Check Proxy Status with timeout handling
+function checkProxyStatus(proxy, button) {
+  button.textContent = 'Loading';
+  button.style.backgroundColor = 'yellow';
+  button.style.color = 'black';
+
+  const latencyCell = button.parentElement.querySelector('.latency-cell');
+  const startTime = performance.now();
+
+  const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject('Timeout'), 5000));
+  const fetchPromise = fetch('https://httpbin.org/ip', {
+    method: 'GET',
+    headers: { 'Proxy': `http://${proxy}` },
+  });
+
+  Promise.race([fetchPromise, timeoutPromise])
+    .then(response => {
+      const endTime = performance.now();
+      const latency = (endTime - startTime).toFixed(2);
+
+      if (response.ok) {
+        button.textContent = 'Ngacengan';
+        button.style.backgroundColor = 'green';
+        button.style.color = 'white';
+        latencyCell.textContent = `${latency}ms`;
+      } else {
+        throw new Error('Turu');
+      }
+    })
+    .catch(() => {
+      button.textContent = 'Turu';
+      button.style.backgroundColor = 'red';
+      button.style.color = 'white';
+      latencyCell.textContent = '';
+    });
+}
+
+// Add event listeners for the copy buttons
+row.querySelector('.copy-vless').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
     const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
     navigator.clipboard.writeText(VLESS);
@@ -646,141 +755,6 @@ function renderProxies(proxies, proxyList, pagination) {
       },
       confirmButtonColor: '#3085d6'
     });
-  });
-
-    
-  });
-
-    proxyList.appendChild(row);
-
-    addCopyButtonListeners(row, uuid, ip, port, negara, penyedia);
-  });
-
-  // Update total proxies
-  const totalProxies = proxies.length;
-  document.getElementById('total-proxy').textContent = `Total Proxies: ${totalProxies}`;
-
-  renderPagination(proxies, pagination);
-}
-
-// Function to render pagination
-function renderPagination(proxies, pagination) {
-  const totalPages = Math.ceil(proxies.length / proxyPerPage);
-  pagination.innerHTML = '';
-
-  // Generate pagination buttons
-  const startPage = Math.max(1, currentPage - Math.floor(6 / 2));
-  const endPage = Math.min(totalPages, startPage + 6 - 1);
-
-  if (currentPage > 1) {
-    pagination.appendChild(createPaginationButton('<<< First', 1, proxies, pagination));
-    pagination.appendChild(createPaginationButton('<< Previous', currentPage - 1, proxies, pagination));
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    pagination.appendChild(createPaginationButton(i, i, proxies, pagination, i === currentPage));
-  }
-
-  if (currentPage < totalPages) {
-    pagination.appendChild(createPaginationButton('Next >>', currentPage + 1, proxies, pagination));
-    pagination.appendChild(createPaginationButton('>>> Last', totalPages, proxies, pagination));
-  }
-}
-
-// Helper function to create pagination buttons
-function createPaginationButton(text, pageNumber, proxies, pagination, isActive = false) {
-  const button = document.createElement('button');
-  button.textContent = text;
-  if (isActive) {
-    button.classList.add('active');
-  }
-  button.addEventListener('click', () => updatePage(pageNumber, proxies, pagination));
-  return button;
-}
-
-// Function to update page number
-function updatePage(pageNumber, proxies, pagination) {
-  currentPage = pageNumber;
-  renderProxies(filteredProxies, document.getElementById('proxy-list'), pagination);
-}
-
-// Function to filter proxies
-function filterProxies(searchTerm) {
-  searchTerm = searchTerm.toLowerCase();
-  filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
-  currentPage = 1;
-  renderProxies(filteredProxies, document.getElementById('proxy-list'), document.getElementById('pagination'));
-}
-
-// Event listener for search bar
-document.getElementById('search-bar').addEventListener('input', (e) => {
-  filterProxies(e.target.value);
-});
-
-// Event listener for items per page dropdown
-document.getElementById('items-per-page').addEventListener('change', (e) => {
-  proxyPerPage = parseInt(e.target.value);
-  renderProxies(filteredProxies, document.getElementById('proxy-list'), document.getElementById('pagination'));
-});
-
-// Fetch proxy data
-fetch("proxy_list.txt")
-  .then(response => response.text())
-  .then(data => {
-    allProxies = data.split("\n").filter(line => line.trim() !== "");
-    filteredProxies = allProxies;
-    renderProxies(filteredProxies, document.getElementById('proxy-list'), document.getElementById('pagination'));
-  })
-  .catch(error => console.error("Error fetching proxy data:", error));
-
-// Check Proxy Status with timeout handling
-function checkProxyStatus(proxy, button) {
-  button.textContent = 'Loading';
-  button.style.backgroundColor = 'yellow';
-  button.style.color = 'black';
-
-  const latencyCell = button.parentElement.querySelector('.latency-cell');
-  const startTime = performance.now();
-
-  const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject('Timeout'), 5000));
-  const fetchPromise = fetch('https://httpbin.org/ip', {
-    method: 'GET',
-    headers: { 'Proxy': `http://${proxy}` },
-  });
-
-  Promise.race([fetchPromise, timeoutPromise])
-    .then(response => {
-      const endTime = performance.now();
-      const latency = (endTime - startTime).toFixed(2);
-
-      if (response.ok) {
-        button.textContent = 'Ngacengan';
-        button.style.backgroundColor = 'green';
-        button.style.color = 'white';
-        latencyCell.textContent = `${latency}ms`;
-      } else {
-        throw new Error('Turu');
-      }
-    })
-    .catch(() => {
-      button.textContent = 'Turu';
-      button.style.backgroundColor = 'red';
-      button.style.color = 'white';
-      latencyCell.textContent = '';
-    });
-}
-
-// Add event listeners for the copy buttons
-
-
-// Generic function to copy text to clipboard
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text);
-  Swal.fire({
-    title: 'Copied!',
-    text: 'Successfully copied to clipboard!',
-    icon: 'success',
-    confirmButtonColor: '#3085d6',
   });
 }
 
