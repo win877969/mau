@@ -794,7 +794,7 @@ function renderPagination(proxies, pagination) {
 
   if (currentPage > 1) {
     const firstButton = document.createElement('button');
-    firstButton.textContent = '<<< First Page';
+    firstButton.textContent = '<< First';
     firstButton.addEventListener('click', () => updatePage(1, proxies, pagination));
     pagination.appendChild(firstButton);
 
@@ -824,7 +824,7 @@ function renderPagination(proxies, pagination) {
     pagination.appendChild(nextButton);
 
     const lastButton = document.createElement('button');
-    lastButton.textContent = 'Last Page >>>';
+    lastButton.textContent = 'Last >>';
     lastButton.addEventListener('click', () => updatePage(totalPages, proxies, pagination));
     pagination.appendChild(lastButton);
   }
