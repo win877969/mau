@@ -26,19 +26,22 @@
   <style>
 
 
-    body {
+    
+
+
+  body {
   background-color: #000; /* Hitam pekat (dark mode) */
   color: red; /* Teks merah agar kontras dengan background */
   margin: 0;
   font-family: Arial, sans-serif; /* Font sederhana dan bersih */
   
-  /* Menambahkan latar belakang gradasi neon bergerak */
-  background: linear-gradient(45deg, #00ffcc, #ff00ff, #ff6600, #00ffff);
+  /* Menambahkan latar belakang gradasi hitam neon bergerak */
+  background: linear-gradient(45deg, #2f4f4f, #004d40, #800080, #1e1e1e); 
   background-size: 400% 400%; /* Menentukan ukuran latar belakang */
   animation: gradientAnimation 10s ease infinite; /* Menerapkan animasi */
 }
 
-/* Menambahkan animasi gradasi neon */
+/* Menambahkan animasi gradasi hitam neon */
 @keyframes gradientAnimation {
   0% {
     background-position: 0% 50%;
@@ -51,19 +54,6 @@
   }
 }
 
-
-/* Menambahkan animasi gradasi */
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
     
     .rounded-popup {
