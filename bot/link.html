@@ -162,17 +162,37 @@ i.fa-check-circle {
         padding: 10px;
     }  
     .container {
-      flex: 1;
-      padding-top: 130px; /* To avoid content being hidden under the header */
-      padding-bottom: 115px; /* To avoid content being hidden under the footer */
-      padding-left: 10px;
-      padding-right: 10px;
-      display: flex;
-      flex-direction: column;
-      max-width: 960px;
-      align-items: center;
-    }
+  flex: 1;
+  padding-top: 130px; /* To avoid content being hidden under the header */
+  padding-bottom: 115px; /* To avoid content being hidden under the footer */
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 960px;
+  align-items: center;
+  
+  /* Efek mengambang */
+  position: relative; /* Agar bisa memanipulasi posisi dengan transform */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Memberikan bayangan agar terlihat melayang */
+  border-radius: 15px; /* Menambahkan sudut melengkung untuk efek lebih halus */
+  
+  /* Efek animasi untuk gerakan melayang */
+  animation: floatAnimation 3s ease-in-out infinite;
+}
 
+/* Menambahkan animasi melayang */
+@keyframes floatAnimation {
+  0%, 100% {
+    transform: translateY(0); /* Posisi awal dan akhir */
+  }
+  50% {
+    transform: translateY(-10px); /* Menggerakkan ke atas pada tengah animasi */
+  }
+}
+
+
+    
     .filters {
       display: flex;
       justify-content: space-between;
