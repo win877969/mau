@@ -1,133 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form as Table</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    table {
-      width: 100%;
-      max-width: 600px;
-      margin: 20px auto;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 10px;
-      text-align: left;
-      border: 1px solid #ddd;
-    }
-    th {
-      background-color: #f4f4f4;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      box-sizing: border-box;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .output {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .output a {
-      color: #007BFF;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .output a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #proxy-list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #proxy-list td, #proxy-list th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        #proxy-list th {
+            background-color: #f2f2f2;
+        }
+        button {
+            cursor: pointer;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+        }
+        .active {
+            font-weight: bold;
+        }
+        .search-container {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Form as Table</h1>
-  <table>
-    <tr>
-      <th>TYPE AKU</th>
-      <th>METODE</th>
-      <th>BUG / WILDCARD</th>
-      <th>ID COUNTRY</th>
-      <th>LIMIT</th>
-      <th>ACTION</th>
-    </tr>
-    <tr>
-      <td>
-        <select id="type" required>
-          <option value="trojan">Trojan</option>
-          <option value="vless">VLESS</option>
-          <option value="vmess">VMess</option>
-        </select>
-      </td>
-      <td>
-        <select id="metode" required>
-          <option value="GATCHANG">GATCHANG</option>
-          <option value="CLASH">CLASH</option>
-          <option value="surfboard">surfboard</option>
-        </select>
-      </td>
-      <td>
-        <select id="bugwil" required>
-          <option value="SERVER">NO WILDCARD</option>
-          <option value="QUIZ">QUIZ</option>
-          <option value="VIU">VIU</option>
-        </select>
-      </td>
-      <td>
-        <select id="country" required>
-          <option value="SG">SG</option>
-          <option value="ID">ID</option>
-          <option value="MY">MY</option>
-        </select>
-      </td>
-      <td>
-        <select id="limit" required>
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <option value="200">200</option>
-        </select>
-      </td>
-      <td>
-        <button type="button" onclick="generateLink()">Generate Link</button>
-      </td>
-    </tr>
-  </table>
+    <h1>Proxy List</h1>
 
-  <div class="output" id="output"></div>
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="Search for proxy...">
+        <label for="items-per-page">Items per page: </label>
+        <select id="items-per-page">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+        <span id="total-proxy">Total Proxies: 0</span>
+    </div>
 
-  <script>
-    function generateLink() {
-      // Ambil nilai dari elemen form
-      const type = document.getElementById("type").value;
-      const metode = document.getElementById("metode").value;
-      const bug = document.getElementById("bugwil").value;
-      const country = document.getElementById("country").value;
-      const limit = document.getElementById("limit").value;
+    <div id="proxy-list-container"></div>
 
-      // Format URL dinamis
-      const baseUrl = "https://bmkg.xyz/bot/sub";
-      const url = `${baseUrl}/${metode}?type=${type}&bug=${bug}&country=${country}&limit=${limit}`;
+    <div id="pagination"></div>
 
-      // Tampilkan URL di halaman
-      const outputDiv = document.getElementById("output");
-      outputDiv.innerHTML = `<p>Generated Link: <a href="${url}" target="_blank">${url}</a></p>`;
-    }
-  </script>
+    <script>
+        let proxyPerPage = 10;
+        let currentPage = 1;
+        let filteredProxies = [];
+        let allProxies = [];
+
+        // Function to handle UUID generation
+        function uuidv4() {
+            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            );
+        }
+
+        // Function to render proxies
+        function renderProxies(proxies, proxyList, pagination) {
+            const start = (currentPage - 1) * proxyPerPage;
+            const end = start + proxyPerPage;
+            const currentPageProxies = proxies.slice(start, end);
+
+            proxyList.innerHTML = ''; // Clear previous list
+
+            currentPageProxies.forEach(proxy => {
+                const [ip, port, negara, penyedia] = proxy.split(",");
+                const uuid = uuidv4();
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${penyedia} | ${negara}</td>
+                    <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
+                         <span class="latency-cell"></span>
+                    </td>
+                    <td>
+                        <select class="service-selector">
+                            <option value="">NO WILDCARD</option>
+                            <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
+                            <option value="graph.instagram.com.tp1.bmkg.xyz">graph.instagram.com</option>
+                            <option value="quiz.int.vidio.com.tp1.bmkg.xyz">quiz.int.vidio.com</option>
+                            <option value="live.iflix.com">live.iflix.com</option>
+                            <option value="support.zoom.us.tp1.bmkg.xyz">support.zoom.us</option>
+                            <option value="blog.webex.com.tp1.bmkg.xyz">blog.webex.com</option>
+                            <option value="investors.spotify.com.tp1.bmkg.xyz">investors.spotify.com</option>
+                            <option value="cache.netflix.com.tp1.bmkg.xyz">cache.netflix.com</option>
+                            <option value="zaintest.vuclip.com.tp1.bmkg.xyz">zaintest.vuclip.com</option>
+                            <option value="io.ruangguru.com.tp1.bmkg.xyz">io.ruangguru.com</option>
+                            <option value="api.midtrans.com.tp1.bmkg.xyz">api.midtrans.com</option>
+                        </select>
+                    </td>
+                    <td><button class="copy-vless">Copy VLESS 443</button>
+                    <button class="copy-vless-clash">Copy VLESS Clash 443</button></td>
+                    <td><button class="copy-vless1">Copy VLESS 80</button>
+                    <button class="copy-vless2">Copy VLESS Clash 80</button></td>
+                    <td><button class="copy-trojan">Copy TROJAN</button>
+                    <button class="copy-trojan-clash">Copy TROJAN Clash</button></td>
+                    <td><button class="copy-ss">Copy SHADOWSOCK</button>
+                    <button class="copy-ss1">Copy SHADOWSOCK Clash</button></td>
+                `;
+                proxyList.appendChild(row);
+
+                // Event listeners for copy buttons
+                row.querySelector('.copy-vless').addEventListener('click', () => {
+                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+                    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+                    navigator.clipboard.writeText(VLESS);
+                    alert('COPY VLESS 443 SUKSES!');
+                });
+                row.querySelector('.copy-vless-clash').addEventListener('click', () => {
+                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+                    const VLESSC = `- name: ${negara}+${penyedia}
+      server: ${selectedService}
+      port: 443
+      type: vless
+      uuid: ${uuid}
+      cipher: auto
+      tls: true
+      udp: true
+      skip-cert-verify: true
+      network: ws
+      servername: ${selectedService}
+      ws-opts:
+        path: /${ip}-${port}
+        headers:
+          Host: ${selectedService}`;
+                    navigator.clipboard.writeText(VLESSC);
+                    alert('COPY VLESS CLASH 443 SUKSES!');
+                });
+                
+                row.querySelector('.copy-trojan').addEventListener('click', () => {
+                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+                    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+                    navigator.clipboard.writeText(TROJAN);
+                    alert('COPY TROJAN SUKSES!');
+                });
+
+                row.querySelector('.copy-trojan-clash').addEventListener('click', () => {
+                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+                    const TROJANC = `- name: ${negara}+${penyedia}
+        server: ${selectedService}
+        port: 443
+        type: trojan
+        password: ${uuid}
+        skip-cert-verify: true
+        sni: ${selectedService}
+        network: ws
+        ws-opts:
+         path: /${ip}-${port}
+         headers:
+           Host: ${selectedService}
+        udp: true `;
+                    navigator.clipboard.writeText(TROJANC);
+                    alert('COPY TROJAN CLASH SUKSES!');
+                });
+
+                row.querySelector('.copy-ss').addEventListener('click', () => {
+                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+                    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+                    navigator.clipboard.writeText(SS);
+                    alert('COPY SHADOWSOCK SUKSES!');
+                });
+
+                row.querySelector('.copy-ss1').addEventListener('click', () => {
+                    const SS1 = `087861167414`;
+                    navigator.clipboard.writeText(SS1);
+                    alert('SHADOWSOCK VERSI CLASH BELUM TERSEDIA');
+                });
+
+                row.querySelector('.copy-vless1').addEventListener('click', () => {
+                    navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
+                    alert('COPY VLESS 80 SUKSES!');
+                });
+
+                row.querySelector('.copy-vless2').addEventListener('click', () => {
+                    navigator.clipboard.writeText(`- name: ${negara}+${penyedia}
+        server: tp1.bmkg.xyz
+        port: 80
+        type: vless
+        uuid: ${uuid}
+        cipher: auto
+        tls: false
+        skip-cert-verify: false
+        servername: tp1.bmkg.xyz
+        network: ws
+        ws-opts:
+          path: /${ip}-${port}
+          headers:
+            Host: tp1.bmkg.xyz
+        udp: true `);
+                    alert('COPY VLESS CLASH 80 SUKSES!');
+                });
+                
+            });
+
+            // Display total proxies
+            const totalProxies = proxies.length;
+            const totalProxyElement = document.getElementById('total-proxy');
+            if (totalProxyElement) {
+                totalProxyElement.textContent = `Total Proxies: ${totalProxies}`;
+            }
+
+            renderPagination(proxies, pagination);
+        }
+
+        // Function to render pagination
+        function renderPagination(proxies, pagination) {
+            const totalPages = Math.ceil(proxies.length / proxyPerPage);
+            const maxButtons = 5;
+            pagination.innerHTML = '';
+
+            if (currentPage > 1) {
+                const prevButton = document.createElement('button');
+                prevButton.textContent = '<< Previous';
+                prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
+                pagination.appendChild(prevButton);
+            }
+
+            const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+            const endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
+                pagination.appendChild(pageButton);
+            }
+
+            if (currentPage < totalPages) {
+                const nextButton = document.createElement('button');
+                nextButton.textContent = 'Next >>';
+                nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
+                pagination.appendChild(nextButton);
+            }
+        }
+
+        // Function to update page
+        function updatePage(page, proxies, pagination) {
+            currentPage = page;
+            const proxyList = document.getElementById('proxy-list');
+            renderProxies(proxies, proxyList, pagination);
+        }
+
+        // Function to filter proxies
+        function filterProxies(searchTerm) {
+            searchTerm = searchTerm.toLowerCase();
+            filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
+            currentPage = 1;
+            const proxyList = document.getElementById('proxy-list');
+            const pagination = document.getElementById('pagination');
+            renderProxies(filteredProxies, proxyList, pagination);
+        }
+
+        // Event listener for search bar
+        document.getElementById('search-bar').addEventListener('input', (e) => {
+            filterProxies(e.target.value);
+        });
+
+        // Event listener for items per page dropdown
+        document.getElementById('items-per-page').addEventListener('change', (e) => {
+            proxyPerPage = parseInt(e.target.value);
+            const proxyList = document.getElementById('proxy-list');
+            const pagination = document.getElementById('pagination');
+            renderProxies(filteredProxies, proxyList, pagination);
+        });
+
+        // Fetching proxy data
+        fetch("bot/proxy_list.txt")
+            .then(response => response.text())
+            .then(data => {
+                allProxies = data.split("\n").filter(line => line.trim() !== "");
+                filteredProxies = allProxies;
+                const proxyList = document.getElementById('proxy-list');
+                const pagination = document.getElementById('pagination');
+                renderProxies(filteredProxies, proxyList, pagination);
+            })
+            .catch(error => console.error("Error fetching proxy data:", error));
+
+        // Check Proxy status function
+        function checkProxyStatus(proxy, button) {
+            button.textContent = 'Loading';
+            button.style.backgroundColor = 'yellow'; // Set background color to yellow when loading
+            button.style.color = 'black'; // Set text color to black during loading
+            const latencyCell = button.parentElement.querySelector('.latency-cell'); // Find the latency span in the same cell
+
+            const startTime = performance.now();
+            fetch('https://httpbin.org/ip', {
+                method: 'GET',
+                headers: {
+                    'Proxy': `http://${proxy}`,
+                },
+                timeout: 5000
+            })
+                .then(response => {
+                    const endTime = performance.now();
+                    const latency = (endTime - startTime).toFixed(2);
+
+                    if (response.ok) {
+                        button.textContent = 'Ngacengan';
+                        button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
+                        button.style.color = 'white'; // Set text color to white for active proxy
+                        latencyCell.textContent = `${latency} ms`; // Display latency in the same column
+                    } else {
+                        throw new Error('Turu');
+                    }
+                })
+                .catch(() => {
+                    button.textContent = 'Turu';
+                    button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
+                    button.style.color = 'white'; // Set text color to white for failed proxy
+                    latencyCell.textContent = ''; // Clear latency cell text on failure
+                });
+        }
+    </script>
 </body>
 </html>
