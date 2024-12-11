@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Link Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    label, input, select {
+      margin: 10px 0;
+      display: block;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+    }
+    .output a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Link Generator</h1>
+  <form id="linkForm">
+    <label for="type">Type:</label>
+    <select id="type" required>
+      <option value="trojan">Trojan</option>
+      <option value="vless">VLESS</option>
+      <option value="vmess">VMess</option>
+    </select>
+    
+    <label for="bug">Bug (Domain):</label>
+    <input type="text" id="bug" placeholder="Enter bug domain" required>
+    
+    <label for="country">Country Code:</label>
+    <input type="text" id="country" placeholder="e.g., sg, us, id" required>
+    
+    <label for="limit">Limit:</label>
+    <input type="number" id="limit" placeholder="Enter limit" required>
+    
+    <button type="button" onclick="generateLink()">Generate Link</button>
+  </form>
+  
+  <div class="output" id="output"></div>
+  
+  <script>
+    function generateLink() {
+      const type = document.getElementById('type').value;
+      const bug = document.getElementById('bug').value;
+      const country = document.getElementById('country').value;
+      const limit = document.getElementById('limit').value;
+      
+      const baseUrl = "https://sub.kominfo.us.kg/sub/surfboard";
+      const generatedUrl = `${baseUrl}?type=${type}&bug=${encodeURIComponent(bug)}&country=${country}&limit=${limit}`;
+      
+      const outputDiv = document.getElementById('output');
+      outputDiv.innerHTML = `<p>Generated Link: <a href="${generatedUrl}" target="_blank">${generatedUrl}</a></p>`;
+    }
+  </script>
+</body>
+</html>
