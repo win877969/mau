@@ -3,19 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Link Generator</title>
+  <title>Form as Table</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
     }
-    label, input, select {
-      margin: 10px 0;
-      display: block;
+    table {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
     }
     button {
-      margin-top: 10px;
-      padding: 10px 20px;
+      width: 100%;
+      padding: 10px;
       background-color: #007BFF;
       color: white;
       border: none;
@@ -24,99 +39,52 @@
     button:hover {
       background-color: #0056b3;
     }
-    table {
-      margin-top: 20px;
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background-color: #f4f4f4;
-    }
-    .copy-btn {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-    .copy-btn:hover {
-      background-color: #218838;
-    }
   </style>
 </head>
 <body>
-  <h1>Link Generator</h1>
-  <form id="linkForm">
-    <label for="type">Type:</label>
-    <select id="type" required>
-      <option value="trojan">Trojan</option>
-      <option value="vless">VLESS</option>
-      <option value="vmess">VMess</option>
-    </select>
-    
-    <label for="bug">Bug (Domain):</label>
-    <input type="text" id="bug" placeholder="Enter bug domain" required>
-    
-    <label for="country">Country Code:</label>
-    <input type="text" id="country" placeholder="e.g., sg, us, id" required>
-    
-    <label for="limit">Limit:</label>
-    <input type="number" id="limit" placeholder="Enter limit" required>
-    
-    <button type="button" onclick="generateLink()">Generate Link</button>
-  </form>
-  
-  <table id="linkTable" style="display: none;">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Generated Link</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
+  <h1>Form as Table</h1>
+  <table>
+    <tr>
+      <th>Field</th>
+      <th>Input</th>
+    </tr>
+    <tr>
+      <td>Type:</td>
+      <td>
+        <select id="type" required>
+          <option value="trojan">Trojan</option>
+          <option value="vless">VLESS</option>
+          <option value="vmess">VMess</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Bug (Domain):</td>
+      <td><input type="text" id="bug" placeholder="Enter bug domain" required></td>
+    </tr>
+    <tr>
+      <td>Country Code:</td>
+      <td><input type="text" id="country" placeholder="e.g., sg, us, id" required></td>
+    </tr>
+    <tr>
+      <td>Limit:</td>
+      <td><input type="number" id="limit" placeholder="Enter limit" required></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <button type="button" onclick="generateLink()">Generate Link</button>
+      </td>
+    </tr>
   </table>
-  
-  <script>
-    let linkCount = 0;
 
+  <script>
     function generateLink() {
       const type = document.getElementById('type').value;
       const bug = document.getElementById('bug').value;
       const country = document.getElementById('country').value;
       const limit = document.getElementById('limit').value;
-      
-      const baseUrl = "https://sub.kominfo.us.kg/sub/surfboard";
-      const generatedUrl = `${baseUrl}?type=${type}&bug=${encodeURIComponent(bug)}&country=${country}&limit=${limit}`;
-      
-      linkCount++;
-      const table = document.getElementById('linkTable');
-      const tbody = table.querySelector('tbody');
-      const row = document.createElement('tr');
-      
-      row.innerHTML = `
-        <td>${linkCount}</td>
-        <td><a href="${generatedUrl}" target="_blank">${generatedUrl}</a></td>
-        <td><button class="copy-btn" onclick="copyToClipboard('${generatedUrl}')">Copy</button></td>
-      `;
-      
-      tbody.appendChild(row);
-      table.style.display = 'table';
-    }
 
-    function copyToClipboard(text) {
-      const tempInput = document.createElement('input');
-      document.body.appendChild(tempInput);
-      tempInput.value = text;
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-      alert('Link copied to clipboard!');
+      alert(`Generated link for:\nType: ${type}\nBug: ${bug}\nCountry: ${country}\nLimit: ${limit}`);
     }
   </script>
 </body>
