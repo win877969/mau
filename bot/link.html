@@ -114,6 +114,14 @@ i.fa-check-circle {
            }
 
     header {
+  position: fixed; /* Pastikan header tetap di atas */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: ;/*Sesuaikan warna latar belakang */
+  z-index: 1000; /* Membuat header tetap di atas */
+}
+    header1 {
       background-color: ;
       color: white;
       text-align: center;
@@ -161,10 +169,14 @@ i.fa-check-circle {
         color: red;
         padding: 10px;
     }  
-    .container {
+    
+
+
+
+.container {
   flex: 1;
-  padding-top: 130px; /* To avoid content being hidden under the header */
-  padding-bottom: 115px; /* To avoid content being hidden under the footer */
+  padding-top: 130px;
+  padding-bottom: 115px;
   padding-left: 10px;
   padding-right: 10px;
   display: flex;
@@ -172,24 +184,16 @@ i.fa-check-circle {
   max-width: 960px;
   align-items: center;
   
-  /* Efek mengambang */
-  position: relative; /* Agar bisa memanipulasi posisi dengan transform */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Memberikan bayangan agar terlihat melayang */
-  border-radius: 15px; /* Menambahkan sudut melengkung untuk efek lebih halus */
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Bayangan agar terlihat melayang */
+  border-radius: 15px; /* Sudut melengkung */
+  margin-top: 130px; /* Memberikan jarak dengan header */
   
-  /* Efek animasi untuk gerakan melayang */
+  z-index: 1; /* Pastikan elemen container berada di bawah header */
+  
   animation: floatAnimation 3s ease-in-out infinite;
 }
 
-/* Menambahkan animasi melayang */
-@keyframes floatAnimation {
-  0%, 100% {
-    transform: translateY(0); /* Posisi awal dan akhir */
-  }
-  50% {
-    transform: translateY(-10px); /* Menggerakkan ke atas pada tengah animasi */
-  }
-}
 
 
     
