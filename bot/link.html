@@ -765,15 +765,15 @@ function checkProxyStatus(proxy, button) {
       const latency = (endTime - startTime).toFixed(2); // Calculate latency
 
       if (response.ok) {
-        button.textContent = 'Ngacengan';
+        button.textContent = 'NGACENG';
         button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
         button.style.color = 'white'; // Set text color to white for active proxy
         latencyCell.textContent = `${latency} ms`; // Display latency in the same column
 
         // Display latency in a popup
         Swal.fire({
-          title: 'Proxy Status: Aktif',
-          text: `Proxy NGACENG ${latency} ms.`,
+          title: 'Proxy Status: NGACENG',
+          text: `${latency} ms.`,
           icon: 'success',
           background: 'rgba(6, 18, 67, 0.89)', // Background color
           color: 'white', // Text color
@@ -783,19 +783,19 @@ function checkProxyStatus(proxy, button) {
           confirmButtonColor: '#3085d6',
         });
       } else {
-        throw new Error('Turu');
+        throw new Error('TURU');
       }
     })
     .catch(() => {
-      button.textContent = 'Turu';
+      button.textContent = 'TURU';
       button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
       button.style.color = 'white'; // Set text color to white for failed proxy
       latencyCell.textContent = ''; // Clear latency cell text on failure
 
       // Display error in a popup
       Swal.fire({
-        title: 'Proxy Status: Gagal',
-        text: `Proxy TURU.`,
+        title: 'Proxy Status: TURU',
+        text: ``,
         icon: 'error',
         background: 'rgba(6, 18, 67, 0.89)', // Background color
         color: 'white', // Text color
