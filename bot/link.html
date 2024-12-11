@@ -138,6 +138,7 @@ i.fa-check-circle {
       padding: 15px;
       position: fixed;
       width: 100%;
+      z-index: 1000;
       left: 0;
     }
 
@@ -176,8 +177,8 @@ i.fa-check-circle {
 
 .container {
   flex: 1;
-  padding-top: 130px;
-  padding-bottom: 115px;
+  padding-top: 130px; /* Untuk menghindari konten tertutup oleh header */
+  padding-bottom: 115px; /* Untuk menghindari konten tertutup oleh footer */
   padding-left: 10px;
   padding-right: 10px;
   display: flex;
@@ -185,15 +186,30 @@ i.fa-check-circle {
   max-width: 960px;
   align-items: center;
   
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Bayangan agar terlihat melayang */
-  border-radius: 15px; /* Sudut melengkung */
-  margin-top: 130px; /* Memberikan jarak dengan header */
+  /* Menambahkan margin-bottom untuk memberi ruang agar tidak tertutup oleh footer */
+  margin-bottom: 115px; /* Memberikan jarak dengan footer */
   
-  z-index: 1; /* Pastikan elemen container berada di bawah header */
+  z-index: 1; /* Pastikan elemen container berada di bawah footer */
+  
+  /* Sesuaikan dengan tinggi footer Anda */
+  
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Efek bayangan */
+  border-radius: 15px; /* Sudut melengkung */
   
   animation: floatAnimation 3s ease-in-out infinite;
 }
+
+/* Efek animasi melayang */
+@keyframes floatAnimation {
+  0%, 100% {
+    transform: translateY(0); /* Posisi awal dan akhir */
+  }
+  50% {
+    transform: translateY(-10px); /* Gerakan naik pada tengah animasi */
+  }
+}
+
 
 
 
