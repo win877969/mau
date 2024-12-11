@@ -26,64 +26,41 @@
   <style>
 
     body {
-    background-color: ; /* Hitam pekat (dark mode) */
-    color: #4CAF50; /* Teks putih agar kontras dengan background */
-    margin: 0;
-    font-family: Arial, sans-serif; /* Font sederhana dan bersih */
-  }
-    /* CSS */
-      .service-selector {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 2px solid #4CAF50; /* Border warna hijau */
-        border-radius: 5px; /* Sudut membulat */
-        background-color: #f9f9f9; /* Warna latar belakang */
-        color: #333; /* Warna teks */
-        transition: background-color 0.3s, border-color 0.3s;
+      background-color: #000; /* Hitam pekat (dark mode) */
+      color: #4CAF50; /* Teks hijau agar kontras dengan background */
+      margin: 0;
+      font-family: Arial, sans-serif; /* Font sederhana dan bersih */
     }
 
-    .service-selector:hover {
-        background-color: #e0f7fa; /* Warna latar belakang saat hover */
-        border-color: #00796b; /* Warna border saat hover */
+    header, footer {
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: fixed;
+      width: 100%;
+      left: 0;
     }
 
-    .service-selector option {
-        padding: 10px;
-    }  
-.container {
-  flex: 1;
+    header {
+      top: 0;
+    }
+
+    footer {
+      bottom: 0;
+    }
+
+    .container {
+      flex: 1;
       padding-top: 115px; /* To avoid content being hidden under the header */
       padding-bottom: 115px; /* To avoid content being hidden under the footer */
       padding-left: 10px;
       padding-right: 10px;
       display: flex;
       flex-direction: column;
-  
-  max-width: 960px;
-  align-items: center;
-  
-}
-    header, footer {
-  background-color: #4CAF50;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  position: fixed;
-  width: 100%;
-  left: 0;
-}
-
-header {
-  top: 0;
-}
-
-footer {
-  bottom: 0;
-}
-
-
-    
+      max-width: 960px;
+      align-items: center;
+    }
 
     .filters {
       display: flex;
@@ -98,47 +75,49 @@ footer {
 
     /* Memberikan sudut melengkung pada tabel */
     table {
-        border-collapse: separate;
-        border-spacing: 0;
-        border: 2px solid #4CAF50; /* Warna border hijau */
-        border-radius: 10px; /* Sudut melengkung */
-        overflow: hidden;
-        width: 100%; /* Membuat tabel lebar penuh */
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 2px solid #4CAF50; /* Warna border hijau */
+      border-radius: 10px; /* Sudut melengkung */
+      overflow: hidden;
+      width: 100%; /* Membuat tabel lebar penuh */
     }
 
-    /* Menyesuaikan warna dan tampilan header tabel */
+    /* Membungkus tabel dalam elemen scroll */
+    .table-container {
+      width: 100%;
+      overflow-x: auto; /* Mengaktifkan scroll horizontal */
+      margin-bottom: 20px;
+    }
+
     th {
-        background-color: #4CAF50; /* Warna hijau */
-        color: white; /* Warna teks putih */
-        font-weight: bold;
-        padding: 10px;
-        text-align: center;
+      background-color: #4CAF50; /* Warna hijau */
+      color: white; /* Warna teks putih */
+      font-weight: bold;
+      padding: 10px;
+      text-align: center;
     }
 
-    /* Menambahkan efek pada elemen td */
     td {
-        padding: 10px;
-        text-align: center;
-        background-color: rgba(76, 175, 80, 0.1); /* Warna hijau transparan */
-        color: #333; /* Warna teks */
-        border-bottom: 1px solid #ddd; /* Garis pembatas antar baris */
-        transition: background-color 0.3s ease; /* Efek transisi */
+      padding: 10px;
+      text-align: center;
+      background-color: rgba(76, 175, 80, 0.1); /* Warna hijau transparan */
+      color: #333; /* Warna teks */
+      border-bottom: 1px solid #ddd; /* Garis pembatas antar baris */
+      transition: background-color 0.3s ease; /* Efek transisi */
     }
 
-    /* Efek hover pada td */
     td:hover {
-        background-color: rgba(76, 175, 80, 0.2); /* Warna hijau lebih gelap saat dihover */
+      background-color: rgba(76, 175, 80, 0.2); /* Warna hijau lebih gelap saat dihover */
     }
 
-    /* Menambahkan warna pada baris ganjil */
     tr:nth-child(odd) td {
-        background-color: rgba(240, 240, 240, 0.5); /* Warna abu terang */
+      background-color: rgba(240, 240, 240, 0.5); /* Warna abu terang */
     }
 
-    /* Efek hover pada baris tabel */
     tr:hover td {
-        background-color: #e0f7fa; /* Warna latar biru muda saat baris dihover */
-        color: #00796b; /* Warna teks saat dihover */
+      background-color: #e0f7fa; /* Warna latar biru muda saat baris dihover */
+      color: #00796b; /* Warna teks saat dihover */
     }
 
     .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
@@ -176,7 +155,7 @@ footer {
     .pagination button {
       margin: 2px;
       padding: 5px 10px;
-      border: 1px solid #000; /* Border warna hijau */
+      border: 1px solid #000;
       border-radius: 5px; 
       background-color: #007bff;
       color: #fff;
@@ -195,17 +174,15 @@ footer {
       padding: 10px;
       width: 150px;
       max-width: 100px;
-      border: 2px solid #4CAF50; /* Border warna hijau */
+      border: 2px solid #4CAF50;
       border-radius: 5px; 
     }
 
-    /* Mobile styles */
+    /* Responsif */
     @media (max-width: 600px) {
       header, footer {
         padding: 5px;
       }
-
-      
 
       table {
         width: 100%;
@@ -216,7 +193,6 @@ footer {
         width: 60px;
         max-width: none;
         margin-bottom: 10px;
-        border: 2px solid #4CAF50; /* Border warna hijau */
         border-radius: 5px; 
       }
 
@@ -230,50 +206,6 @@ footer {
         font-size: 12px;
       }
     }
-
-    /* Tablet styles */
-    @media (max-width: 1024px) {
-      table {
-        max-width: 95%;
-      }
-
-      #search-bar, #items-per-page {
-        width: 80px;
-        max-width: 400px;
-      }
-
-      .pagination button {
-        padding: 6px;
-        font-size: 14px;
-      }
-
-      .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
-        padding: 6px 12px;
-        font-size: 14px;
-      }
-    }
-
-    /* Desktop styles */
-    @media (min-width: 1025px) {
-      table {
-        max-width: 100%;
-      }
-
-      #search-bar, #items-per-page {
-        width: 30%;
-        max-width: 100px;
-      }
-
-      .pagination button {
-        padding: 8px;
-        font-size: 16px;
-      }
-
-      .copy-vless, .cekproxy,  .copy-vless1, .copy-trojan, .copy-ss {
-        padding: 8px 16px;
-        font-size: 16px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -284,7 +216,7 @@ footer {
 </header>
 
 <div class="container">
-
+    <div class="table-container">
     <div class="filters">
       <div>
         <span class="filter-label">Item Page:</span>
@@ -319,7 +251,7 @@ footer {
     <p id="total-proxy"></p>
 
     <div class="pagination" id="pagination"></div>
-  </div>
+  </div>  </div>
 
   <footer>
     <p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p>
