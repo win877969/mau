@@ -24,15 +24,28 @@
     button:hover {
       background-color: #0056b3;
     }
-    .output {
+    table {
       margin-top: 20px;
-      padding: 10px;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
+      width: 100%;
+      border-collapse: collapse;
     }
-    .output a {
-      color: #007BFF;
-      text-decoration: none;
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .copy-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .copy-btn:hover {
+      background-color: #218838;
     }
   </style>
 </head>
@@ -58,9 +71,20 @@
     <button type="button" onclick="generateLink()">Generate Link</button>
   </form>
   
-  <div class="output" id="output"></div>
+  <table id="linkTable" style="display: none;">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Generated Link</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
   
   <script>
+    let linkCount = 0;
+
     function generateLink() {
       const type = document.getElementById('type').value;
       const bug = document.getElementById('bug').value;
@@ -70,8 +94,29 @@
       const baseUrl = "https://sub.kominfo.us.kg/sub/surfboard";
       const generatedUrl = `${baseUrl}?type=${type}&bug=${encodeURIComponent(bug)}&country=${country}&limit=${limit}`;
       
-      const outputDiv = document.getElementById('output');
-      outputDiv.innerHTML = `<p>Generated Link: <a href="${generatedUrl}" target="_blank">${generatedUrl}</a></p>`;
+      linkCount++;
+      const table = document.getElementById('linkTable');
+      const tbody = table.querySelector('tbody');
+      const row = document.createElement('tr');
+      
+      row.innerHTML = `
+        <td>${linkCount}</td>
+        <td><a href="${generatedUrl}" target="_blank">${generatedUrl}</a></td>
+        <td><button class="copy-btn" onclick="copyToClipboard('${generatedUrl}')">Copy</button></td>
+      `;
+      
+      tbody.appendChild(row);
+      table.style.display = 'table';
+    }
+
+    function copyToClipboard(text) {
+      const tempInput = document.createElement('input');
+      document.body.appendChild(tempInput);
+      tempInput.value = text;
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      alert('Link copied to clipboard!');
     }
   </script>
 </body>
