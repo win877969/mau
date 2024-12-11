@@ -723,7 +723,7 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 });
 
 // Fetching proxy data
-fetch("proxy_list.txt")
+fetch("bot/proxy_list.txt")
   .then(response => response.text())
   .then(data => {
     allProxies = data.split("\n").filter(line => line.trim() !== "");
