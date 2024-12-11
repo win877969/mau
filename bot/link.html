@@ -3,20 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy List</title>
+    <title>Proxy List Grouped by Country</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
-        #proxy-list {
+        .country-group {
+            margin-bottom: 20px;
+        }
+        .country-header {
+            background-color: #f2f2f2;
+            padding: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .country-header.active {
+            background-color: #ddd;
+        }
+        .country-proxies {
+            display: none;
+            padding-left: 20px;
+        }
+        .country-proxies.active {
+            display: block;
+        }
+        table {
             width: 100%;
             border-collapse: collapse;
         }
-        #proxy-list td, #proxy-list th {
+        th, td {
             border: 1px solid #ddd;
             padding: 8px;
         }
-        #proxy-list th {
+        th {
             background-color: #f2f2f2;
         }
         button {
@@ -28,13 +47,10 @@
         .active {
             font-weight: bold;
         }
-        .search-container {
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
-    <h1>Proxy List</h1>
+    <h1>Proxy List Grouped by Country</h1>
 
     <div class="search-container">
         <input type="text" id="search-bar" placeholder="Search for proxy...">
@@ -47,20 +63,7 @@
         <span id="total-proxy">Total Proxies: 0</span>
     </div>
 
-    <table id="proxy-list-container">
-        <thead>
-            <tr>
-                <th>Provider | Country</th>
-                <th>Check Proxy</th>
-                <th>Service Selector</th>
-                <th>VLESS 443</th>
-                <th>VLESS 80</th>
-                <th>TROJAN</th>
-                <th>SHADOWSOCK</th>
-            </tr>
-        </thead>
-        <tbody id="proxy-list"></tbody>
-    </table>
+    <div id="proxy-list-container"></div>
 
     <div id="pagination"></div>
 
@@ -77,53 +80,81 @@
             );
         }
 
-        // Function to render proxies
-        function renderProxies(proxies, proxyList, pagination) {
-            const start = (currentPage - 1) * proxyPerPage;
-            const end = start + proxyPerPage;
-            const currentPageProxies = proxies.slice(start, end);
+        // Function to render proxies by country group
+        function renderProxiesByCountry(proxies, proxyList, pagination) {
+            const groupedProxies = groupProxiesByCountry(proxies);
 
             proxyList.innerHTML = ''; // Clear previous list
 
-            currentPageProxies.forEach(proxy => {
-                const [ip, port, country, provider] = proxy.split(",");
-                const uuid = uuidv4();
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${provider} | ${country}</td>
-                    <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Check Proxy</button></td>
-                    <td>
-                        <select class="service-selector">
-                            <option value="">NO WILDCARD</option>
-                            <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
-                            <option value="graph.instagram.com.tp1.bmkg.xyz">graph.instagram.com</option>
-                            <option value="quiz.int.vidio.com.tp1.bmkg.xyz">quiz.int.vidio.com</option>
-                            <option value="live.iflix.com">live.iflix.com</option>
-                            <option value="support.zoom.us.tp1.bmkg.xyz">support.zoom.us</option>
-                            <option value="blog.webex.com.tp1.bmkg.xyz">blog.webex.com</option>
-                            <option value="investors.spotify.com.tp1.bmkg.xyz">investors.spotify.com</option>
-                            <option value="cache.netflix.com.tp1.bmkg.xyz">cache.netflix.com</option>
-                            <option value="zaintest.vuclip.com.tp1.bmkg.xyz">zaintest.vuclip.com</option>
-                            <option value="io.ruangguru.com.tp1.bmkg.xyz">io.ruangguru.com</option>
-                            <option value="api.midtrans.com.tp1.bmkg.xyz">api.midtrans.com</option>
-                        </select>
-                    </td>
-                    <td><button class="copy-vless">Copy VLESS 443</button></td>
-                    <td><button class="copy-vless1">Copy VLESS 80</button></td>
-                    <td><button class="copy-trojan">Copy TROJAN</button></td>
-                    <td><button class="copy-ss">Copy SHADOWSOCK</button></td>
-                `;
-                proxyList.appendChild(row);
+            Object.keys(groupedProxies).forEach(country => {
+                const countryGroup = document.createElement('div');
+                countryGroup.classList.add('country-group');
+
+                const countryHeader = document.createElement('div');
+                countryHeader.classList.add('country-header');
+                countryHeader.textContent = `${country.toUpperCase()} (${groupedProxies[country].length} proxies)`;
+                countryHeader.addEventListener('click', () => toggleCountryGroup(country));
+
+                const countryProxies = document.createElement('div');
+                countryProxies.classList.add('country-proxies');
+
+                groupedProxies[country].forEach(proxy => {
+                    const [ip, port, _country, provider] = proxy.split(",");
+                    const uuid = uuidv4();
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${provider} | ${_country}</td>
+                        <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Check Proxy</button></td>
+                        <td>
+                            <select class="service-selector">
+                                <option value="">NO WILDCARD</option>
+                                <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
+                                <option value="graph.instagram.com.tp1.bmkg.xyz">graph.instagram.com</option>
+                                <option value="quiz.int.vidio.com.tp1.bmkg.xyz">quiz.int.vidio.com</option>
+                                <option value="live.iflix.com">live.iflix.com</option>
+                                <option value="support.zoom.us.tp1.bmkg.xyz">support.zoom.us</option>
+                                <option value="blog.webex.com.tp1.bmkg.xyz">blog.webex.com</option>
+                                <option value="investors.spotify.com.tp1.bmkg.xyz">investors.spotify.com</option>
+                                <option value="cache.netflix.com.tp1.bmkg.xyz">cache.netflix.com</option>
+                                <option value="zaintest.vuclip.com.tp1.bmkg.xyz">zaintest.vuclip.com</option>
+                                <option value="io.ruangguru.com.tp1.bmkg.xyz">io.ruangguru.com</option>
+                                <option value="api.midtrans.com.tp1.bmkg.xyz">api.midtrans.com</option>
+                            </select>
+                        </td>
+                        <td><button class="copy-vless">Copy VLESS 443</button></td>
+                        <td><button class="copy-vless1">Copy VLESS 80</button></td>
+                        <td><button class="copy-trojan">Copy TROJAN</button></td>
+                        <td><button class="copy-ss">Copy SHADOWSOCK</button></td>
+                    `;
+                    countryProxies.appendChild(row);
+                });
+
+                countryGroup.appendChild(countryHeader);
+                countryGroup.appendChild(countryProxies);
+                proxyList.appendChild(countryGroup);
             });
 
-            // Display total proxies
-            const totalProxies = proxies.length;
-            const totalProxyElement = document.getElementById('total-proxy');
-            if (totalProxyElement) {
-                totalProxyElement.textContent = `Total Proxies: ${totalProxies}`;
-            }
-
             renderPagination(proxies, pagination);
+        }
+
+        // Group proxies by country
+        function groupProxiesByCountry(proxies) {
+            const grouped = {};
+            proxies.forEach(proxy => {
+                const [ip, port, country] = proxy.split(",");
+                if (!grouped[country]) {
+                    grouped[country] = [];
+                }
+                grouped[country].push(proxy);
+            });
+            return grouped;
+        }
+
+        // Toggle visibility of country group
+        function toggleCountryGroup(country) {
+            const countryProxies = document.querySelector(`.country-group div[data-country="${country}"]`);
+            const isActive = countryProxies.classList.contains('active');
+            countryProxies.classList.toggle('active', !isActive);
         }
 
         // Function to render pagination
@@ -163,8 +194,8 @@
         // Function to update page
         function updatePage(page, proxies, pagination) {
             currentPage = page;
-            const proxyList = document.getElementById('proxy-list');
-            renderProxies(proxies, proxyList, pagination);
+            const proxyList = document.getElementById('proxy-list-container');
+            renderProxiesByCountry(proxies, proxyList, pagination);
         }
 
         // Function to filter proxies
@@ -172,9 +203,9 @@
             searchTerm = searchTerm.toLowerCase();
             filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
             currentPage = 1;
-            const proxyList = document.getElementById('proxy-list');
+            const proxyList = document.getElementById('proxy-list-container');
             const pagination = document.getElementById('pagination');
-            renderProxies(filteredProxies, proxyList, pagination);
+            renderProxiesByCountry(filteredProxies, proxyList, pagination);
         }
 
         // Event listener for search bar
@@ -185,9 +216,9 @@
         // Event listener for items per page dropdown
         document.getElementById('items-per-page').addEventListener('change', (e) => {
             proxyPerPage = parseInt(e.target.value);
-            const proxyList = document.getElementById('proxy-list');
+            const proxyList = document.getElementById('proxy-list-container');
             const pagination = document.getElementById('pagination');
-            renderProxies(filteredProxies, proxyList, pagination);
+            renderProxiesByCountry(filteredProxies, proxyList, pagination);
         });
 
         // Fetching proxy data
@@ -196,9 +227,9 @@
             .then(data => {
                 allProxies = data.split("\n").filter(line => line.trim() !== "");
                 filteredProxies = allProxies;
-                const proxyList = document.getElementById('proxy-list');
+                const proxyList = document.getElementById('proxy-list-container');
                 const pagination = document.getElementById('pagination');
-                renderProxies(filteredProxies, proxyList, pagination);
+                renderProxiesByCountry(filteredProxies, proxyList, pagination);
             })
             .catch(error => console.error("Error fetching proxy data:", error));
 
