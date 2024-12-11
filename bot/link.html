@@ -29,12 +29,12 @@
   /* Menambahkan gambar latar belakang dan animasi */
 body {
   font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
-  background-color: #000; /* Hitam pekat (dark mode) */
-  color: #fff; /* Teks putih agar kontras dengan background */
+  background-color: #000;
+  color: #fff;
   margin: 0;
   padding: 0;
-  height: 100vh; /* Menyediakan tinggi penuh untuk layar */
-
+  height: 100vh; /* Menyediakan tinggi penuh layar */
+}
   /* Menambahkan gambar latar belakang */
   
   /* Menambahkan latar belakang gradasi hitam neon bergerak */
@@ -159,9 +159,7 @@ i.fa-check-circle {
     }  
     
 
-
-
-.container {
+    .container {
   font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
   flex: 1;
   padding-top: 150px; /* Untuk menghindari konten tertutup oleh header */
@@ -172,19 +170,16 @@ i.fa-check-circle {
   flex-direction: column;
   max-width: 960px;
   align-items: center;
-  
-  /* Menambahkan margin-bottom untuk memberi ruang agar tidak tertutup oleh footer */
+  margin: 0 auto;
   margin-bottom: 115px; /* Memberikan jarak dengan footer */
   
-  z-index: 1; /* Pastikan elemen container berada di bawah footer */
-  
-  /* Sesuaikan dengan tinggi footer Anda */
-  
-  position: relative;
+  position: relative; /* Penting untuk z-index */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Efek bayangan */
   border-radius: 15px; /* Sudut melengkung */
   
-  animation: floatAnimation 3s ease-in-out infinite;
+  animation: floatAnimation 3s ease-in-out infinite; /* Animasi melayang */
+  z-index: 1; /* Pastikan container tetap berada di atas konten lainnya */
+  background-color: rgba(255, 255, 255, 0.1); /* Memberikan latar belakang transparan */
 }
 
 /* Efek animasi melayang */
@@ -196,11 +191,6 @@ i.fa-check-circle {
     transform: translateY(-10px); /* Gerakan naik pada tengah animasi */
   }
 }
-
-
-
-
-    
     .filters {
       font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
       display: flex;
