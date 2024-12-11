@@ -338,9 +338,12 @@ function renderProxies(proxies, proxyList, pagination) {
           <option value="api.midtrans.com.tp1.bmkg.xyz">api.midtrans.com</option>
         </select>
       </td>
-      <td><button class="copy-vless">Copy VLESS 443</button></td>
-      <td><button class="copy-vless1">Copy VLESS 80</button></td>
-      <td><button class="copy-trojan">Copy TROJAN</button></td>
+      <td><button class="copy-vless">Copy VLESS 443</button>
+      <button class="copy-vless-clash">Copy VLESS Clash 443</button></td>
+      <td><button class="copy-vless1">Copy VLESS 80</button>
+      <button class="copy-vless2">Copy VLESS Clash 80</button></td>
+      <td><button class="copy-trojan">Copy TROJAN</button>
+      <button class="copy-trojan-clash">Copy TROJAN Clash</button></td>
       <td><button class="copy-ss">Copy SHADOWSOCK</button></td>
     `;
     proxyList.appendChild(row);
@@ -352,12 +355,51 @@ function renderProxies(proxies, proxyList, pagination) {
       navigator.clipboard.writeText(VLESS);
       alert('COPY VLESS 443 SUKSES!');
     });
-
+    row.querySelector('.copy-vless-clash').addEventListener('click', () => {
+      const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+      const VLESSC = `- name: ${negara}+${penyedia}
+  server: ${selectedService}
+  port: 443
+  type: vless
+  uuid: ${uuid}
+  cipher: auto
+  tls: true
+  udp: true
+  skip-cert-verify: true
+  network: ws
+  servername: ${selectedService}
+  ws-opts:
+    path: /${ip}-${port}
+    headers:
+      Host: ${selectedService}`;
+      navigator.clipboard.writeText(VLESSC);
+      alert('COPY VLESS CLASH 443 SUKSES!');
+    });
+    
     row.querySelector('.copy-trojan').addEventListener('click', () => {
       const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
       const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
       navigator.clipboard.writeText(TROJAN);
       alert('COPY TROJAN SUKSES!');
+    });
+
+    row.querySelector('.copy-trojan-clash').addEventListener('click', () => {
+      const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
+      const TROJANC = `- name: ${negara}+${penyedia}
+    server: ${selectedService}
+    port: 443
+    type: trojan
+    password: ${uuid}
+    skip-cert-verify: true
+    sni: ${selectedService}
+    network: ws
+    ws-opts:
+      path: /${ip}-${port}
+      headers:
+        Host: ${selectedService}
+    udp: true `;
+      navigator.clipboard.writeText(TROJANC);
+      alert('COPY TROJAN CLASH SUKSES!');
     });
 
     row.querySelector('.copy-ss').addEventListener('click', () => {
@@ -371,6 +413,26 @@ function renderProxies(proxies, proxyList, pagination) {
       navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
       alert('COPY VLESS 80 SUKSES!');
     });
+
+      row.querySelector('.copy-vless2').addEventListener('click', () => {
+      navigator.clipboard.writeText(`- name: ${negara}+${penyedia}
+  server: tp1.bmkg.xyz
+  port: 80
+  type: vless
+  uuid: ${uuid}
+  cipher: auto
+  tls: false
+  skip-cert-verify: false
+  servername: tp1.bmkg.xyz
+  network: ws
+  ws-opts:
+    path: /${ip}-${port}
+    headers:
+      Host: tp1.bmkg.xyz
+  udp: true `);
+      alert('COPY VLESS CLASH 80 SUKSES!');
+    });
+    
   });
 
   // Display total proxies
