@@ -434,7 +434,9 @@ function renderProxies(proxies, proxyList, pagination) {
     const uuid = uuidv4();
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span></td>
+      
+        <td>${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
+     </td>
       <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>
            <span class="latency-cell"></span>
       </td>
@@ -442,13 +444,213 @@ function renderProxies(proxies, proxyList, pagination) {
         <select class="service-selector">
           <option value="">NO WILDCARD</option>
           <option value="ava.game.naver.com.tp1.bmkg.xyz">ava.game.naver.com</option>
-          <!-- Add other options here -->
+          <option value="graph.instagram.com.tp1.bmkg.xyz">graph.instagram.com</option>
+          <option value="quiz.int.vidio.com.tp1.bmkg.xyz">quiz.int.vidio.com</option>
+          <option value="live.iflix.com">live.iflix.com</option>
+          <option value="support.zoom.us.tp1.bmkg.xyz">support.zoom.us</option>
+          <option value="blog.webex.com.tp1.bmkg.xyz">blog.webex.com</option>
+          <option value="investors.spotify.com.tp1.bmkg.xyz">investors.spotify.com</option>
+          <option value="cache.netflix.com.tp1.bmkg.xyz">cache.netflix.com</option>
+          <option value="zaintest.vuclip.com.tp1.bmkg.xyz">zaintest.vuclip.com</option>
+          <option value="io.ruangguru.com.tp1.bmkg.xyz">io.ruangguru.com</option>
+          <option value="api.midtrans.com.tp1.bmkg.xyz">api.midtrans.com</option>
         </select>
       </td>
       <td><button class="copy-vless">COPY VLESS</button>
       <button class="copy-vless-clash">COPY CLASH</button></td>
-      <!-- Add more buttons -->
+      <td><button class="copy-vless1">COPY VLESS</button>
+      <button class="copy-vless2">COPY CLASH</button></td>
+      <td><button class="copy-trojan">COPY TROJAN</button>
+      <button class="copy-trojan-clash">COPY CLASH</button></td>
+      <td><button class="copy-ss">COPY SHADOWSOCK</button>
+      <button class="copy-ss1">COPY CLASH</button></td>
     `;
+    proxyList.appendChild(row);
+
+    // Event listeners for copy buttons
+    
+    
+      
+    
+
+      
+    
+  row.querySelector('.copy-vless').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
+    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+    navigator.clipboard.writeText(VLESS);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY VLESS 443 SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+  });
+
+  row.querySelector('.copy-vless-clash').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
+    const VLESSC = `- name: ${negara}+${penyedia}
+  server: ${selectedService}
+  port: 443
+  type: vless
+  uuid: ${uuid}
+  cipher: auto
+  tls: true
+  udp: true
+  skip-cert-verify: true
+  network: ws
+  servername: ${selectedService}
+  ws-opts:
+    path: /${ip}-${port}
+    headers:
+      Host: ${selectedService}`;
+    navigator.clipboard.writeText(VLESSC);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY VLESS CLASH 443 SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+  });
+
+  row.querySelector('.copy-trojan').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
+    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+    navigator.clipboard.writeText(TROJAN);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY TROJAN SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+  });
+
+  row.querySelector('.copy-trojan-clash').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
+    const TROJANC = `- name: ${negara}+${penyedia}
+    server: ${selectedService}
+    port: 443
+    type: trojan
+    password: ${uuid}
+    skip-cert-verify: true
+    sni: ${selectedService}
+    network: ws
+    ws-opts:
+      path: /${ip}-${port}
+      headers:
+        Host: ${selectedService}
+    udp: true `;
+    navigator.clipboard.writeText(TROJANC);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY TROJAN CLASH SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+  });
+
+  row.querySelector('.copy-ss').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
+    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+    navigator.clipboard.writeText(SS);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY SHADOWSOCK SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+  });
+
+  row.querySelector('.copy-ss1').addEventListener('click', () => {
+    const SS1 = `087861167414`;
+    navigator.clipboard.writeText(SS1);
+    Swal.fire({
+      title: 'Perhatian!',
+      text: 'SHADOWSOCK VERSI CLASH BELUM TERSEDIA',
+      icon: 'warning',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#f39c12'
+    });
+  });
+
+  row.querySelector('.copy-vless1').addEventListener('click', () => {
+    const VLESS1 = `vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`;
+    navigator.clipboard.writeText(VLESS1);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY VLESS 80 SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+  });
+
+  row.querySelector('.copy-vless2').addEventListener('click', () => {
+    const VLESS2 = `- name: ${negara}+${penyedia}
+  server: tp1.bmkg.xyz
+  port: 80
+  type: vless
+  uuid: ${uuid}
+  cipher: auto
+  tls: false
+  skip-cert-verify: false
+  servername: tp1.bmkg.xyz
+  network: ws
+  ws-opts:
+    path: /${ip}-${port}
+    headers:
+      Host: tp1.bmkg.xyz
+  udp: true `;
+    navigator.clipboard.writeText(VLESS2);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY VLESS CLASH 80 SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+  });
+
+    
+  });
+
     proxyList.appendChild(row);
 
     addCopyButtonListeners(row, uuid, ip, port, negara, penyedia);
@@ -569,18 +771,7 @@ function checkProxyStatus(proxy, button) {
 }
 
 // Add event listeners for the copy buttons
-function addCopyButtonListeners(row, uuid, ip, port, negara, penyedia) {
-  // Add copy functionality for each button
-  row.querySelector('.copy-vless').addEventListener('click', () => {
-    copyToClipboard(`vless://${uuid}@${ip}:${port}?encryption=none&type=ws&host=${ip}&path=%2F${ip}-${port}&security=tls&sni=${ip}#${negara}+${penyedia}`);
-  });
 
-  row.querySelector('.copy-vless-clash').addEventListener('click', () => {
-    copyToClipboard(`- name: ${negara}+${penyedia}\nserver: ${ip}\nport: 443\ntype: vless\nuuid: ${uuid}\n...`);
-  });
-
-  // Add more event listeners here for other buttons
-}
 
 // Generic function to copy text to clipboard
 function copyToClipboard(text) {
