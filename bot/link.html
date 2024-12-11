@@ -47,7 +47,20 @@
         <span id="total-proxy">Total Proxies: 0</span>
     </div>
 
-    <div id="proxy-list-container"></div>
+    <table id="proxy-list-container">
+        <thead>
+            <tr>
+                <th>Provider | Country</th>
+                <th>Check Proxy</th>
+                <th>Service Selector</th>
+                <th>VLESS 443</th>
+                <th>VLESS 80</th>
+                <th>TROJAN</th>
+                <th>SHADOWSOCK</th>
+            </tr>
+        </thead>
+        <tbody id="proxy-list"></tbody>
+    </table>
 
     <div id="pagination"></div>
 
@@ -73,14 +86,12 @@
             proxyList.innerHTML = ''; // Clear previous list
 
             currentPageProxies.forEach(proxy => {
-                const [ip, port, negara, penyedia] = proxy.split(",");
+                const [ip, port, country, provider] = proxy.split(",");
                 const uuid = uuidv4();
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${penyedia} | ${negara}</td>
-                    <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Cek Proxy</button>
-                         <span class="latency-cell"></span>
-                    </td>
+                    <td>${provider} | ${country}</td>
+                    <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">Check Proxy</button></td>
                     <td>
                         <select class="service-selector">
                             <option value="">NO WILDCARD</option>
@@ -97,108 +108,12 @@
                             <option value="api.midtrans.com.tp1.bmkg.xyz">api.midtrans.com</option>
                         </select>
                     </td>
-                    <td><button class="copy-vless">Copy VLESS 443</button>
-                    <button class="copy-vless-clash">Copy VLESS Clash 443</button></td>
-                    <td><button class="copy-vless1">Copy VLESS 80</button>
-                    <button class="copy-vless2">Copy VLESS Clash 80</button></td>
-                    <td><button class="copy-trojan">Copy TROJAN</button>
-                    <button class="copy-trojan-clash">Copy TROJAN Clash</button></td>
-                    <td><button class="copy-ss">Copy SHADOWSOCK</button>
-                    <button class="copy-ss1">Copy SHADOWSOCK Clash</button></td>
+                    <td><button class="copy-vless">Copy VLESS 443</button></td>
+                    <td><button class="copy-vless1">Copy VLESS 80</button></td>
+                    <td><button class="copy-trojan">Copy TROJAN</button></td>
+                    <td><button class="copy-ss">Copy SHADOWSOCK</button></td>
                 `;
                 proxyList.appendChild(row);
-
-                // Event listeners for copy buttons
-                row.querySelector('.copy-vless').addEventListener('click', () => {
-                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-                    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
-                    navigator.clipboard.writeText(VLESS);
-                    alert('COPY VLESS 443 SUKSES!');
-                });
-                row.querySelector('.copy-vless-clash').addEventListener('click', () => {
-                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-                    const VLESSC = `- name: ${negara}+${penyedia}
-      server: ${selectedService}
-      port: 443
-      type: vless
-      uuid: ${uuid}
-      cipher: auto
-      tls: true
-      udp: true
-      skip-cert-verify: true
-      network: ws
-      servername: ${selectedService}
-      ws-opts:
-        path: /${ip}-${port}
-        headers:
-          Host: ${selectedService}`;
-                    navigator.clipboard.writeText(VLESSC);
-                    alert('COPY VLESS CLASH 443 SUKSES!');
-                });
-                
-                row.querySelector('.copy-trojan').addEventListener('click', () => {
-                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-                    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
-                    navigator.clipboard.writeText(TROJAN);
-                    alert('COPY TROJAN SUKSES!');
-                });
-
-                row.querySelector('.copy-trojan-clash').addEventListener('click', () => {
-                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-                    const TROJANC = `- name: ${negara}+${penyedia}
-        server: ${selectedService}
-        port: 443
-        type: trojan
-        password: ${uuid}
-        skip-cert-verify: true
-        sni: ${selectedService}
-        network: ws
-        ws-opts:
-         path: /${ip}-${port}
-         headers:
-           Host: ${selectedService}
-        udp: true `;
-                    navigator.clipboard.writeText(TROJANC);
-                    alert('COPY TROJAN CLASH SUKSES!');
-                });
-
-                row.querySelector('.copy-ss').addEventListener('click', () => {
-                    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // handle no wildcard
-                    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
-                    navigator.clipboard.writeText(SS);
-                    alert('COPY SHADOWSOCK SUKSES!');
-                });
-
-                row.querySelector('.copy-ss1').addEventListener('click', () => {
-                    const SS1 = `087861167414`;
-                    navigator.clipboard.writeText(SS1);
-                    alert('SHADOWSOCK VERSI CLASH BELUM TERSEDIA');
-                });
-
-                row.querySelector('.copy-vless1').addEventListener('click', () => {
-                    navigator.clipboard.writeText(`vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`);
-                    alert('COPY VLESS 80 SUKSES!');
-                });
-
-                row.querySelector('.copy-vless2').addEventListener('click', () => {
-                    navigator.clipboard.writeText(`- name: ${negara}+${penyedia}
-        server: tp1.bmkg.xyz
-        port: 80
-        type: vless
-        uuid: ${uuid}
-        cipher: auto
-        tls: false
-        skip-cert-verify: false
-        servername: tp1.bmkg.xyz
-        network: ws
-        ws-opts:
-          path: /${ip}-${port}
-          headers:
-            Host: tp1.bmkg.xyz
-        udp: true `);
-                    alert('COPY VLESS CLASH 80 SUKSES!');
-                });
-                
             });
 
             // Display total proxies
@@ -276,7 +191,7 @@
         });
 
         // Fetching proxy data
-        fetch("bot/proxy_list.txt")
+        fetch("proxy_list.txt")
             .then(response => response.text())
             .then(data => {
                 allProxies = data.split("\n").filter(line => line.trim() !== "");
@@ -292,7 +207,6 @@
             button.textContent = 'Loading';
             button.style.backgroundColor = 'yellow'; // Set background color to yellow when loading
             button.style.color = 'black'; // Set text color to black during loading
-            const latencyCell = button.parentElement.querySelector('.latency-cell'); // Find the latency span in the same cell
 
             const startTime = performance.now();
             fetch('https://httpbin.org/ip', {
@@ -307,19 +221,17 @@
                     const latency = (endTime - startTime).toFixed(2);
 
                     if (response.ok) {
-                        button.textContent = 'Ngacengan';
+                        button.textContent = 'Working';
                         button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
                         button.style.color = 'white'; // Set text color to white for active proxy
-                        latencyCell.textContent = `${latency} ms`; // Display latency in the same column
                     } else {
-                        throw new Error('Turu');
+                        throw new Error('Not working');
                     }
                 })
                 .catch(() => {
-                    button.textContent = 'Turu';
+                    button.textContent = 'Failed';
                     button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
                     button.style.color = 'white'; // Set text color to white for failed proxy
-                    latencyCell.textContent = ''; // Clear latency cell text on failure
                 });
         }
     </script>
