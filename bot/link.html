@@ -39,6 +39,18 @@
     button:hover {
       background-color: #0056b3;
     }
+    .output {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .output a {
+      color: #007BFF;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .output a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -61,51 +73,60 @@
         </select>
       </td>
       <td>
-      <select id="metode" required>
+        <select id="metode" required>
           <option value="GATCHANG">GATCHANG</option>
-          <option value="FCLASH">FCLASH</option>
           <option value="CLASH">CLASH</option>
           <option value="surfboard">surfboard</option>
-      </select>
+        </select>
       </td>
       <td>
-      <select id="bugwil" required>
-          <option value="SERVER">NO WILDCSRD</option>
+        <select id="bugwil" required>
+          <option value="SERVER">NO WILDCARD</option>
           <option value="QUIZ">QUIZ</option>
           <option value="VIU">VIU</option>
         </select>
       </td>
       <td>
-      <select id="country" required>
+        <select id="country" required>
           <option value="SG">SG</option>
           <option value="ID">ID</option>
           <option value="MY">MY</option>
         </select>
       </td>
       <td>
-      <select id="limit" required>
+        <select id="limit" required>
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="25">25</option>
           <option value="50">50</option>
           <option value="100">100</option>
           <option value="200">200</option>
-        
-      </select>
+        </select>
       </td>
-      <td><button type="button" onclick="generateLink()">Generate Link</button>
+      <td>
+        <button type="button" onclick="generateLink()">Generate Link</button>
       </td>
     </tr>
   </table>
 
+  <div class="output" id="output"></div>
+
   <script>
     function generateLink() {
-      const type = document.getElementById('type').value;
-      const bug = document.getElementById('bug').value;
-      const country = document.getElementById('country').value;
-      const limit = document.getElementById('limit').value;
+      // Ambil nilai dari elemen form
+      const type = document.getElementById("type").value;
+      const metode = document.getElementById("metode").value;
+      const bug = document.getElementById("bugwil").value;
+      const country = document.getElementById("country").value;
+      const limit = document.getElementById("limit").value;
 
-      alert(`Generated link for:\nType: ${type}\nBug: ${bug}\nCountry: ${country}\nLimit: ${limit}`);
+      // Format URL dinamis
+      const baseUrl = "https://bmkg.xyz/bot/sub";
+      const url = `${baseUrl}/${metode}?type=${type}&bug=${bug}&country=${country}&limit=${limit}`;
+
+      // Tampilkan URL di halaman
+      const outputDiv = document.getElementById("output");
+      outputDiv.innerHTML = `<p>Generated Link: <a href="${url}" target="_blank">${url}</a></p>`;
     }
   </script>
 </body>
