@@ -24,7 +24,8 @@
     <meta name="twitter:image" content="https://wallpapers.com/images/featured-full/green-and-white-background-dds1fzx7f10m7hw9.jpg"> <!-- Ganti dengan URL gambar yang sesuai -->
     <link href="https://wallpapers.com/images/featured-full/green-and-white-background-dds1fzx7f10m7hw9.jpg" rel="icon" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icon-css/css/flag-icon.min.css">
+
   <style>
   /* Menambahkan gambar latar belakang dan animasi */
 body {
@@ -431,7 +432,8 @@ function renderProxies(proxies, proxyList, pagination) {
     const uuid = uuidv4();
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${penyedia} | ${negara}</td>
+      <td>${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
+     </td>
       <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>
            <span class="latency-cell"></span>
       </td>
@@ -721,7 +723,7 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 });
 
 // Fetching proxy data
-fetch("bot/proxy_list.txt")
+fetch("proxy_list.txt")
   .then(response => response.text())
   .then(data => {
     allProxies = data.split("\n").filter(line => line.trim() !== "");
