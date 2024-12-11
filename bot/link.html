@@ -434,8 +434,7 @@ function renderProxies(proxies, proxyList, pagination) {
     row.innerHTML = `
       <td>${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
-      <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>
-           <span class="latency-cell"></span>
+      <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>          
       </td>
       <td>
         <select class="service-selector">
@@ -697,7 +696,7 @@ function renderPagination(proxies, pagination) {
     pagination.appendChild(nextButton);
 
     const lastButton = document.createElement('button');
-    lastButton.textContent = '>>> Last Page';
+    lastButton.textContent = 'Last Page >>>';
     lastButton.addEventListener('click', () => updatePage(totalPages, proxies, pagination));
     pagination.appendChild(lastButton);
   }
@@ -774,7 +773,7 @@ function checkProxyStatus(proxy, button) {
         // Display latency in a popup
         Swal.fire({
           title: 'Proxy Status: Aktif',
-          text: `Proxy ${proxy} bekerja dengan latensi ${latency} ms.`,
+          text: `Proxy NGACENG ${latency} ms.`,
           icon: 'success',
           background: 'rgba(6, 18, 67, 0.89)', // Background color
           color: 'white', // Text color
@@ -796,7 +795,7 @@ function checkProxyStatus(proxy, button) {
       // Display error in a popup
       Swal.fire({
         title: 'Proxy Status: Gagal',
-        text: `Proxy ${proxy} tidak dapat digunakan.`,
+        text: `Proxy TURU.`,
         icon: 'error',
         background: 'rgba(6, 18, 67, 0.89)', // Background color
         color: 'white', // Text color
