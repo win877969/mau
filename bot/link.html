@@ -659,11 +659,22 @@ function renderProxies(proxies, proxyList, pagination) {
 }
 
 // Function to render pagination
+
+  // Function to render pagination
 function renderPagination(proxies, pagination) {
   const totalPages = Math.ceil(proxies.length / proxyPerPage);
   const maxButtons = 6;
   pagination.innerHTML = '';
 
+  // Button for going to the first page
+  if (currentPage > 1) {
+    const firstButton = document.createElement('button');
+    firstButton.textContent = '<<< First';
+    firstButton.addEventListener('click', () => updatePage(1, proxies, pagination));
+    pagination.appendChild(firstButton);
+  }
+
+  // Button for going to the previous page
   if (currentPage > 1) {
     const prevButton = document.createElement('button');
     prevButton.textContent = '<< Previous';
@@ -674,6 +685,7 @@ function renderPagination(proxies, pagination) {
   const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
   const endPage = Math.min(totalPages, startPage + maxButtons - 1);
 
+  // Pagination page buttons
   for (let i = startPage; i <= endPage; i++) {
     const pageButton = document.createElement('button');
     pageButton.textContent = i;
@@ -684,20 +696,26 @@ function renderPagination(proxies, pagination) {
     pagination.appendChild(pageButton);
   }
 
+  // Button for going to the next page
   if (currentPage < totalPages) {
     const nextButton = document.createElement('button');
     nextButton.textContent = 'Next >>';
     nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
     pagination.appendChild(nextButton);
   }
+
+  // Button for going to the last page
+  if (currentPage < totalPages) {
+    const lastButton = document.createElement('button');
+    lastButton.textContent = '>>> Last';
+    lastButton.addEventListener('click', () => updatePage(totalPages, proxies, pagination));
+    pagination.appendChild(lastButton);
+  }
 }
 
+  
 // Function to update page
-function updatePage(page, proxies, pagination) {
-  currentPage = page;
-  const proxyList = document.getElementById('proxy-list');
-  renderProxies(proxies, proxyList, pagination);
-}
+
 
 // Function to filter proxies
 function filterProxies(searchTerm) {
