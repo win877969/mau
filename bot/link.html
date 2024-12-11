@@ -277,7 +277,7 @@
 
   
     <script>
-let proxyPerPage = 10;
+let proxyPerPage = 15;
 let currentPage = 1;
 let filteredProxies = [];
 let allProxies = [];
@@ -440,7 +440,7 @@ function renderProxies(proxies, proxyList, pagination) {
 // Function to render pagination
 function renderPagination(proxies, pagination) {
   const totalPages = Math.ceil(proxies.length / proxyPerPage);
-  const maxButtons = 5;
+  const maxButtons = 6;
   pagination.innerHTML = '';
 
   if (currentPage > 1) {
@@ -502,7 +502,7 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 });
 
 // Fetching proxy data
-fetch("bot/proxy_list.txt")
+fetch("proxy_list.txt")
   .then(response => response.text())
   .then(data => {
     allProxies = data.split("\n").filter(line => line.trim() !== "");
@@ -536,7 +536,7 @@ function checkProxyStatus(proxy, button) {
               button.textContent = 'Ngacengan';
               button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
               button.style.color = 'white'; // Set text color to white for active proxy
-              latencyCell.textContent = `${latency} ms`; // Display latency in the same column
+              latencyCell.textContent = ``; // Display latency in the same column
           } else {
               throw new Error('Turu');
           }
