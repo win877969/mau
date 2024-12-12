@@ -1,54 +1,92 @@
-// Fungsi untuk menghasilkan UUID v4 varian 2
-function generateUUIDv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0,
-            v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Link Generator</h1>
+    <label for="sub">Country (sub): </label>
+    <input type="text" id="sub" placeholder="Enter country code (e.g., SG)" />
+    <br>
+    <label for="count">Count: </label>
+    <input type="number" id="count" value="5" min="1" />
+    <br>
+    <label for="wildcard">Wildcard Domain (optional): </label>
+    <input type="text" id="wildcard" placeholder="Enter wildcard domain (e.g., bug.com)" />
+    <br><br>
+    <button onclick="generateLinks()">Generate Links</button>
 
-// Fungsi untuk mengambil parameter dari URL
-function getURLParameter(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
+    <h2>Generated Links:</h2>
+    <textarea id="generatedLinks" readonly></textarea>
 
-async function fetchProxyList() {
-    try {
-        const response = await fetch('proxy_list.txt');
-        if (!response.ok) throw new Error('Failed to load proxy list.');
-        const text = await response.text();
-        const proxies = text.split('\n').filter(proxy => proxy.trim() !== '');
-
-        const countryParam = getURLParameter('sub'); // Ambil parameter 'sub' dari URL
-        const count = getURLParameter('count') || proxies.length; // Ambil jumlah dari URL, default seluruh data
-        
-        // Filter proxies berdasarkan negara
-        const filteredProxies = countryParam ? proxies.filter(proxy => {
-            const [ , , country] = proxy.split(',');
-            return country.toUpperCase() === countryParam.toUpperCase();
-        }) : proxies;
-
-        // Ambil sesuai dengan count
-        const proxiesToShow = filteredProxies.slice(0, count);
-
-        const vlessUrls = []; // Untuk menampung semua URL VLESS
-
-        for (const proxy of proxiesToShow) {
-            const [ip, port, country, provider] = proxy.split(',');
-            const uuid = generateUUIDv4(); // Menghasilkan UUID v4 varian 2
-
-            const vlessUrl = `vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
-
-            vlessUrls.push(vlessUrl); // Tambahkan URL VLESS ke array
+    <script>
+        // Fungsi untuk menghasilkan UUID v4 varian 2
+        function generateUUIDv4() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0,
+                    v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
         }
 
-        // Tampilkan URL VLESS di console atau lakukan sesuatu dengan vlessUrls
-        console.log(vlessUrls.join('\n'));
+        // Fungsi untuk menghasilkan link sesuai dengan tipe
+        function generateLinks() {
+            const sub = document.getElementById('sub').value.trim();
+            const count = document.getElementById('count').value || 5;
+            const wildcard = document.getElementById('wildcard').value.trim();
 
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
+            if (!sub) {
+                alert("Please enter a country code.");
+                return;
+            }
 
-fetchProxyList();
+            let links = [];
+            for (let i = 0; i < count; i++) {
+                const uuid = generateUUIDv4();
+                const ip = `47.236.246.163`; // Sample IP (should be replaced with real IPs)
+                const port = `14108`; // Sample port (should be replaced with real ports)
+                const provider = `Sample Provider`; // Sample provider (should be replaced with real provider)
+
+                // Generate link based on wildcard presence
+                if (wildcard) {
+                    links.push(`vless://${uuid}@${wildcard}:443?encryption=none&type=ws&host=${wildcard}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${wildcard}.tp1.bmkg.xyz#${sub}+${provider}`);
+                    links.push(`trojan://${uuid}@${wildcard}:443?encryption=none&type=ws&host=${wildcard}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${wildcard}.tp1.bmkg.xyz#${sub}+${provider}`);
+                    links.push(`ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${wildcard}:443?encryption=none&type=ws&host=${wildcard}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${wildcard}.tp1.bmkg.xyz#${sub}+${provider}`);
+                } else {
+                    links.push(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${sub}+${provider}`);
+                    links.push(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${sub}+${provider}`);
+                    links.push(`ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${sub}+${provider}`);
+                }
+            }
+
+            // Output generated links to textarea
+            document.getElementById('generatedLinks').value = links.join('\n');
+        }
+    </script>
+</body>
+</html>
