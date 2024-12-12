@@ -1,92 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        input, button {
-            padding: 10px;
-            margin: 5px;
-            font-size: 16px;
-        }
-        textarea {
-            width: 100%;
-            height: 200px;
-            padding: 10px;
-            font-size: 16px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        h1 {
-            font-size: 24px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Link Generator</h1>
-    <label for="sub">Country (sub): </label>
-    <input type="text" id="sub" placeholder="Enter country code (e.g., SG)" />
-    <br>
-    <label for="count">Count: </label>
-    <input type="number" id="count" value="5" min="1" />
-    <br>
-    <label for="wildcard">Wildcard Domain (optional): </label>
-    <input type="text" id="wildcard" placeholder="Enter wildcard domain (e.g., bug.com)" />
-    <br><br>
-    <button onclick="generateLinks()">Generate Links</button>
+<table>
+  <thead>
+    <tr>
+      <th>TYPE</th>
+      <th>COUNTRY CODE</th>
+      <th>WILDCARD</th>
+      <th>CONS</th>
+      <th>LINK SUB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <select class="service-selector">
+          <option value="vless">VLESS</option>
+          <option value="trojan">TROJAN</option>
+          <option value="ss">SS</option>
+        </select>
+      </td>
+      <td>
+        <select class="service-selector">
+          <option value="ID">ID</option>
+          <option value="SG">SG</option>
+          <option value="US">US</option>
+        </select>
+      </td>
+      <td>
+        <select class="service-selector">
+          <option value="">NO WILDCARD</option>
+          <option value="ava.game.naver.com">ava.game.naver.com</option>
+          <option value="graph.instagram.com">graph.instagram.com</option>
+          <option value="quiz.int.vidio.com">quiz.int.vidio.com</option>
+          <option value="live.iflix.com">live.iflix.com</option>
+          <option value="support.zoom.us">support.zoom.us</option>
+          <option value="blog.webex.com">blog.webex.com</option>
+          <option value="investors.spotify.com">investors.spotify.com</option>
+          <option value="cache.netflix.com">cache.netflix.com</option>
+          <option value="zaintest.vuclip.com">zaintest.vuclip.com</option>
+          <option value="io.ruangguru.com">io.ruangguru.com</option>
+          <option value="api.midtrans.com">api.midtrans.com</option>
+        </select>
+      </td>
+      <td>
+        <select class="service-selector">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="250">250</option>
+        </select>
+      </td>
+      <td>
+        <input type="text" id="link-sub" value="https://sub.bmkg.xyz/vless?sub=KR&count=5" readonly />
+        <button onclick="copyLink()">Copy</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-    <h2>Generated Links:</h2>
-    <textarea id="generatedLinks" readonly></textarea>
-
-    <script>
-        // Fungsi untuk menghasilkan UUID v4 varian 2
-        function generateUUIDv4() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0,
-                    v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
-
-        // Fungsi untuk menghasilkan link sesuai dengan tipe
-        function generateLinks() {
-            const sub = document.getElementById('sub').value.trim();
-            const count = document.getElementById('count').value || 5;
-            const wildcard = document.getElementById('wildcard').value.trim();
-
-            if (!sub) {
-                alert("Please enter a country code.");
-                return;
-            }
-
-            let links = [];
-            for (let i = 0; i < count; i++) {
-                const uuid = generateUUIDv4();
-                const ip = `47.236.246.163`; // Sample IP (should be replaced with real IPs)
-                const port = `14108`; // Sample port (should be replaced with real ports)
-                const provider = `Sample Provider`; // Sample provider (should be replaced with real provider)
-
-                // Generate link based on wildcard presence
-                if (wildcard) {
-                    links.push(`vless://${uuid}@${wildcard}:443?encryption=none&type=ws&host=${wildcard}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${wildcard}.tp1.bmkg.xyz#${sub}+${provider}`);
-                    links.push(`trojan://${uuid}@${wildcard}:443?encryption=none&type=ws&host=${wildcard}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${wildcard}.tp1.bmkg.xyz#${sub}+${provider}`);
-                    links.push(`ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${wildcard}:443?encryption=none&type=ws&host=${wildcard}.tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=${wildcard}.tp1.bmkg.xyz#${sub}+${provider}`);
-                } else {
-                    links.push(`vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${sub}+${provider}`);
-                    links.push(`trojan://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${sub}+${provider}`);
-                    links.push(`ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${sub}+${provider}`);
-                }
-            }
-
-            // Output generated links to textarea
-            document.getElementById('generatedLinks').value = links.join('\n');
-        }
-    </script>
-</body>
-</html>
+<script>
+  function copyLink() {
+    const inputField = document.getElementById('link-sub');
+    inputField.select();
+    document.execCommand('copy');
+    alert("Link copied to clipboard!");
+  }
+</script>
