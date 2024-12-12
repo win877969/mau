@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Proxy</title>
+    <style>
+        .proxy-list {
+            list-style: none;
+            padding: 0;
+        }
+        .proxy-item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daftar Proxy</h1>
+    <ul class="proxy-list" id="proxy-list"></ul>
+
+    <script>
+        fetch('http://bmkg.xyz/bot/proxy_list.txt')
+        .then(response => response.text())
+        .then(data => {
+            const proxyList = document.getElementById('proxy-list');
+            const proxies = data.split('\n');
+
+            proxies.forEach(proxy => {
+                const li = document.createElement('li');
+                li.classList.add('proxy-item');
+                li.textContent = proxy;
+                proxyList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
