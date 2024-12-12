@@ -1,37 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Daftar Proxy</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy List Checker</title>
     <style>
-        .proxy-list {
-            list-style: none;
-            padding: 0;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
-        .proxy-item {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .active {
+            color: green;
+        }
+        .inactive {
+            color: red;
         }
     </style>
 </head>
 <body>
-    <h1>Daftar Proxy</h1>
-    <ul class="proxy-list" id="proxy-list"></ul>
+    <h1>Proxy List Checker</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>IP</th>
+                <th>Port</th>
+                <th>Country</th>
+                <th>Provider</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="proxy-table">
+            <tr>
+                <td colspan="5">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
 
     <script>
-        fetch('proxy_list.txt')
-        .then(response => response.text())
-        .then(data => {
-            const proxyList = document.getElementById('proxy-list');
-            const proxies = data.split('\n');
+        async function fetchProxyList() {
+            try {
+                const response = await fetch('proxy_list.txt');
+                if (!response.ok) throw new Error('Failed to load proxy list.');
+                const text = await response.text();
+                const proxies = text.split('\n').filter(proxy => proxy.trim() !== '');
 
-            proxies.forEach(proxy => {
-                const li = document.createElement('li');
-                li.classList.add('proxy-item');
-                li.textContent = proxy;
-                proxyList.appendChild(li);
-            });
-        });
+                const tableBody = document.getElementById('proxy-table');
+                tableBody.innerHTML = ''; // Clear the table body
+
+                for (const proxy of proxies) {
+                    const [ip, port, country, provider] = proxy.split(',');
+
+                    const row = document.createElement('tr');
+
+                    row.appendChild(createCell(ip));
+                    row.appendChild(createCell(port));
+                    row.appendChild(createCell(country));
+                    row.appendChild(createCell(provider));
+
+                    const statusCell = document.createElement('td');
+                    statusCell.textContent = 'Checking...';
+                    row.appendChild(statusCell);
+
+                    tableBody.appendChild(row);
+
+                    // Check proxy status
+                    const isActive = await checkProxy(ip, port);
+                    statusCell.textContent = isActive ? 'Active' : 'Inactive';
+                    statusCell.className = isActive ? 'active' : 'inactive';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('proxy-table').innerHTML = '<tr><td colspan="5">Failed to load proxy list.</td></tr>';
+            }
+        }
+
+        function createCell(content) {
+            const cell = document.createElement('td');
+            cell.textContent = content || '-';
+            return cell;
+        }
+
+        async function checkProxy(ip, port) {
+            try {
+                const proxyUrl = `http://${ip}:${port}`;
+                const response = await fetch(proxyUrl, { method: 'HEAD', mode: 'no-cors' });
+                return response.ok;
+            } catch {
+                return false;
+            }
+        }
+
+        fetchProxyList();
     </script>
 </body>
 </html>
-
