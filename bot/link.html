@@ -27,6 +27,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icon-css/css/flag-icon.min.css">
 
   <style>
+
+    html {
+    font-size: 16px; /* Pastikan root font size terdefinisi */
+}
   /* Menambahkan gambar latar belakang dan animasi */
 body {
   font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
@@ -928,7 +932,7 @@ function renderProxies(proxies, proxyList, pagination) {
     const uuid = uuidv4();
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
+      <td style="font-size: 1rem;">${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
       <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>          
       <span class="latency-cell"></span></td>
