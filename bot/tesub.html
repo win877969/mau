@@ -50,6 +50,12 @@
             });
         }
 
+        // Fungsi untuk menangkap parameter URL
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
         async function fetchProxyList() {
             try {
                 const response = await fetch('proxy_list.txt');
@@ -60,17 +66,32 @@
                 const tableBody = document.getElementById('proxy-table');
                 tableBody.innerHTML = ''; // Clear the table body
 
-                for (const proxy of proxies) {
+                // Ambil parameter dari URL (misal: sg=5)
+                const countryParam = getURLParameter('sg');
+                const providerCount = getURLParameter('count') || proxies.length;
+
+                // Filter proxy berdasarkan negara dan jumlah provider
+                const filteredProxies = proxies.filter(proxy => {
                     const [ip, port, country, provider] = proxy.split(',');
-                    const uuid = generateUUIDv4(); // Menghasilkan UUID v4 varian 2
+                    return country.toLowerCase() === countryParam?.toLowerCase();
+                }).slice(0, providerCount);
 
-                    const vlessUrl = `vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
+                if (filteredProxies.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="3">No proxies found for the given criteria.</td></tr>';
+                } else {
+                    // Tambahkan baris untuk setiap proxy yang difilter
+                    for (const proxy of filteredProxies) {
+                        const [ip, port, country, provider] = proxy.split(',');
+                        const uuid = generateUUIDv4(); // Menghasilkan UUID v4 varian 2
 
-                    const row = document.createElement('tr');
-                    row.appendChild(createCell(`${ip}:${port}`)); // Gabungkan IP dan Port
-                    row.appendChild(createCell(`(${country}) | ${provider}`)); // Format kolom Details
-                    row.appendChild(createCell(vlessUrl)); // Tambahkan kolom VLESS URL
-                    tableBody.appendChild(row);
+                        const vlessUrl = `vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
+
+                        const row = document.createElement('tr');
+                        row.appendChild(createCell(`${ip}:${port}`)); // Gabungkan IP dan Port
+                        row.appendChild(createCell(`(${country}) | ${provider}`)); // Format kolom Details
+                        row.appendChild(createCell(vlessUrl)); // Tambahkan kolom VLESS URL
+                        tableBody.appendChild(row);
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
