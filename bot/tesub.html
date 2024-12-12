@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy List Checker</title>
+    <title>Proxy List Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,16 +21,10 @@
         th {
             background-color: #f4f4f4;
         }
-        .active {
-            color: green;
-        }
-        .inactive {
-            color: red;
-        }
     </style>
 </head>
 <body>
-    <h1>Proxy List Checker</h1>
+    <h1>Proxy List</h1>
     <table>
         <thead>
             <tr>
@@ -38,13 +32,11 @@
                 <th>Port</th>
                 <th>Country</th>
                 <th>Provider</th>
-                <th>Status</th>
-                <th>Latency (ms)</th>
             </tr>
         </thead>
         <tbody id="proxy-table">
             <tr>
-                <td colspan="6">Loading...</td>
+                <td colspan="4">Loading...</td>
             </tr>
         </tbody>
     </table>
@@ -64,31 +56,15 @@
                     const [ip, port, country, provider] = proxy.split(',');
 
                     const row = document.createElement('tr');
-
                     row.appendChild(createCell(ip));
                     row.appendChild(createCell(port));
                     row.appendChild(createCell(country));
                     row.appendChild(createCell(provider));
-
-                    const statusCell = document.createElement('td');
-                    statusCell.textContent = 'Checking...';
-                    row.appendChild(statusCell);
-
-                    const latencyCell = document.createElement('td');
-                    latencyCell.textContent = '...';
-                    row.appendChild(latencyCell);
-
                     tableBody.appendChild(row);
-
-                    // Check proxy status and latency
-                    const result = await checkProxy(ip, port);
-                    statusCell.textContent = result.success ? 'Active' : 'Inactive';
-                    statusCell.className = result.success ? 'active' : 'inactive';
-                    latencyCell.textContent = result.success ? `${result.latency} ms` : '-';
                 }
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('proxy-table').innerHTML = '<tr><td colspan="6">Failed to load proxy list.</td></tr>';
+                document.getElementById('proxy-table').innerHTML = '<tr><td colspan="4">Failed to load proxy list.</td></tr>';
             }
         }
 
@@ -96,15 +72,6 @@
             const cell = document.createElement('td');
             cell.textContent = content || '-';
             return cell;
-        }
-
-        async function checkProxy(ip, port) {
-            try {
-                const response = await fetch(`/check-proxy?ip=${ip}&port=${port}`);
-                return await response.json();
-            } catch {
-                return { success: false };
-            }
         }
 
         fetchProxyList();
