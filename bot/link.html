@@ -332,7 +332,7 @@ i.fa-check-circle {
       color: #fff; /* Warna teks saat dihover */
     }
 
-    .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
+    .copy-vless, .cekproxy, .sub, .copy-vless1, .copy-trojan, .copy-ss {
       font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
       margin: 5px;
       padding: 5px 10px;
@@ -477,7 +477,7 @@ i.fa-check-circle {
         font-size: 18px;
       }
 
-      .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
+      .copy-vless, .sub, .copy-vless1, .copy-trojan, .copy-ss {
         padding: 4px 8px;
         font-size: 12px;
         
@@ -515,6 +515,7 @@ i.fa-check-circle {
       <th>WILDCARD</th>
       <th>COOUNT</th>
       <th>LINK SUB</th>
+      <th>ACTION</th>
     </tr>
   </thead>
   <tbody>
@@ -793,7 +794,8 @@ i.fa-check-circle {
       </td>
       <td>
         <input type="text" id="link-sub" value="" readonly />
-        <button onclick="copyLink()">Copy</button>
+        </td>
+      <td><button class="sub" onclick="copyLink()">Copy Link Sub</button>
       </td>
     </tr>
   </tbody>
