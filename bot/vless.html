@@ -1,86 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy List Viewer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            white-space: pre-wrap; /* Menyediakan line breaks */
-            word-wrap: break-word; /* Memastikan teks panjang tidak melampaui batas */
-        }
-        h1 {
-            font-size: 24px;
-        }
-    </style>
-</head>
-<body>
-    <h1>VLESS Proxy List</h1>
-    <pre id="vless-urls">Loading...</pre>
+// Fungsi untuk menghasilkan UUID v4 varian 2
+function generateUUIDv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0,
+            v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
 
-    <script>
-        // Fungsi untuk menghasilkan UUID v4 varian 2
-        function generateUUIDv4() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0,
-                    v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
+// Fungsi untuk mengambil parameter dari URL
+function getURLParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
 
-        // Fungsi untuk mengambil parameter dari URL
-        function getURLParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
+async function fetchProxyList() {
+    try {
+        const response = await fetch('proxy_list.txt');
+        if (!response.ok) throw new Error('Failed to load proxy list.');
+        const text = await response.text();
+        const proxies = text.split('\n').filter(proxy => proxy.trim() !== '');
 
-        async function fetchProxyList() {
-            try {
-                const response = await fetch('proxy_list.txt');
-                if (!response.ok) throw new Error('Failed to load proxy list.');
-                const text = await response.text();
-                const proxies = text.split('\n').filter(proxy => proxy.trim() !== '');
+        const countryParam = getURLParameter('sub'); // Ambil parameter 'sub' dari URL
+        const count = getURLParameter('count') || proxies.length; // Ambil jumlah dari URL, default seluruh data
+        
+        // Filter proxies berdasarkan negara
+        const filteredProxies = countryParam ? proxies.filter(proxy => {
+            const [ , , country] = proxy.split(',');
+            return country.toUpperCase() === countryParam.toUpperCase();
+        }) : proxies;
 
-                const countryParam = getURLParameter('sub'); // Ambil parameter 'sub' dari URL
-                const count = getURLParameter('count') || proxies.length; // Ambil jumlah dari URL, default seluruh data
-                
-                // Filter proxies berdasarkan negara
-                const filteredProxies = countryParam ? proxies.filter(proxy => {
-                    const [ , , country] = proxy.split(',');
-                    return country.toUpperCase() === countryParam.toUpperCase();
-                }) : proxies;
+        // Ambil sesuai dengan count
+        const proxiesToShow = filteredProxies.slice(0, count);
 
-                // Ambil sesuai dengan count
-                const proxiesToShow = filteredProxies.slice(0, count);
+        const vlessUrls = []; // Untuk menampung semua URL VLESS
 
-                const vlessUrls = []; // Untuk menampung semua URL VLESS
+        for (const proxy of proxiesToShow) {
+            const [ip, port, country, provider] = proxy.split(',');
+            const uuid = generateUUIDv4(); // Menghasilkan UUID v4 varian 2
 
-                for (const proxy of proxiesToShow) {
-                    const [ip, port, country, provider] = proxy.split(',');
-                    const uuid = generateUUIDv4(); // Menghasilkan UUID v4 varian 2
+            const vlessUrl = `vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
 
-                    const vlessUrl = `vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
-
-                    vlessUrls.push(vlessUrl); // Tambahkan URL VLESS ke array
-                }
-
-                // Tampilkan URL VLESS dalam format yang mudah disalin
-                document.getElementById('vless-urls').textContent = vlessUrls.join('\n');
-
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('vless-urls').textContent = 'Failed to load proxy list.';
-            }
+            vlessUrls.push(vlessUrl); // Tambahkan URL VLESS ke array
         }
 
-        fetchProxyList();
-    </script>
-</body>
-</html>
+        // Tampilkan URL VLESS di console atau lakukan sesuatu dengan vlessUrls
+        console.log(vlessUrls.join('\n'));
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+fetchProxyList();
