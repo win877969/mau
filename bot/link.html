@@ -559,24 +559,24 @@ i.fa-check-circle {
         <input type="text" id="search-bar" placeholder="Cari Isp, Country Code">
       </div></div>
 
-  <div class="cont11">
-  <div class="umpan kadal">
-    <div class="col">TYPE</div>
-    <div class="col">COUNTRY</div>
-    <div class="col">BUG</div>
-    <div class="col">COUNT</div>
-    <div class="col">SUB</div>
+  <table class="aha">
+  <thead class="aha">
+    <tr class="aha"><th class="aha">TYPE</th>
+    <th class="aha">COUNTRY</th>
+    <th class="aha">BUG</th>
+    <th class="aha">COUNT</th>
+    <th class="aha">SUB</th></tr></thead>
   
-  </div>
-  <div class="umpan">
-    <div class="col">
+  <tbody class="aha">
+    <tr class="aha">
+      <td class="aha">
       <select class="service-selector" id="service-type">
         <option value="vless">VLESS</option>
         <option value="trojan">TROJAN</option>
         <option value="ss">SS</option>
       </select>
-    </div>
-    <div class="col">
+    </td>
+    <td class="aha">
       <select class="service-selector" id="country-code">
          <option value="ID">Indonesia</option>
     <option value="SG">Singapore</option>
@@ -814,16 +814,16 @@ i.fa-check-circle {
     <option value="ZM">Zambia</option>
     <option value="ZW">Zimbabwe</option>
 </select>
-      </div>
-    <div class="col">
+      </td>
+    <td class="aha">
       <select class="service-selector" id="wildcard">
         <option value="">NO WILDCARD</option>
         <option value="ava.game.naver.com">ava.game.naver.com</option>
         <option value="graph.instagram.com">graph.instagram.com</option>
         <!-- Wildcard lainnya -->
       </select>
-    </div>
-    <div class="col">
+    </td>
+    <td class="td">
       <select class="service-selector" id="cons">
         <option value="5">5</option>
         <option value="10">10</option>
@@ -832,13 +832,13 @@ i.fa-check-circle {
         <option value="100">100</option>
         <option value="250">250</option>
       </select>
-    </div>
-    <div class="col">
+    </td>
+    <td class=aha">
       <input type="text" id="link-sub" value="" readonly />
       <button class="sub" onclick="copyLink()">COPY</button>
-    </div>
-  </div>
-</div>
+    </td>
+  </tr>
+</table>
 
 <script>
   // Function to generate the link
