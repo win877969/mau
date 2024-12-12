@@ -315,6 +315,7 @@ i.fa-check-circle {
     }
 
     td {
+      font-size: 1rem; /* 1rem biasanya setara dengan 16px */
       font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
       padding: 10px;
       text-align: center;
@@ -927,7 +928,7 @@ function renderProxies(proxies, proxyList, pagination) {
     const uuid = uuidv4();
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td style="font-size: 14px;">${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
+      <td style="font-size: 10px;">${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
       <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>          
       <span class="latency-cell"></span></td>
