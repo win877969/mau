@@ -1,5 +1,5 @@
-<div class="container22">
-  <div class="row header2">
+<div class="con11">
+  <div class="umpan kadal">
     <div class="col">TYPE</div>
     <div class="col">COUNTRY CODE</div>
     <div class="col">WILDCARD</div>
@@ -7,7 +7,7 @@
     <div class="col">LINK SUB</div>
     <div class="col">ACTION</div>
   </div>
-  <div class="row">
+  <div class="umpan">
     <div class="col">
       <select class="service-selector" id="service-type">
         <option value="vless">VLESS</option>
@@ -90,28 +90,43 @@
 </script>
 
 <style>
-  .container22 {
+   .cont11 {
+    align-items: center;
     display: flex;
     flex-direction: column;
     width: 100%;
   }
-  .row {
+  .umpan {
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
     display: flex;
     flex-direction: row;
     width: 100%;
     margin-bottom: 10px;
   }
-  .header2 {
+  .kadal {
+    align-items: center;
+    text-align: center;
     font-weight: bold;
-    background-color: #f4f4f4;
+    background-color: ;
   }
   .col {
+    font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
+      display: flex;
+      justify-content: space-between;
+      width: 70%;
+      margin-bottom: 20px;
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+
     flex: 1;
     padding: 5px;
     text-align: center;
   }
-  select, input, button {
-    width: 100%;
-    padding: 5px;
-  }
+  
 </style>
