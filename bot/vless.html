@@ -18,12 +18,8 @@
         </select>
       </td>
       <td>
-        <select class="service-selector" id="country-code">
-          <option value="ID">ID</option>
-          <option value="SG">SG</option>
-          <option value="US">US</option>
-        </select>
-      </td>
+        <div id="country-selector-container"></div>
+</td>
       <td>
         <select class="service-selector" id="wildcard">
           <option value="">NO WILDCARD</option>
@@ -57,6 +53,17 @@
     </tr>
   </tbody>
 </table>
+  <script>
+    // Memuat konten file country-selector.html ke dalam elemen container
+    fetch('myfile/data_con.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('country-selector-container').innerHTML = data;
+      })
+      .catch(error => {
+        console.error('Error loading the country selector:', error);
+      });
+  </script>
 
 <script>
   // Function to generate the link
