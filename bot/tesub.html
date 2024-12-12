@@ -30,11 +30,12 @@
             <tr>
                 <th>IP:Port</th>
                 <th>Details</th>
+                <th>VLESS URL</th>
             </tr>
         </thead>
         <tbody id="proxy-table">
             <tr>
-                <td colspan="2">Loading...</td>
+                <td colspan="3">Loading...</td>
             </tr>
         </tbody>
     </table>
@@ -53,14 +54,17 @@
                 for (const proxy of proxies) {
                     const [ip, port, country, provider] = proxy.split(',');
 
+                    const vlessUrl = `vless://e1028865-3cc7-436c-8c22-aa8eba7cfc3e@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
+
                     const row = document.createElement('tr');
                     row.appendChild(createCell(`${ip}:${port}`)); // Gabungkan IP dan Port
                     row.appendChild(createCell(`(${country}) | ${provider}`)); // Format kolom Details
+                    row.appendChild(createCell(vlessUrl)); // Tambahkan kolom VLESS URL
                     tableBody.appendChild(row);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('proxy-table').innerHTML = '<tr><td colspan="2">Failed to load proxy list.</td></tr>';
+                document.getElementById('proxy-table').innerHTML = '<tr><td colspan="3">Failed to load proxy list.</td></tr>';
             }
         }
 
