@@ -1,36 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Daftar Proxy</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy List Viewer</title>
     <style>
-        .proxy-list {
-            list-style: none;
-            padding: 0;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
-        .proxy-item {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
         }
     </style>
 </head>
 <body>
-    <h1>Daftar Proxy</h1>
-    <ul class="proxy-list" id="proxy-list"></ul>
+    <h1>Proxy List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>IP:Port</th>
+                <th>Details</th>
+                <th>VLESS URL</th>
+            </tr>
+        </thead>
+        <tbody id="proxy-table">
+            <tr>
+                <td colspan="3">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
 
     <script>
-        fetch('proxy.txt')
-        .then(response => response.text())
-        .then(data => {
-            const proxyList = document.getElementById('proxy-list');
-            const proxies = data.split('\n');
-
-            proxies.forEach(proxy => {
-                const li = document.createElement('li');
-                li.classList.add('proxy-item');
-                li.textContent = proxy;
-                proxyList.appendChild(li);
+        // Fungsi untuk menghasilkan UUID v4 varian 2
+        function generateUUIDv4() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0,
+                    v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
             });
-        });
+        }
+
+        async function fetchProxyList() {
+            try {
+                const response = await fetch('proxy_list.txt');
+                if (!response.ok) throw new Error('Failed to load proxy list.');
+                const text = await response.text();
+                const proxies = text.split('\n').filter(proxy => proxy.trim() !== '');
+
+                const tableBody = document.getElementById('proxy-table');
+                tableBody.innerHTML = ''; // Clear the table body
+
+                for (const proxy of proxies) {
+                    const [ip, port, country, provider] = proxy.split(',');
+                    const uuid = generateUUIDv4(); // Menghasilkan UUID v4 varian 2
+
+                    const vlessUrl = `vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
+
+                    const row = document.createElement('tr');
+                    row.appendChild(createCell(`${ip}:${port}`)); // Gabungkan IP dan Port
+                    row.appendChild(createCell(`(${country}) | ${provider}`)); // Format kolom Details
+                    row.appendChild(createCell(vlessUrl)); // Tambahkan kolom VLESS URL
+                    tableBody.appendChild(row);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('proxy-table').innerHTML = '<tr><td colspan="3">Failed to load proxy list.</td></tr>';
+            }
+        }
+
+        function createCell(content) {
+            const cell = document.createElement('td');
+            cell.textContent = content || '-';
+            return cell;
+        }
+
+        fetchProxyList();
     </script>
 </body>
 </html>
