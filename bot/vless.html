@@ -80,16 +80,44 @@
   // Function to copy the link to clipboard
   function copyLink() {
     const inputField = document.getElementById('link-sub');
-    inputField.select();
-    document.execCommand('copy');
-    alert("Link copied to clipboard!");
+    const link = inputField.value;
+
+    // Salin teks ke clipboard
+    navigator.clipboard.writeText(link).then(() => {
+      // Tampilkan pesan popup yang menarik menggunakan Swal
+      Swal.fire({
+        title: 'Berhasil!',
+        text: 'Link telah berhasil disalin ke clipboard.',
+        icon: 'success',
+        background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru tua transparan)
+        color: 'white', // Warna teks
+        customClass: {
+          popup: 'rounded-popup', // Kustomisasi popup
+        },
+        confirmButtonColor: '#3085d6' // Warna tombol konfirmasi
+      });
+    }).catch((err) => {
+      // Tangani jika ada kesalahan saat menyalin
+      Swal.fire({
+        title: 'Gagal!',
+        text: 'Terjadi kesalahan saat menyalin link.',
+        icon: 'error',
+        background: 'rgba(67, 6, 6, 0.89)', // Warna latar belakang (merah tua transparan)
+        color: 'white', // Warna teks
+        confirmButtonColor: '#d33' // Warna tombol konfirmasi
+      });
+    });
   }
 
   // Call generateLink initially to populate the field
   generateLink();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
+  .rounded-popup {
+    border-radius: 10px; /* Membuat sudut melengkung */
+  }
    .cont11 {
   align-items: center;
   display: flex;
