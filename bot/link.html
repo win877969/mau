@@ -53,9 +53,32 @@ body {
         color: red; /* Warna teks */
         transition: background-color 0.3s, border-color 0.3s;
         
-   }}
+   }
 
-
+   .container22 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .header2 {
+    font-weight: bold;
+    background-color: #f4f4f4;
+  }
+  .col {
+    flex: 1;
+    padding: 5px;
+    text-align: center;
+  }
+  select, input, button {
+    width: 100%;
+    padding: 5px;
+  }
     
     .rounded-popup {
   border-radius: 15px; /* Sudut melengkung */
@@ -520,30 +543,27 @@ i.fa-check-circle {
         <span class="filter-label">Search:</span>
         <input type="text" id="search-bar" placeholder="Cari Isp, Country Code">
       </div></div>
-  <div class="table-container">
-      <table>
-  <thead>
-    <tr>
-      <th>TYPE</th>
-      <th>COUNTRY CODE</th>
-      <th>WILDCARD</th>
-      <th>COOUNT</th>
-      <th>LINK SUB</th>
-      <th>ACTION</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <select class="service-selector" id="service-type">
-          <option value="vless">VLESS</option>
-          <option value="trojan">TROJAN</option>
-          <option value="ss">SS</option>
-        </select>
-      </td>
-      <td>
-        <select class="service-selector" id="country-code">
-    <option value="ID">Indonesia</option>
+
+  <div class="container22">
+  <div class="row header2">
+    <div class="col">TYPE</div>
+    <div class="col">COUNTRY CODE</div>
+    <div class="col">WILDCARD</div>
+    <div class="col">COUNT</div>
+    <div class="col">LINK SUB</div>
+    <div class="col">ACTION</div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <select class="service-selector" id="service-type">
+        <option value="vless">VLESS</option>
+        <option value="trojan">TROJAN</option>
+        <option value="ss">SS</option>
+      </select>
+    </div>
+    <div class="col">
+      <select class="service-selector" id="country-code">
+         <option value="ID">Indonesia</option>
     <option value="SG">Singapore</option>
     <option value="US">United States</option>
     <option value="AF">Afghanistan</option>
@@ -779,41 +799,33 @@ i.fa-check-circle {
     <option value="ZM">Zambia</option>
     <option value="ZW">Zimbabwe</option>
 </select>
-      </td>
-      <td>
-        <select class="service-selector" id="wildcard">
-          <option value="">NO WILDCARD</option>
-          <option value="ava.game.naver.com">ava.game.naver.com</option>
-          <option value="graph.instagram.com">graph.instagram.com</option>
-          <option value="quiz.int.vidio.com">quiz.int.vidio.com</option>
-          <option value="live.iflix.com">live.iflix.com</option>
-          <option value="support.zoom.us">support.zoom.us</option>
-          <option value="blog.webex.com">blog.webex.com</option>
-          <option value="investors.spotify.com">investors.spotify.com</option>
-          <option value="cache.netflix.com">cache.netflix.com</option>
-          <option value="zaintest.vuclip.com">zaintest.vuclip.com</option>
-          <option value="io.ruangguru.com">io.ruangguru.com</option>
-          <option value="api.midtrans.com">api.midtrans.com</option>
-        </select>
-      </td>
-      <td>
-        <select class="service-selector" id="cons">
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <option value="250">250</option>
-        </select>
-      </td>
-      <td>
-        <input type="text" id="link-sub" value="" readonly />
-        </td>
-      <td><button class="sub" onclick="copyLink()">Copy Link Sub</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      </div>
+    <div class="col">
+      <select class="service-selector" id="wildcard">
+        <option value="">NO WILDCARD</option>
+        <option value="ava.game.naver.com">ava.game.naver.com</option>
+        <option value="graph.instagram.com">graph.instagram.com</option>
+        <!-- Wildcard lainnya -->
+      </select>
+    </div>
+    <div class="col">
+      <select class="service-selector" id="cons">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="250">250</option>
+      </select>
+    </div>
+    <div class="col">
+      <input type="text" id="link-sub" value="" readonly />
+    </div>
+    <div class="col">
+      <button onclick="copyLink()">Copy</button>
+    </div>
+  </div>
+</div>
 
 <script>
   // Function to generate the link
@@ -853,7 +865,7 @@ i.fa-check-circle {
   generateLink();
 </script>
 
-    
+      <div class="table-container">
     
     <table>
       <thead>
