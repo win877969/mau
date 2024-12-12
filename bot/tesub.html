@@ -81,10 +81,10 @@
                     tableBody.appendChild(row);
 
                     // Check proxy status and latency
-                    const { isActive, latency } = await checkProxy(ip, port);
-                    statusCell.textContent = isActive ? 'Active' : 'Inactive';
-                    statusCell.className = isActive ? 'active' : 'inactive';
-                    latencyCell.textContent = isActive ? `${latency} ms` : '-';
+                    const result = await checkProxy(ip, port);
+                    statusCell.textContent = result.success ? 'Active' : 'Inactive';
+                    statusCell.className = result.success ? 'active' : 'inactive';
+                    latencyCell.textContent = result.success ? `${result.latency} ms` : '-';
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -99,24 +99,11 @@
         }
 
         async function checkProxy(ip, port) {
-            const proxyUrl = `http://${ip}:${port}`;
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 5000); // Timeout after 5 seconds
-            const startTime = performance.now();
-
             try {
-                const response = await fetch('https://httpbin.org/ip', {
-                    method: 'GET',
-                    signal: controller.signal,
-                    mode: 'no-cors',
-                    headers: { 'Proxy-Authorization': proxyUrl }
-                });
-                clearTimeout(timeout);
-                const latency = Math.round(performance.now() - startTime);
-                return { isActive: response.ok, latency };
+                const response = await fetch(`/check-proxy?ip=${ip}&port=${port}`);
+                return await response.json();
             } catch {
-                clearTimeout(timeout);
-                return { isActive: false, latency: null };
+                return { success: false };
             }
         }
 
