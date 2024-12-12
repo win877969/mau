@@ -1,536 +1,111 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="https://bmkg.xyz/bot/img/favicons/favicon.ico">
-
-    <title>Checkout example for Bootstrap</title>
-    <!-- Bootstrap core CSS -->
-   <link href="https://bmkg.xyz/bot/bootstrap.min.css" rel="stylesheet">
-  <link href="https://bmkg.xyz/css/config.css" rel="stylesheet">
- 
-    <!-- Custom styles for this template -->
-
-  <!-- Fonts and icons -->
-  
-<style>
-  .body {
-  max-width: 100%;
-  background-color: #000;
-}
-  body {
-  max-width: 100%;
-  background-color: #000;
-}
-  .container {
-  max-width: 960px;
-  background-color: #000;
-}
-
-.border-top { border-top: 1px solid #e5e5e5; }
-.border-bottom { border-bottom: 1px solid #e5e5e5; }
-.border-top-gray { border-top-color: #adb5bd; }
-
-.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
-
-.lh-condensed { line-height: 1.25; }
-
-  
-
-  
-  
-header {
-  background-color: grey;
-  position: fixed;
-  left: 0;
-  width: 0%;
-  text-align: center;
-}
-.header {
-  background-color: grey;
-  position: fixed;
-  left: 0;
-
-  width: 0%;
-  text-align: center;
-}
-.config-header {
-        max-width: 100%;
-        background: rgba(5, 0, 255, 0.53);
-        color: #fff;
-        backdrop-filter: blur(10px);
-        border: 0px solid rgba(242, 89, 0, 1);
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: var(--glow);
-        transform-style: preserve-3d;
-        animation: cardFloat 6s ease-in-out infinite;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy List Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
-  .config-menu {
-        max-width: 100%;
-        background: rgba(0, 0, 60, 0.84);
-        color: #fff;
-        backdrop-filter: blur(10px);
-        border: 0px solid rgba(242, 89, 0, 1);
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: var(--glow);
-        transform-style: preserve-3d;
-        animation: cardFloat 6s ease-in-out infinite;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-  .config-section {
-        max-width: 100%;
-        background: var(--card-bg);
-        color: #fff;
-        backdrop-filter: blur(10px);
-        border: 0px solid rgba(242, 89, 0, 1);
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: var(--glow);
-        transform-style: preserve-3d;
-        animation: cardFloat 6s ease-in-out infinite;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
-  .config-footer {
-        max-width: 100%;
-        background: rgba(0, 0, 0, 0.31);
-        color: #fff;
-        backdrop-filter: blur(10px);
-        border: 0px solid rgba(242, 89, 0, 1);
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: var(--glow);
-        transform-style: preserve-3d;
-        animation: cardFloat 6s ease-in-out infinite;
+        th {
+            background-color: #f4f4f4;
         }
-main {
-  padding-top: 80px; /* bad, because it's fixed */
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;   
-   width: 100%;
-   text-align: center;
-}
-</style>
+    </style>
+</head>
+<body>
+    <h1>Proxy List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>IP:Port</th>
+                <th>Details</th>
+                <th>VLESS URL</th>
+            </tr>
+        </thead>
+        <tbody id="proxy-table">
+            <tr>
+                <td colspan="3">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
 
+    <script>
+        // Fungsi untuk menghasilkan UUID v4 varian 2
+        function generateUUIDv4() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0,
+                    v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
 
+        // Fungsi untuk menangkap parameter URL
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
 
-  </head>
+        async function fetchProxyList() {
+            try {
+                const response = await fetch('proxy_list.txt');
+                if (!response.ok) throw new Error('Failed to load proxy list.');
+                const text = await response.text();
+                const proxies = text.split('\n').filter(proxy => proxy.trim() !== '');
 
-  <body>
-    
- <div class="container">
-   
-      
-      <div class="py-5 text-center">
-       <div class="config-header"> ALAAH KINTIL </div>
-</div>
-      <div class="row">
-        <div class="col-md-4 order-md-2 mb-4">
-          <div class="config-menu">
+                const tableBody = document.getElementById('proxy-table');
+                tableBody.innerHTML = ''; // Clear the table body
 
-  <!--
-    Available colors for the full background: full-color-blue, full-color-azure, full-color-green, full-color-red, full-color-orange
-    Available colors only for the toolbar: toolbar-color-blue, toolbar-color-azure, toolbar-color-green, toolbar-color-red, toolbar-color-orange
-  -->
+                // Ambil parameter dari URL (misal: sg=5)
+                const countryParam = getURLParameter('sg');
+                const providerCount = getURLParameter('count') || proxies.length;
 
+                // Filter proxy berdasarkan negara dan jumlah provider
+                const filteredProxies = proxies.filter(proxy => {
+                    const [ip, port, country, provider] = proxy.split(',');
+                    return country.toLowerCase() === countryParam?.toLowerCase();
+                }).slice(0, providerCount);
 
+                if (filteredProxies.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="3">No proxies found for the given criteria.</td></tr>';
+                } else {
+                    // Tambahkan baris untuk setiap proxy yang difilter
+                    for (const proxy of filteredProxies) {
+                        const [ip, port, country, provider] = proxy.split(',');
+                        const uuid = generateUUIDv4(); // Menghasilkan UUID v4 varian 2
 
-  <table id="example" class="display" style="width:100%">
-     <thead>
-      <th data-field="id">ID</th>
-      <th data-field="name">Name</th>    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>Dakota Rice</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Minerva Hooper</td>
-        </tr>
-      <tr>
-        <td>3</td>
-        <td>Sage Rodriguez</td>
-        </tr>
-      <tr>
-        <td>4</td>
-        <td>Philip Chaney</td>
-        </tr>
-      <tr>
-        <td>5</td>
-        <td>Doris Greene</td>
-        </tr>
-      <tr>
-        <td>6</td>
-        <td>Mason Porter</td>
-        </tr>
-      <tr>
-        <td>7</td>
-        <td>Alden Chen</td>
-      </tr>
-      <tr>
-        <td>8</td>
-        <td>Colton Hodges</td>
-      </tr>
-      <tr>
-        <td>9</td>
-        <td>Illana Nelson</td>
-        </tr>
-      <tr>
-        <td>10</td>
-        <td>Nicole Lane</td>
-        </tr>
-      <tr>
-        <td>11</td>
-        <td>Chaim Saunders</td>
-        </tr>
-      <tr>
-        <td>12</td>
-        <td>Josiah Simon</td>
-        </tr>
-      <tr>
-        <td>13</td>
-        <td>Ila Poole</td>
-        </tr>
-      <tr>
-        <td>14</td>
-        <td>Shana Mejia</td>
-        </tr>
-      <tr>
-        <td>15</td>
-        <td>Lana Ryan</td>
-        </tr>
-      <tr>
-        <td>16</td>
-        <td>Daquan Bender</td>
-         </tr>
-      <tr>
-        <td>17</td>
-        <td>Connor Wagner</td>
-        </tr>
-      <tr>
-        <td>18</td>
-        <td>Boris Horton</td>
-        </tr>
-      <tr>
-        <td>19</td>
-        <td>Winifred Ryan</td>
-         </tr>
-    </tbody>
-  </table>
+                        const vlessUrl = `vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
 
-          </div>
-        </div>
+                        const row = document.createElement('tr');
+                        row.appendChild(createCell(`${ip}:${port}`)); // Gabungkan IP dan Port
+                        row.appendChild(createCell(`(${country}) | ${provider}`)); // Format kolom Details
+                        row.appendChild(createCell(vlessUrl)); // Tambahkan kolom VLESS URL
+                        tableBody.appendChild(row);
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('proxy-table').innerHTML = '<tr><td colspan="3">Failed to load proxy list.</td></tr>';
+            }
+        }
 
-        
-          
-        <div class="col-md-8 order-md-1">
-         <div class="config-section"> APE LUUbackground-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}<br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: 
-         background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}<br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: 
-         background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}<br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: 
-           background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}<br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: 
-           vbackground-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}<br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: lightblue;
-}
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;   
-   text-align: center;
-}</br> <br><br>body {
-  background-color: 
-         </div>
-        </div>
-      </div>
+        function createCell(content) {
+            const cell = document.createElement('td');
+            cell.textContent = content || '-';
+            return cell;
+        }
 
-      
-     <footer class="my-5 pt-5 text-muted text-center text-small">
-
-   <div class="footer">
-    <div class="config-footer">  <p class="mb-1">&copy; 2017-2018 Company Name</p>
-        
-    </div>  
-    </div></footer>
-
-    </div>
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="https://bmkg.xyz/bot/jquery-slim.min.js"><\/script>')</script>
-    <script src="https://bmkg.xyz/bot/popper.min.js"></script>
-    <script src="https://bmkg.xyz/bot/bootstrap.min.js"></script>
-    <script src="https://bmkg.xyz/vendor/holder.min.js"></script>
-      
-        <script>
-       new DataTable('#example');
-</script>   
-  </body>
+        fetchProxyList();
+    </script>
+</body>
 </html>
