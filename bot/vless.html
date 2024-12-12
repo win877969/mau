@@ -97,11 +97,35 @@
 
   // Function to copy the link to clipboard
   function copyLink() {
-    const inputField = document.getElementById('link-sub');
-    inputField.select();
-    document.execCommand('copy');
-    alert('Link copied to clipboard!');
-  }
+  const inputField = document.getElementById('link-sub');
+  inputField.select();
+  document.execCommand('copy');
+
+  // Tampilkan popup pesan
+  const popup = document.createElement('div');
+  popup.innerText = "🚀 Link copied successfully! Ready to share! 🎉";
+  popup.style.position = "fixed";
+  popup.style.bottom = "20px";
+  popup.style.right = "20px";
+  popup.style.padding = "10px 20px";
+  popup.style.backgroundColor = "#4CAF50";
+  popup.style.color = "#fff";
+  popup.style.fontSize = "16px";
+  popup.style.borderRadius = "5px";
+  popup.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  popup.style.zIndex = "1000";
+  popup.style.transition = "opacity 0.5s ease-in-out";
+  popup.style.opacity = "1";
+
+  document.body.appendChild(popup);
+
+  // Hilangkan popup setelah 3 detik
+  setTimeout(() => {
+    popup.style.opacity = "0";
+    setTimeout(() => popup.remove(), 500);
+  }, 3000);
+}
+
 
   // Panggil fungsi loadCountrySelector dan tambahkan listener ke elemen lain
   loadCountrySelector().then(() => {
