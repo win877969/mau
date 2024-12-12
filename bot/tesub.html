@@ -28,15 +28,14 @@
     <table>
         <thead>
             <tr>
-                <th>IP</th>
-                <th>Port</th>
+                <th>IP:Port</th>
                 <th>Country</th>
                 <th>Provider</th>
             </tr>
         </thead>
         <tbody id="proxy-table">
             <tr>
-                <td colspan="4">Loading...</td>
+                <td colspan="3">Loading...</td>
             </tr>
         </tbody>
     </table>
@@ -56,15 +55,14 @@
                     const [ip, port, country, provider] = proxy.split(',');
 
                     const row = document.createElement('tr');
-                    row.appendChild(createCell(ip));
-                    row.appendChild(createCell(port));
+                    row.appendChild(createCell(`${ip}:${port}`)); // Gabungkan IP dan Port
                     row.appendChild(createCell(country));
                     row.appendChild(createCell(provider));
                     tableBody.appendChild(row);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('proxy-table').innerHTML = '<tr><td colspan="4">Failed to load proxy list.</td></tr>';
+                document.getElementById('proxy-table').innerHTML = '<tr><td colspan="3">Failed to load proxy list.</td></tr>';
             }
         }
 
