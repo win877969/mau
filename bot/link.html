@@ -1008,7 +1008,8 @@ function renderProxies(proxies, proxyList, pagination) {
     
   row.querySelector('.copy-vless').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
-    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+    const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
+    const VLESS = `vless://${uuid}@${domain}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#${negara}+${penyedia}`;
     navigator.clipboard.writeText(VLESS);
     Swal.fire({
       title: 'Berhasil!',
@@ -1025,8 +1026,9 @@ function renderProxies(proxies, proxyList, pagination) {
 
   row.querySelector('.copy-vless-clash').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
+    const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
     const VLESSC = `- name: ${negara}+${penyedia}
-  server: ${selectedService}
+  server: ${domain}
   port: 443
   type: vless
   uuid: ${uuid}
@@ -1035,11 +1037,11 @@ function renderProxies(proxies, proxyList, pagination) {
   udp: true
   skip-cert-verify: true
   network: ws
-  servername: ${selectedService}
+  servername: ${domain}
   ws-opts:
     path: /${ip}-${port}
     headers:
-      Host: ${selectedService}`;
+      Host: ${domain}`;
     navigator.clipboard.writeText(VLESSC);
     Swal.fire({
       title: 'Berhasil!',
@@ -1056,7 +1058,8 @@ function renderProxies(proxies, proxyList, pagination) {
 
   row.querySelector('.copy-trojan').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
-    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+    const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
+    const TROJAN = `trojan://${uuid}@${domain}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#${negara}+${penyedia}`;
     navigator.clipboard.writeText(TROJAN);
     Swal.fire({
       title: 'Berhasil!',
@@ -1073,18 +1076,19 @@ function renderProxies(proxies, proxyList, pagination) {
 
   row.querySelector('.copy-trojan-clash').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
+    const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
     const TROJANC = `- name: ${negara}+${penyedia}
-    server: ${selectedService}
+    server: ${domain}
     port: 443
     type: trojan
     password: ${uuid}
     skip-cert-verify: true
-    sni: ${selectedService}
+    sni: ${domain}
     network: ws
     ws-opts:
       path: /${ip}-${port}
       headers:
-        Host: ${selectedService}
+        Host: ${domain}
     udp: true `;
     navigator.clipboard.writeText(TROJANC);
     Swal.fire({
@@ -1102,7 +1106,8 @@ function renderProxies(proxies, proxyList, pagination) {
 
   row.querySelector('.copy-ss').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
-    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${selectedService}&path=%2F${ip}-${port}&security=tls&sni=${selectedService}#${negara}+${penyedia}`;
+    const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
+    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${domain}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#${negara}+${penyedia}`;
     navigator.clipboard.writeText(SS);
     Swal.fire({
       title: 'Berhasil!',
