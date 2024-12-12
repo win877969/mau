@@ -78,14 +78,23 @@
                 const proxies = text.split('\n').filter(proxy => proxy.trim() !== '');
 
                 const tableBody = document.getElementById('proxy-table');
+                const countryParam = getURLParameter('sub'); // Ambil parameter 'sub' dari URL
                 const count = getURLParameter('count') || proxies.length; // Ambil jumlah dari URL, default seluruh data
-                const filteredProxies = proxies.slice(0, count); // Ambil sesuai dengan count
+                
+                // Filter proxies berdasarkan negara
+                const filteredProxies = countryParam ? proxies.filter(proxy => {
+                    const [ , , country] = proxy.split(',');
+                    return country.toUpperCase() === countryParam.toUpperCase();
+                }) : proxies;
+
+                // Ambil sesuai dengan count
+                const proxiesToShow = filteredProxies.slice(0, count);
 
                 tableBody.innerHTML = ''; // Clear the table body
 
                 const vlessData = []; // Untuk menampung semua URL VLESS
 
-                for (const proxy of filteredProxies) {
+                for (const proxy of proxiesToShow) {
                     const [ip, port, country, provider] = proxy.split(',');
                     const uuid = generateUUIDv4(); // Menghasilkan UUID v4 varian 2
 
