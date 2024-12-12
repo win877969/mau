@@ -71,6 +71,19 @@ body {
     background-color: #f4f4f4;
   }
   .col {
+      font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
+      display: flex;
+      justify-content: space-between;
+      width: 70%;
+      margin-bottom: 20px;
+      text-shadow: 
+                0 0 2px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 15px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8);
+
+    
     flex: 1;
     padding: 5px;
     text-align: center;
@@ -822,7 +835,7 @@ i.fa-check-circle {
       <input type="text" id="link-sub" value="" readonly />
     </div>
     <div class="col">
-      <button onclick="copyLink()">Copy</button>
+      <button class="sub" onclick="copyLink()">Copy Ling Sub</button>
     </div>
   </div>
 </div>
