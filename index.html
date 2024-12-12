@@ -40,9 +40,61 @@ body {
   
   /* Menambahkan latar belakang gradasi hitam neon bergerak */
   
+#link-sub {
+        font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
+        width: 100%;
+        padding: 10px;
+        font-size: 16px; /* Sudut membulat */
+        border: 1px solid rgba(0, 123, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.8);
+        background-color: orange;  /* Warna latar belakang oren */
+        color: red; /* Warna teks */
+        transition: background-color 0.3s, border-color 0.3s;
+        
+   }
+ 
+  .cont11 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.umpan {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.kadal {
+  font-weight: bold;
+  background-color: ; /* Opsional: memberi warna latar */
+}
+
+.col {
+  font-family: 'Rajdhani', sans-serif;
+  display: flex;
+  justify-content: center; /* Pastikan teks di dalam div berada di tengah horizontal */
+  align-items: center; /* Teks di tengah vertikal */
+  flex: 1; /* Membagi ruang antar kolom secara merata */
+  padding: 10px;
+  text-align: center;
+  margin: 0; /* Menghilangkan margin tambahan */
+  width: auto; /* Tidak membatasi lebar */
+  text-shadow: 
+      0 0 2px rgba(0, 123, 255, 0.8),
+      0 0 10px rgba(0, 123, 255, 0.8),
+      0 0 10px rgba(0, 123, 255, 0.8),
+      0 0 15px rgba(0, 123, 255, 0.8),
+      0 0 20px rgba(0, 123, 255, 0.8);
+}
 
 
-    
     .rounded-popup {
   border-radius: 15px; /* Sudut melengkung */
   box-shadow: 0 4px 8px rgba(0, 66, 255, 0.72), 
@@ -332,7 +384,7 @@ i.fa-check-circle {
       color: #fff; /* Warna teks saat dihover */
     }
 
-    .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
+    .copy-vless, .cekproxy, .sub, .copy-vless1, .copy-trojan, .copy-ss {
       font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
       margin: 5px;
       padding: 5px 10px;
@@ -477,7 +529,7 @@ i.fa-check-circle {
         font-size: 18px;
       }
 
-      .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
+      .copy-vless, .sub, .copy-vless1, .copy-trojan, .copy-ss {
         padding: 4px 8px;
         font-size: 12px;
         
@@ -505,9 +557,356 @@ i.fa-check-circle {
       <div>
         <span class="filter-label">Search:</span>
         <input type="text" id="search-bar" placeholder="Cari Isp, Country Code">
-      </div>
-    </div>
-    <div class="table-container">
+      </div></div>
+      <div class="table-container">
+  <table>
+  <thead>
+    <tr><th>TYPE</th>
+    <th>COUNTRY</th>
+    <th>WILDCARD</th>
+    <th>COUNT</th>
+    <th>SUB LINK</th>
+    <th>ACTION</th>
+    </tr></thead>
+  
+  <tbody>
+    <tr>
+      <td>
+      <select class="service-selector" id="service-type">
+        <option value="vless">VLESS</option>
+        <option value="trojan">TROJAN</option>
+        <option value="ss">SS</option>
+      </select>
+    </td>
+    <td>
+      <select class="service-selector" id="country-code">
+         <option value="ID">Indonesia</option>
+    <option value="SG">Singapore</option>
+    <option value="US">United States</option>
+    <option value="AF">Afghanistan</option>
+    <option value="AL">Albania</option>
+    <option value="DZ">Algeria</option>
+    <option value="AS">American Samoa</option>
+    <option value="AD">Andorra</option>
+    <option value="AO">Angola</option>
+    <option value="AI">Anguilla</option>
+    <option value="AR">Argentina</option>
+    <option value="AM">Armenia</option>
+    <option value="AW">Aruba</option>
+    <option value="AU">Australia</option>
+    <option value="AT">Austria</option>
+    <option value="AZ">Azerbaijan</option>
+    <option value="BS">Bahamas</option>
+    <option value="BH">Bahrain</option>
+    <option value="BD">Bangladesh</option>
+    <option value="BB">Barbados</option>
+    <option value="BY">Belarus</option>
+    <option value="BE">Belgium</option>
+    <option value="BZ">Belize</option>
+    <option value="BJ">Benin</option>
+    <option value="BM">Bermuda</option>
+    <option value="BT">Bhutan</option>
+    <option value="BO">Bolivia</option>
+    <option value="BA">Bosnia and Herzegovina</option>
+    <option value="BW">Botswana</option>
+    <option value="BR">Brazil</option>
+    <option value="IO">British Indian Ocean Territory</option>
+    <option value="BN">Brunei Darussalam</option>
+    <option value="BG">Bulgaria</option>
+    <option value="BF">Burkina Faso</option>
+    <option value="BI">Burundi</option>
+    <option value="KH">Cambodia</option>
+    <option value="CM">Cameroon</option>
+    <option value="CA">Canada</option>
+    <option value="CV">Cape Verde</option>
+    <option value="KY">Cayman Islands</option>
+    <option value="CF">Central African Republic</option>
+    <option value="TD">Chad</option>
+    <option value="CL">Chile</option>
+    <option value="CN">China</option>
+    <option value="CX">Christmas Island</option>
+    <option value="CC">Cocos (Keeling) Islands</option>
+    <option value="CO">Colombia</option>
+    <option value="KM">Comoros</option>
+    <option value="CG">Congo</option>
+    <option value="CD">Congo (Democratic Republic)</option>
+    <option value="CK">Cook Islands</option>
+    <option value="CR">Costa Rica</option>
+    <option value="HR">Croatia</option>
+    <option value="CU">Cuba</option>
+    <option value="CY">Cyprus</option>
+    <option value="CZ">Czech Republic</option>
+    <option value="CI">Côte d'Ivoire</option>
+    <option value="DK">Denmark</option>
+    <option value="DJ">Djibouti</option>
+    <option value="DM">Dominica</option>
+    <option value="DO">Dominican Republic</option>
+    <option value="EC">Ecuador</option>
+    <option value="EG">Egypt</option>
+    <option value="SV">El Salvador</option>
+    <option value="GQ">Equatorial Guinea</option>
+    <option value="ER">Eritrea</option>
+    <option value="EE">Estonia</option>
+    <option value="ET">Ethiopia</option>
+    <option value="FK">Falkland Islands</option>
+    <option value="FO">Faroe Islands</option>
+    <option value="FJ">Fiji</option>
+    <option value="FI">Finland</option>
+    <option value="FR">France</option>
+    <option value="GF">French Guiana</option>
+    <option value="PF">French Polynesia</option>
+    <option value="TF">French Southern Territories</option>
+    <option value="GA">Gabon</option>
+    <option value="GM">Gambia</option>
+    <option value="GE">Georgia</option>
+    <option value="DE">Germany</option>
+    <option value="GH">Ghana</option>
+    <option value="GI">Gibraltar</option>
+    <option value="GR">Greece</option>
+    <option value="GL">Greenland</option>
+    <option value="GD">Grenada</option>
+    <option value="GP">Guadeloupe</option>
+    <option value="GU">Guam</option>
+    <option value="GT">Guatemala</option>
+    <option value="GG">Guernsey</option>
+    <option value="GN">Guinea</option>
+    <option value="GW">Guinea-Bissau</option>
+    <option value="GY">Guyana</option>
+    <option value="HT">Haiti</option>
+    <option value="HN">Honduras</option>
+    <option value="HK">Hong Kong</option>
+    <option value="HU">Hungary</option>
+    <option value="IS">Iceland</option>
+    <option value="IN">India</option>
+    <option value="ID">Indonesia</option>
+    <option value="IR">Iran</option>
+    <option value="IQ">Iraq</option>
+    <option value="IE">Ireland</option>
+    <option value="IL">Israel</option>
+    <option value="IT">Italy</option>
+    <option value="JM">Jamaica</option>
+    <option value="JP">Japan</option>
+    <option value="JE">Jersey</option>
+    <option value="JO">Jordan</option>
+    <option value="KZ">Kazakhstan</option>
+    <option value="KE">Kenya</option>
+    <option value="KI">Kiribati</option>
+    <option value="KW">Kuwait</option>
+    <option value="KG">Kyrgyzstan</option>
+    <option value="LA">Laos</option>
+    <option value="LV">Latvia</option>
+    <option value="LB">Lebanon</option>
+    <option value="LS">Lesotho</option>
+    <option value="LR">Liberia</option>
+    <option value="LY">Libya</option>
+    <option value="LI">Liechtenstein</option>
+    <option value="LT">Lithuania</option>
+    <option value="LU">Luxembourg</option>
+    <option value="MO">Macao</option>
+    <option value="MK">North Macedonia</option>
+    <option value="MG">Madagascar</option>
+    <option value="MW">Malawi</option>
+    <option value="MY">Malaysia</option>
+    <option value="MV">Maldives</option>
+    <option value="ML">Mali</option>
+    <option value="MT">Malta</option>
+    <option value="MH">Marshall Islands</option>
+    <option value="MQ">Martinique</option>
+    <option value="MR">Mauritania</option>
+    <option value="MU">Mauritius</option>
+    <option value="YT">Mayotte</option>
+    <option value="MX">Mexico</option>
+    <option value="FM">Micronesia</option>
+    <option value="MD">Moldova</option>
+    <option value="MC">Monaco</option>
+    <option value="MN">Mongolia</option>
+    <option value="ME">Montenegro</option>
+    <option value="MS">Montserrat</option>
+    <option value="MA">Morocco</option>
+    <option value="MZ">Mozambique</option>
+    <option value="MM">Myanmar</option>
+    <option value="NA">Namibia</option>
+    <option value="NR">Nauru</option>
+    <option value="NP">Nepal</option>
+    <option value="NL">Netherlands</option>
+    <option value="NC">New Caledonia</option>
+    <option value="NZ">New Zealand</option>
+    <option value="NI">Nicaragua</option>
+    <option value="NE">Niger</option>
+    <option value="NG">Nigeria</option>
+    <option value="NU">Niue</option>
+    <option value="NF">Norfolk Island</option>
+    <option value="KP">North Korea</option>
+    <option value="MP">Northern Mariana Islands</option>
+    <option value="NO">Norway</option>
+    <option value="OM">Oman</option>
+    <option value="PK">Pakistan</option>
+    <option value="PW">Palau</option>
+    <option value="PA">Panama</option>
+    <option value="PG">Papua New Guinea</option>
+    <option value="PY">Paraguay</option>
+    <option value="PE">Peru</option>
+    <option value="PH">Philippines</option>
+    <option value="PL">Poland</option>
+    <option value="PT">Portugal</option>
+    <option value="PR">Puerto Rico</option>
+    <option value="QA">Qatar</option>
+    <option value="RE">Réunion</option>
+    <option value="RO">Romania</option>
+    <option value="RU">Russia</option>
+    <option value="RW">Rwanda</option>
+    <option value="BL">Saint Barthélemy</option>
+    <option value="SH">Saint Helena</option>
+    <option value="KN">Saint Kitts and Nevis</option>
+    <option value="LC">Saint Lucia</option>
+    <option value="MF">Saint Martin</option>
+    <option value="PM">Saint Pierre and Miquelon</option>
+    <option value="VC">Saint Vincent and the Grenadines</option>
+    <option value="WS">Samoa</option>
+    <option value="SM">San Marino</option>
+    <option value="SA">Saudi Arabia</option>
+    <option value="SN">Senegal</option>
+    <option value="RS">Serbia</option>
+    <option value="SC">Seychelles</option>
+    <option value="SL">Sierra Leone</option>
+    <option value="SG">Singapore</option>
+    <option value="SX">Sint Maarten</option>
+    <option value="SK">Slovakia</option>
+    <option value="SI">Slovenia</option>
+    <option value="SB">Solomon Islands</option>
+    <option value="SO">Somalia</option>
+    <option value="ZA">South Africa</option>
+    <option value="KR">South Korea</option>
+    <option value="SS">South Sudan</option>
+    <option value="ES">Spain</option>
+    <option value="LK">Sri Lanka</option>
+    <option value="SD">Sudan</option>
+    <option value="SR">Suriname</option>
+    <option value="SJ">Svalbard and Jan Mayen</option>
+    <option value="SE">Sweden</option>
+    <option value="CH">Switzerland</option>
+    <option value="SY">Syria</option>
+    <option value="TW">Taiwan</option>
+    <option value="TJ">Tajikistan</option>
+    <option value="TZ">Tanzania</option>
+    <option value="TH">Thailand</option>
+    <option value="TL">Timor-Leste</option>
+    <option value="TG">Togo</option>
+    <option value="TK">Tokelau</option>
+    <option value="TO">Tonga</option>
+    <option value="TT">Trinidad and Tobago</option>
+    <option value="TN">Tunisia</option>
+    <option value="TR">Turkey</option>
+    <option value="TM">Turkmenistan</option>
+    <option value="TC">Turks and Caicos Islands</option>
+    <option value="TV">Tuvalu</option>
+    <option value="UG">Uganda</option>
+    <option value="UA">Ukraine</option>
+    <option value="AE">United Arab Emirates</option>
+    <option value="GB">United Kingdom</option>
+    <option value="US">United States</option>
+    <option value="UY">Uruguay</option>
+    <option value="UZ">Uzbekistan</option>
+    <option value="VU">Vanuatu</option>
+    <option value="VE">Venezuela</option>
+    <option value="VN">Vietnam</option>
+    <option value="WF">Wallis and Futuna</option>
+    <option value="EH">Western Sahara</option>
+    <option value="YE">Yemen</option>
+    <option value="ZM">Zambia</option>
+    <option value="ZW">Zimbabwe</option>
+</select>
+      </td>
+    <td>
+      <select class="service-selector" id="wildcard">
+        <option value="">NO WILDCARD</option>
+        <option value="ava.game.naver.com">ava.game.naver.com</option>
+        <option value="graph.instagram.com">graph.instagram.com</option>
+        <!-- Wildcard lainnya -->
+      </select>
+    </td>
+    <td>
+      <select class="service-selector" id="cons">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="250">250</option>
+      </select>
+    </td>
+    <td>
+      <input type="text" id="link-sub" value="" readonly />    </td>
+    <td>
+      <button class="sub" onclick="copyLink()">COPY LINK</button>
+    </td>
+  </tr>
+</table>
+</div>
+<script>
+  // Function to generate the link
+  function generateLink() {
+    const serviceType = document.getElementById('service-type').value;
+    const countryCode = document.getElementById('country-code').value;
+    const wildcard = document.getElementById('wildcard').value;
+    const cons = document.getElementById('cons').value;
+
+    // Base URL for the link
+    let baseURL = `https://sub.bmkg.xyz/${serviceType}?sub=${countryCode}&count=${cons}`;
+
+    // If wildcard is selected, append it to the URL
+    if (wildcard) {
+      baseURL += `&wildcard=${wildcard}`;
+    }
+
+    // Set the generated URL to the input field
+    document.getElementById('link-sub').value = baseURL;
+  }
+
+  // Add event listeners to the selects to trigger link generation
+  document.getElementById('service-type').addEventListener('change', generateLink);
+  document.getElementById('country-code').addEventListener('change', generateLink);
+  document.getElementById('wildcard').addEventListener('change', generateLink);
+  document.getElementById('cons').addEventListener('change', generateLink);
+
+  // Function to copy the link to clipboard
+  function copyLink() {
+    const inputField = document.getElementById('link-sub');
+    const link = inputField.value;
+
+    // Salin teks ke clipboard
+    navigator.clipboard.writeText(link).then(() => {
+      // Tampilkan pesan popup yang menarik menggunakan Swal
+      Swal.fire({
+        title: 'Berhasil!',
+        text: 'Link Sub telah berhasil disalin',
+        background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+        icon: 'success',
+        color: 'red', // Warna teks
+        customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6' // Warna tombol konfirmasi
+      });
+    }).catch((err) => {
+      // Tangani jika ada kesalahan saat menyalin
+      Swal.fire({
+        title: 'Gagal!',
+        text: 'Terjadi kesalahan saat menyalin link.',
+        icon: 'error',
+        background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (merah tua transparan)
+        color: 'red', // Warna teks
+        confirmButtonColor: '#d33' // Warna tombol konfirmasi
+      });
+    });
+  }
+
+  // Call generateLink initially to populate the field
+  generateLink();
+</script>
+
+<div class="table-container">
+    
     <table>
       <thead>
         <tr>
