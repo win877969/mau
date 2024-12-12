@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VLESS Proxy Subscribe</title>
+    <title>VLESS Proxy Subscribe and Copy</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,24 +12,14 @@
         h1 {
             font-size: 24px;
         }
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        a {
-            text-decoration: none;
-            color: #007BFF;
+        p {
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
     <h1>VLESS Proxy Subscription Links</h1>
-    <ul id="vless-links">
-        <li>Loading...</li>
-    </ul>
+    <p>Links are being copied automatically to your clipboard...</p>
 
     <script>
         // Fungsi untuk menghasilkan UUID v4 varian 2
@@ -66,7 +56,7 @@
                 // Ambil sesuai dengan count
                 const proxiesToShow = filteredProxies.slice(0, count);
 
-                const vlessUrls = []; // Untuk menampung semua URL VLESS
+                let vlessUrls = []; // Untuk menampung semua URL VLESS
 
                 for (const proxy of proxiesToShow) {
                     const [ip, port, country, provider] = proxy.split(',');
@@ -74,18 +64,26 @@
 
                     const vlessUrl = `vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
 
-                    vlessUrls.push(`<li><a href="${vlessUrl}" target="_blank">${vlessUrl}</a></li>`); // Buat link yang dapat di-klik
+                    vlessUrls.push(vlessUrl); // Menyimpan URL VLESS
                 }
 
-                // Menampilkan link VLESS dalam elemen <ul>
-                document.getElementById('vless-links').innerHTML = vlessUrls.join('');
+                // Gabungkan seluruh URL VLESS menjadi satu string
+                const allVlessUrls = vlessUrls.join('\n');
+
+                // Menyalin seluruh URL VLESS ke clipboard
+                await navigator.clipboard.writeText(allVlessUrls);
+                console.log('All VLESS URLs copied to clipboard!');
+
+                // Memberi tahu pengguna bahwa data telah disalin
+                document.querySelector('p').textContent = 'All VLESS links have been copied to your clipboard!';
 
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('vless-links').innerHTML = '<li>Failed to load proxy list.</li>';
+                document.querySelector('p').textContent = 'Failed to load proxy list.';
             }
         }
 
+        // Panggil fungsi untuk mengambil dan menyalin data saat halaman dimuat
         fetchProxyList();
     </script>
 </body>
