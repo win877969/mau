@@ -3,27 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy List Viewer</title>
+    <title>VLESS Proxy Subscribe</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        pre {
-            background-color: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            white-space: pre-wrap; /* Menyediakan line breaks */
-            word-wrap: break-word; /* Memastikan teks panjang tidak melampaui batas */
-        }
         h1 {
             font-size: 24px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
         }
     </style>
 </head>
 <body>
-    <h1>VLESS Proxy List</h1>
-    <pre id="vless-urls">Loading...</pre>
+    <h1>VLESS Proxy Subscription Links</h1>
+    <ul id="vless-links">
+        <li>Loading...</li>
+    </ul>
 
     <script>
         // Fungsi untuk menghasilkan UUID v4 varian 2
@@ -68,15 +74,15 @@
 
                     const vlessUrl = `vless://${uuid}@tp1.bmkg.xyz:443?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=tls&sni=tp1.bmkg.xyz#${country})+${provider}`;
 
-                    vlessUrls.push(vlessUrl); // Tambahkan URL VLESS ke array
+                    vlessUrls.push(`<li><a href="${vlessUrl}" target="_blank">${vlessUrl}</a></li>`); // Buat link yang dapat di-klik
                 }
 
-                // Tampilkan URL VLESS dalam format yang mudah disalin
-                document.getElementById('vless-urls').textContent = vlessUrls.join('\n');
+                // Menampilkan link VLESS dalam elemen <ul>
+                document.getElementById('vless-links').innerHTML = vlessUrls.join('');
 
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('vless-urls').textContent = 'Failed to load proxy list.';
+                document.getElementById('vless-links').innerHTML = '<li>Failed to load proxy list.</li>';
             }
         }
 
