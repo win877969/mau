@@ -928,7 +928,7 @@ function renderProxies(proxies, proxyList, pagination) {
     const uuid = uuidv4();
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td style="font-size: 10px;">${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
+      <td>${penyedia} | ${negara} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
       <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>          
       <span class="latency-cell"></span></td>
