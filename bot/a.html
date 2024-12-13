@@ -228,10 +228,9 @@
         <table>
           <thead>
             <tr>
-              <th>IP:Port</th>
-              <th>Negara</th>
-              <th>Penyedia</th>
-              <th>Detail</th>
+              
+              <th>Negara Penyedia</th>
+              
             </tr>
           </thead>
           <tbody id="proxy-list">
@@ -277,7 +276,7 @@
       row.innerHTML = `
       
         <td>
-          <p class="btn" onclick="openProxyDetails(${index})">${country} | ${provider}</p>
+          <p class="" onclick="openProxyDetails(${index})">${country} | ${provider}</p>
         </td>
       `;
       proxyList.appendChild(row);
