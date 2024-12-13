@@ -9,7 +9,7 @@
     <h1>Proxy List</h1>
 
     <h2>List of Proxies</h2>
-    <ul id="proxyList"></ul>
+    <div id="proxyList"></div>
 
     <script>
         // Fungsi untuk mengambil file proxy_list.txt dan menampilkan isinya
@@ -25,12 +25,12 @@
                 const fileContent = await response.text();
                 const proxyList = fileContent.split('\n').map(proxy => proxy.trim()).filter(proxy => proxy !== "");
 
-                // Menampilkan daftar proxy dalam elemen <ul>
+                // Menampilkan daftar proxy dalam elemen <div>
                 const listContainer = document.getElementById('proxyList');
                 proxyList.forEach(proxy => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = proxy;  // Set teks untuk setiap proxy
-                    listContainer.appendChild(listItem); // Tambahkan ke dalam <ul>
+                    const divElement = document.createElement('div');
+                    divElement.textContent = proxy;  // Set teks untuk setiap proxy
+                    listContainer.appendChild(divElement); // Tambahkan ke dalam <div>
                 });
             } catch (error) {
                 console.error('Error loading proxy list:', error);
