@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Check Automation</title>
+</head>
+<body>
+    <h1>Proxy Check Automation</h1>
+    <textarea id="proxyList" rows="10" cols="50" placeholder="Enter proxies here, one per line..."></textarea><br><br>
+    <button onclick="checkProxies()">Check Proxies</button>
+
+    <h2>Results</h2>
+    <div id="results"></div>
+
+    <script>
+        async function checkProxies() {
+            const proxyList = document.getElementById('proxyList').value.split('\n').map(proxy => proxy.trim());
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = ''; // Clear previous results
+
+            const checkUrl = "https://p01--boiling-frame--kw6dd7bjv2nr.code.run/check";
+            
+            for (const proxy of proxyList) {
+                if (proxy === '') continue;
+                try {
+                    const response = await fetch(checkUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Proxy': proxy // Set the proxy in request headers (customize based on your server's requirement)
+                        },
+                        mode: 'cors',
+                        cache: 'no-cache'
+                    });
+                    
+                    if (response.ok) {
+                        resultsContainer.innerHTML += `<p>Proxy ${proxy} is working.</p>`;
+                    } else {
+                        resultsContainer.innerHTML += `<p>Proxy ${proxy} failed with status: ${response.status}</p>`;
+                    }
+                } catch (error) {
+                    resultsContainer.innerHTML += `<p>Proxy ${proxy} failed with error: ${error.message}</p>`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
