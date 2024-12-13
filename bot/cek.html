@@ -45,26 +45,37 @@
     <div id="proxyList"></div>
 
     <script>
-        // Daftar proxy yang diambil dari file atau sumber lain
-        const proxyList = [
-            "192.168.1.1:8080",
-            "203.0.113.5:3128",
-            "47.236.246.163:14108"
-        ];
+        // Fungsi untuk mengambil file proxy_list.txt dari server
+        window.onload = async function() {
+            try {
+                // Mengambil file proxy_list.txt dari server
+                const response = await fetch('proxy_list.txt');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch the proxy list');
+                }
 
-        // Menampilkan daftar proxy dalam format ip:port
-        const listContainer = document.getElementById('proxyList');
-        proxyList.forEach(proxy => {
-            const divElement = document.createElement('div');
-            divElement.textContent = `${proxy} - Checking...`;
-            divElement.classList.add('proxy-status');
-            listContainer.appendChild(divElement);
+                // Membaca isi file sebagai teks
+                const fileContent = await response.text();
+                const proxyList = fileContent.split('\n').map(proxy => proxy.trim()).filter(proxy => proxy !== "");
 
-            // Simulasi pengecekan proxy (karena tidak bisa memeriksa proxy langsung di browser)
-            setTimeout(() => {
-                checkProxy(proxy, divElement);
-            }, 1000);
-        });
+                // Menampilkan daftar proxy dalam format ip:port
+                const listContainer = document.getElementById('proxyList');
+                proxyList.forEach(proxy => {
+                    const divElement = document.createElement('div');
+                    divElement.textContent = `${proxy} - Checking...`;
+                    divElement.classList.add('proxy-status');
+                    listContainer.appendChild(divElement);
+
+                    // Simulasi pengecekan proxy (karena tidak bisa memeriksa proxy langsung di browser)
+                    setTimeout(() => {
+                        checkProxy(proxy, divElement);
+                    }, 1000);
+                });
+
+            } catch (error) {
+                console.error('Error loading proxy list:', error);
+            }
+        };
 
         // Fungsi simulasi pengecekan proxy
         function checkProxy(proxy, element) {
