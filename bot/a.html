@@ -5,54 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Responsive Proxy List</title>
   <style>
+    :root {
+      --primary: #007bff;
+      --secondary: #6c757d;
+      --light: #f8f9fa;
+      --dark: #343a40;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
       color: #333;
     }
-    .colkiri, .colkanan {
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 5px;
-    }
-
-    .colkiri a {
-      display: block;
-      margin: 5px 0;
-      color: blue;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .colkiri a:hover {
-      text-decoration: underline;
-    }
- .colkiri p.ganjil {
-      background-color: #d3d3d3; /* Warna abu */
-    }
-
-    .colkiri p.genap {
-      background-color: #ffffff; /* Warna putih */
-    }
-    .content-item {
-      display: none; /* Default: sembunyikan semua konten */
-    }
-
-    .content-item.active {
-      display: block; /* Tampilkan hanya konten aktif */
-    }
+  .config-section {
+        max-width: 100%;
+        background: var(--card-bg);
+        color: #fff;
+        backdrop-filter: blur(10px);
+        border: 0px solid rgba(242, 89, 0, 1);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--glow);
+        transform-style: preserve-3d;
+        animation: cardFloat 6s ease-in-out infinite;
+        }
     header, footer {
-      background-color: #007bff;
+      background-color: var(--primary);
       color: white;
       text-align: center;
       padding: 15px;
     }
+            .config {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+            border: 2px solid #448998;
+            color: #f5f5f5;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+        }
+        
+    
 
+        .config-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #fff, transparent);
+            margin: 20px 0;
+        }
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
+    }
+
+    .text-center {
+      text-align: center;
     }
 
     .row {
@@ -61,69 +72,125 @@
       gap: 20px;
     }
 
-    .col-md-5, .col-md-7 {
+    .col {
       flex: 1;
       min-width: 300px;
     }
 
-    .filters {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .proxy-list {
+    table {
+      width: 100%;
+      border-collapse: collapse;
       margin-top: 20px;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .proxy-item {
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
+    table th, table td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ddd;
     }
 
-    .pagination1 {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      gap: 5px;
-    }
-
-    .pagination1 button {
-      background-color: #444;
+    table th {
+      background-color: var(--primary);
       color: white;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
     }
 
-    .pagination1 button.active {
-      background-color: #007bff;
+    table tr:nth-child(even) {
+      background-color: #f2f2f2;
     }
 
-    .pagination1 button:hover {
-      background-color: #555;
+    .filters {
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .filters label {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+
+    .filters input, .filters select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .details-section {
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .details-section p {
+      margin: 10px 0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
     }
 
     .btn {
-      background-color: #007bff;
+      background-color: var(--primary);
       color: white;
       border: none;
       padding: 8px 12px;
       cursor: pointer;
+      border-radius: 4px;
     }
 
     .btn:hover {
       background-color: #0056b3;
     }
 
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 5px;
+    }
+
+    .pagination button {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .pagination button.active {
+      background-color: var(--primary);
+    }
+
+    .pagination button:hover {
+      background-color: #555;
+    }
+
+    .pagination input {
+      padding: 8px;
+      width: 50px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
     @media (max-width: 768px) {
-      .row {
+      .filters {
         flex-direction: column;
       }
 
-      .filters {
-        gap: 5px;
+      table th, table td {
+        font-size: 14px;
+      }
+
+      .row {
+        flex-direction: column;
       }
     }
   </style>
@@ -138,61 +205,201 @@
       <h2>ALAAH KINTIL</h2>
     </div>
 
+    
     <div class="row">
-      <!-- Bagian kanan -->
-              <div class="col-md-5">
-    <div class="colkiri" id="link-container">
-      <p <a href="#" data-target="content-1">Link 1</a>
-      <a href="#" data-target="content-2">Link 2</a>
-      <a href="#" data-target="content-3">Link 3</a>
-      <a href="#" data-target="content-4">Link 4</a>
-    </div>    </div>
+      <!-- Kolom Kiri: Daftar Proxy -->
+      <div class="col">
+        <div class="config-section">
+        <div class="filters">
+      <!-- Entri Page Label and Select -->
+      <label for="items-per-page">Entri Page:</label>
+      <select id="items-per-page">
+        <option value="10">10 Baris</option>
+        <option value="25">25 Baris</option>
+        <option value="50">50 Baris</option>
+        <option value="100">100 Baris</option>
+      </select>
 
-    <!-- Bagian Kanan -->
-    <div class="col-md-7">
-    <div class="colkanan">
-      <div id="content-1" class="content-item active">
-        <p>Konten 1: Ini adalah konten pertama.</p>
-      </div>
-      <div id="content-2" class="content-item">
-        <p>Konten 2: Ini adalah konten kedua.</p>
-      </div>
-      <div id="content-3" class="content-item">
-        <p>Konten 3: Ini adalah konten ketiga.</p>
-      </div>
-      <div id="content-4" class="content-item">
-        <p>Konten 4: Ini adalah konten keempat.</p>
-              </div>
-      </div>
+      <!-- Search Label and Input -->
+      <label for="search-bar">Search:</label>
+      <input type="text" id="search-bar" placeholder="Cari berdasarkan negara, ISP, atau penyedia layanan...">
     </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>IP:Port</th>
+              <th>Negara</th>
+              <th>Penyedia</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody id="proxy-list">
+            <!-- Data proxy akan dimasukkan di sini -->
+          </tbody>
+        </table>
+
+        <div class="pagination" id="pagination"></div>
+      </div>
+      </div>
+      <!-- Kolom Kanan: Detail Proxy -->
+      <div class="col">
+        <div class="config-section">
+        <div id="v2ray-details" class="details-section">
+          <!-- Detail vless dan trojan akan muncul di sini -->
+        </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <footer>
     <p>&copy; 2024 Proxy List Manager</p>
   </footer>
+<script>
+  let proxyPerPage = 10;
+  let currentPage = 1;
+  let filteredProxies = [];
+  let allProxies = [];
 
-    <script>
-    // Pilih semua link di kolom kiri
-    const links = document.querySelectorAll('.col-md-5 a');
-    const contents = document.querySelectorAll('.content-item');
+  // Fungsi untuk render proxy ke tabel
+  function renderProxies(proxies) {
+    const proxyList = document.getElementById("proxy-list");
+    const start = (currentPage - 1) * proxyPerPage;
+    const end = start + proxyPerPage;
+    const currentPageProxies = proxies.slice(start, end);
 
-    // Tambahkan event listener ke setiap link
-    links.forEach(link => {
-      link.addEventListener('click', function (event) {
-        event.preventDefault(); // Hentikan aksi default link
+    proxyList.innerHTML = "";
+    currentPageProxies.forEach((proxy, index) => {
+      const [ip, port, country, provider] = proxy.split(",");
+      const row = document.createElement("tr");
 
-        // Hapus kelas "active" dari semua konten
-        contents.forEach(content => content.classList.remove('active'));
-
-        // Ambil ID target dari atribut data-target
-        const targetId = this.getAttribute('data-target');
-
-        // Tampilkan konten yang sesuai
-        document.getElementById(targetId).classList.add('active');
-      });
+      row.innerHTML = `
+      
+        <td>
+          <p class="btn" onclick="openProxyDetails(${index})">${country} | ${provider}</p>
+        </td>
+      `;
+      proxyList.appendChild(row);
     });
-  </script>
+
+    renderPagination(proxies);
     
+    // Tampilkan detail pertama kali setelah render tabel
+    if (filteredProxies.length > 0) {
+      openProxyDetails(0); // Menampilkan detail pertama kali
+    }
+  }
+
+  // Fungsi untuk render pagination
+  function renderPagination(proxies) {
+    const pagination = document.getElementById("pagination");
+    const totalPages = Math.ceil(proxies.length / proxyPerPage);
+    pagination.innerHTML = "";
+
+    const prevButton = document.createElement("button");
+    prevButton.textContent = "<<";
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener("click", () => updatePage(1, proxies));
+    pagination.appendChild(prevButton);
+
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+
+    for (let i = startPage; i <= endPage; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.textContent = i;
+      pageButton.classList.toggle("active", i === currentPage);
+      pageButton.addEventListener("click", () => updatePage(i, proxies));
+      pagination.appendChild(pageButton);
+    }
+
+    const nextButton = document.createElement("button");
+    nextButton.textContent = "Next";
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener("click", () => updatePage(totalPages, proxies));
+    pagination.appendChild(nextButton);
+
+    const goToPage = document.createElement("input");
+    goToPage.type = "number";
+    goToPage.min = 1;
+    goToPage.max = totalPages;
+    goToPage.placeholder = "Go to page";
+    goToPage.addEventListener("change", (e) => {
+      const page = parseInt(e.target.value);
+      if (page >= 1 && page <= totalPages) {
+        updatePage(page, proxies);
+      }
+    });
+    pagination.appendChild(goToPage);
+  }
+
+  // Fungsi untuk mengupdate halaman
+  function updatePage(page, proxies) {
+    currentPage = page;
+    renderProxies(filteredProxies);
+  }
+
+  // Fungsi untuk menyaring proxy berdasarkan pencarian
+  function filterProxies(searchTerm) {
+    filteredProxies = allProxies.filter((proxy) =>
+      proxy.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    currentPage = 1;
+    renderProxies(filteredProxies);
+  }
+
+  // Fungsi untuk membuka detail proxy
+  function openProxyDetails(index) {
+    const proxy = filteredProxies[index];
+    const [ip, port, country, provider] = proxy.split(",");
+    const detailsContainer = document.getElementById("v2ray-details");
+
+    detailsContainer.innerHTML = `
+      <h3>Detail Proxy</h3>
+      <p><strong>ISP: ${country} | ${provider}</strong></p>
+      <p><strong>IP:Port:</strong> ${ip}:${port}</p>
+      
+        <p class="config">vless://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</p>
+        <button class="btn" onclick="copyToClipboard(this)">Copy</button>
+      
+      
+        <p class="config">trojan://uuid@BUG.COM:${port}?encryption=none&type=ws&host=xvp.bmkg.xyz&path=%2F${ip}:${port}&security=tls&sni=xvp.bmkg.xyz#${country}+${provider}</p>
+        <button class="btn" onclick="copyToClipboard(this)">Copy</button>
+      
+    `;
+  }
+
+  // Fungsi untuk menyalin teks ke clipboard
+  function copyToClipboard(button) {
+    const text = button.previousElementSibling.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Copied to clipboard!");
+    });
+  }
+
+  // Event listener untuk pencarian proxy
+  document.getElementById("search-bar").addEventListener("input", (e) => {
+    filterProxies(e.target.value);
+  });
+
+  // Event listener untuk memilih jumlah item per halaman
+  document.getElementById("items-per-page").addEventListener("change", (e) => {
+    proxyPerPage = parseInt(e.target.value);
+    renderProxies(filteredProxies);
+  });
+
+  // Ambil data proxy dan render tabel
+  fetch("proxy_list.txt")
+    .then((response) => response.text())
+    .then((data) => {
+      allProxies = data.split("\n").filter((line) => line.trim() !== "");
+      filteredProxies = allProxies;
+      renderProxies(filteredProxies);
+    })
+    .catch((error) => console.error("Error fetching proxy data:", error));
+</script>
+
+        
 </body>
 </html>
