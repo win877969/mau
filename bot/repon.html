@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Responsive Two-Column Layout</title>
+  <title>Responsive Layout</title>
   <style>
     /* Reset */
     * {
@@ -14,7 +14,6 @@
 
     body {
       font-family: Arial, sans-serif;
-      line-height: 1.6;
       background-color: #f4f4f9;
       color: #333;
     }
@@ -22,99 +21,59 @@
     /* Container utama */
     .container {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: wrap; /* Pastikan fleksibel */
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
       gap: 20px;
     }
 
-    /* Kolom kiri (Sidebar) */
+    /* Kolom kiri */
     .left-column {
-      flex: 0 0 40%; /* Lebar 40% */
+      flex: 0 0 40%; /* Kolom kiri 40% */
       background-color: #222;
       color: #fff;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .left-column h2 {
-      margin-bottom: 15px;
-      color: #f9a825;
-    }
-
-    .left-column ul {
-      list-style: none;
-    }
-
-    .left-column ul li {
-      margin: 10px 0;
-    }
-
-    .left-column ul li a {
-      text-decoration: none;
-      color: #f9a825;
-      transition: color 0.3s ease;
-    }
-
-    .left-column ul li a:hover {
-      color: #ffc107;
-    }
-
-    /* Kolom kanan (Main Content) */
+    /* Kolom kanan */
     .right-column {
-      flex: 0 0 60%; /* Lebar 60% */
+      flex: 0 0 60%; /* Kolom kanan 60% */
       background-color: #fff;
-      color: #333;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .right-column h1 {
-      margin-bottom: 15px;
-      color: #222;
     }
 
     /* Responsif untuk layar kecil */
     @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-
       .left-column, .right-column {
-        flex: 0 0 100%; /* Kolom penuh pada layar kecil */
+        flex: 0 0 100%; /* Kolom penuh di layar kecil */
       }
     }
   </style>
 </head>
 <body>
-  <header style="text-align: center; padding: 20px; background-color: #333; color: #fff;">
-    <h1>Responsive Two-Column Layout</h1>
+  <header style="text-align: center; padding: 20px; background-color: #333; color: white;">
+    <h1>Responsive Layout</h1>
   </header>
+  
   <div class="container">
-    <!-- Kolom kiri -->
+    <!-- Kolom Kiri -->
     <div class="left-column">
-      <h2>Sidebar</h2>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
+      <h2>Kolom Kiri</h2>
+      <p>Konten untuk kolom kiri. Lebar ini adalah 40% pada layar besar.</p>
     </div>
-
-    <!-- Kolom kanan -->
+    
+    <!-- Kolom Kanan -->
     <div class="right-column">
-      <h1>Main Content</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim, purus eu luctus sodales, lacus risus suscipit magna, non varius nisi felis et mi.</p>
-      <p>Mauris accumsan, urna eget venenatis posuere, nisl nisl dictum elit, nec volutpat quam nisl at velit. Integer sed facilisis est.</p>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, eligendi.</p>
+      <h2>Kolom Kanan</h2>
+      <p>Konten untuk kolom kanan. Lebar ini adalah 60% pada layar besar.</p>
     </div>
   </div>
-  <footer style="text-align: center; padding: 20px; background-color: #333; color: #fff;">
-    <p>&copy; 2024 Responsive Layout. All Rights Reserved.</p>
+  
+  <footer style="text-align: center; padding: 20px; background-color: #333; color: white;">
+    <p>&copy; 2024 Responsive Layout</p>
   </footer>
 </body>
 </html>
