@@ -83,12 +83,13 @@ body {
                 0 0 40px rgba(0, 123, 255, 0.8);
     }
     header, footer {
+      position: absolute;
       background-color: ;
       color: white;
       text-align: center;
       border: 1px solid rgba(143, 0, 0, 0.89); /* Border dengan warna abu-abu */
       border-radius: 10px;
-      padding: 10px;
+      padding: 10px 0;
       position: fixed;
       width: 100%;
       left: 0;
@@ -122,6 +123,7 @@ body {
         padding: 10px;
     }  
     .container {
+      position: relative;
       flex: 1;
       padding-top: 115px; /* To avoid content being hidden under the header */
       padding-bottom: 115px;
@@ -133,8 +135,13 @@ body {
       flex-direction: column;
       max-width: 960px;
       align-items: center;
+      overflow: hidden;
     }
-
+.content {
+  padding: 60px 20px 40px; /* Memberikan ruang untuk header dan footer */
+  height: 100%;
+  overflow-y: auto;
+}
     .filters {
       display: flex;
       justify-content: space-between;
@@ -367,11 +374,12 @@ thhhh {
   </style>
 </head>
 <body>
-  <header>
+  <div class="container">
+  <header class="header">
   <h1>FREE PROXY CF BMKG.XYZ</h1>
     </header>
 
-<div class="container">    
+<main class="content">
     <div class="filters">
       <div>
         <span class="filter-label">Item Page:</span>
@@ -695,9 +703,9 @@ thhhh {
     </div>
     </div>
   </div>
-  <footer>
+  <footer class="footer">
     <h2><p>&copy; 2024 FREE PROXY CF BMKG.XYZ</p></h2>
-  </footer>
+  </footer></div>
 <script>
   // Function to generate the link
   function generateLink() {
