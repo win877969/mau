@@ -58,10 +58,22 @@ body {
     position: relative; /* Pastikan posisinya tidak fixed atau absolute */
     z-index: 1; /* Memberi prioritas lebih rendah daripada header */
 }
-    h1, h2 {
+    h1 {
       color: black;
             text-align: center;
             font-size: 8vw;
+            font-weight: bold;
+            text-shadow: 
+                0 0 5px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8),
+                0 0 30px rgba(0, 123, 255, 0.8),
+                0 0 40px rgba(0, 123, 255, 0.8);
+    }
+    h2 {
+      color: black;
+            text-align: center;
+            font-size: 4vw;
             font-weight: bold;
             text-shadow: 
                 0 0 5px rgba(0, 123, 255, 0.8),
@@ -366,7 +378,7 @@ body {
   </div> 
 <div class="popup" id="myPopup">
 <div class="popup-content">
-<div class="row">
+<div class="row"><center>LINK SUB GENERATE</center>
     <div class="col">
       <label for="service-type">TYPE</label>
       <select class="service-selector" id="service-type">
