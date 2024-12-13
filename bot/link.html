@@ -257,10 +257,7 @@ body {
           <option value="100">100 Baris</option>
         </select>
       </div>
-      <div>
-        <span class="filter-label">Search:</span>
-        <input type="text" id="search-bar" placeholder="Cari Isp, Country Code">
-      </div></div>
+      
       
       
   <div class="row">
@@ -305,12 +302,15 @@ body {
     <div class="col">
       <label for="link-sub">SUB LINK</label>
       <input type="text" id="link-sub" value="" readonly />
-    </div>
-    <div class="col">
+    
       <button class="sub" onclick="copyLink()">COPY LINK</button>
     </div>
   </div>
 </div>
+  <div>
+        <span class="filter-label">Search:</span>
+        <input type="text" id="search-bar" placeholder="Cari Isp, Country Code">
+      </div></div>
 <script>
   // Function to generate the link
   function generateLink() {
