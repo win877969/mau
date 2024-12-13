@@ -830,7 +830,7 @@ function renderProxies(proxies, proxyList, pagination) {
   row.querySelector('.copy-vless').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
     const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
-    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#${negara}+${penyedia}`;
+    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${negara}+${penyedia}`;
     navigator.clipboard.writeText(VLESS);
     Swal.fire({
       title: 'Berhasil!',
@@ -848,7 +848,7 @@ function renderProxies(proxies, proxyList, pagination) {
   row.querySelector('.copy-vless-clash').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
     const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
-    const VLESSC = `- name: ${negara}+${penyedia}
+    const VLESSC = `- name: (${selectedService})+${negara}+${penyedia}
   server: ${selectedService}
   port: 443
   type: vless
@@ -880,7 +880,7 @@ function renderProxies(proxies, proxyList, pagination) {
   row.querySelector('.copy-trojan').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
     const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
-    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#${negara}+${penyedia}`;
+    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${negara}+${penyedia}`;
     navigator.clipboard.writeText(TROJAN);
     Swal.fire({
       title: 'Berhasil!',
@@ -898,7 +898,7 @@ function renderProxies(proxies, proxyList, pagination) {
   row.querySelector('.copy-trojan-clash').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
     const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
-    const TROJANC = `- name: ${negara}+${penyedia}
+    const TROJANC = `- name: (${selectedService})+${negara}+${penyedia}
     server: ${selectedService}
     port: 443
     type: trojan
@@ -928,7 +928,7 @@ function renderProxies(proxies, proxyList, pagination) {
   row.querySelector('.copy-ss').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
     const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
-    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#${negara}+${penyedia}`;
+    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${negara}+${penyedia}`;
     navigator.clipboard.writeText(SS);
     Swal.fire({
       title: 'Berhasil!',
@@ -960,7 +960,7 @@ function renderProxies(proxies, proxyList, pagination) {
   });
 
   row.querySelector('.copy-vless1').addEventListener('click', () => {
-    const VLESS1 = `vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#${negara}+${penyedia}`;
+    const VLESS1 = `vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#(${selectedService})+${negara}+${penyedia}`;
     navigator.clipboard.writeText(VLESS1);
     Swal.fire({
       title: 'Berhasil!',
@@ -976,7 +976,7 @@ function renderProxies(proxies, proxyList, pagination) {
   });
 
   row.querySelector('.copy-vless2').addEventListener('click', () => {
-    const VLESS2 = `- name: ${negara}+${penyedia}
+    const VLESS2 = `- name: (${selectedService})+${negara}+${penyedia}
   server: tp1.bmkg.xyz
   port: 80
   type: vless
