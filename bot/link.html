@@ -264,8 +264,57 @@ body {
       <div class="table-container">
 
 
-    <table>
-      <div class="table-container">  
+    <table>  
+      <div class="container">
+  <div class="row">
+    <div class="col">
+      <label for="service-type">TYPE</label>
+      <select class="service-selector" id="service-type">
+        <option value="vless">VLESS</option>
+        <option value="trojan">TROJAN</option>
+        <option value="ss">SS</option>
+      </select>
+    </div>
+    <div class="col">
+      <label for="country-code">COUNTRY</label>
+      <select class="service-selector" id="country-code">
+        <option value="ID">Indonesia</option>
+        <option value="SG">Singapore</option>
+        <option value="US">United States</option>
+        <!-- Other countries can be added here -->
+      </select>
+    </div>
+    <div class="col">
+      <label for="wildcard">WILDCARD</label>
+      <select class="service-selector" id="wildcard">
+        <option value="">NO WILDCARD</option>
+        <option value="ava.game.naver.com">ava.game.naver.com</option>
+        <option value="graph.instagram.com">graph.instagram.com</option>
+        <option value="quiz.int.vidio.com">quiz.int.vidio.com</option>
+        <!-- Other wildcard options can be added here -->
+      </select>
+    </div>
+    <div class="col">
+      <label for="cons">COUNT</label>
+      <select class="service-selector" id="cons">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="250">250</option>
+      </select>
+    </div>
+    <div class="col">
+      <label for="link-sub">SUB LINK</label>
+      <input type="text" id="link-sub" value="" readonly />
+    </div>
+    <div class="col">
+      <button class="sub" onclick="copyLink()">COPY LINK</button>
+    </div>
+  </div>
+</div>
+
       <thead>
         <tr>          
           <th>ISP | COUNTRY</th>
@@ -278,8 +327,9 @@ body {
         </tr>
       </thead>
       <tbody id="proxy-list"></tbody>
-    </div>
+    
     </table>
+        </div>
     <div class="total-proxy" id="total-proxy"></div>
     <div class="pagination" id="pagination"></div>
   </div>  
