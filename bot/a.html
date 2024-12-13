@@ -28,7 +28,13 @@
     .colkiri a:hover {
       text-decoration: underline;
     }
+ .colkiri p.ganjil {
+      background-color: #d3d3d3; /* Warna abu */
+    }
 
+    .colkiri p.genap {
+      background-color: #ffffff; /* Warna putih */
+    }
     .content-item {
       display: none; /* Default: sembunyikan semua konten */
     }
@@ -135,8 +141,8 @@
     <div class="row">
       <!-- Bagian kanan -->
               <div class="col-md-5">
-    <div class="colkiri">
-      <a href="#" data-target="content-1">Link 1</a>
+    <div class="colkiri" id="link-container">
+      <p <a href="#" data-target="content-1">Link 1</a>
       <a href="#" data-target="content-2">Link 2</a>
       <a href="#" data-target="content-3">Link 3</a>
       <a href="#" data-target="content-4">Link 4</a>
@@ -145,7 +151,7 @@
     <!-- Bagian Kanan -->
     <div class="col-md-7">
     <div class="colkanan">
-      <div id="content-1" class="content-item">
+      <div id="content-1" class="content-item active">
         <p>Konten 1: Ini adalah konten pertama.</p>
       </div>
       <div id="content-2" class="content-item">
