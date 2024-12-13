@@ -333,7 +333,10 @@ body {
     .popup button:hover {
       background-color: rgba(255, 108, 0, 0.86);
     }
-
+.highlight-text {
+    color: #007bff; /* Warna biru */
+    font-size: 18px; /* Ukuran teks */
+}
   </style>
 </head>
 <body>
@@ -378,8 +381,8 @@ body {
   </div> 
 <div class="popup" id="myPopup">
 <div class="popup-content">
-<div class="row"><center><hr/>LINK SUB GENERATE<hr/></center>
-    <div class="col">
+<div class="row"><hr/><span class="highlight-text">LINK SUB GENERATE</span><hr/>
+     <div class="col">
       <label for="service-type">TYPE</label>
       <select class="service-selector" id="service-type">
         <option value="vless">VLESS</option>
