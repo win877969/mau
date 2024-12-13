@@ -83,7 +83,8 @@ body {
                 0 0 40px rgba(0, 123, 255, 0.8);
     }
     header, footer {
-
+      
+      box-sizing: border-box; /* Pastikan padding dihitung dalam lebar elemen */
       background-color: ;
       color: white;
       text-align: center;
@@ -92,7 +93,8 @@ body {
       padding: 0 20px;
       position: fixed;
       width: 100%;
-      left: ;
+      left: 0;
+      right: 2px;
       z-index: 10;
     }
 
@@ -122,7 +124,7 @@ body {
     .service-selector option {
         padding: 10px;
     }  
-    .container1, .content {
+    .container, .content {
       
       flex: 1;
       padding-top: 110px; /* To avoid content being hidden under the header */
