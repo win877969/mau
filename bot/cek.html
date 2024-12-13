@@ -3,48 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy Check Automation</title>
+    <title>Display Proxy List</title>
 </head>
 <body>
-    <h1>Proxy Check Automation</h1>
-    <textarea id="proxyList" rows="10" cols="50" placeholder="Enter proxies here, one per line..."></textarea><br><br>
-    <button onclick="checkProxies()">Check Proxies</button>
+    <h1>Proxy List</h1>
 
-    <h2>Results</h2>
-    <div id="results"></div>
+    <h2>List of Proxies</h2>
+    <ul id="proxyList"></ul>
 
     <script>
-        async function checkProxies() {
-            const proxyList = document.getElementById('proxyList').value.split('\n').map(proxy => proxy.trim());
-            const resultsContainer = document.getElementById('results');
-            resultsContainer.innerHTML = ''; // Clear previous results
-
-            const checkUrl = "https://p01--boiling-frame--kw6dd7bjv2nr.code.run/check";
-
-            for (const proxy of proxyList) {
-                if (proxy === '') continue;
-                try {
-                    // Create a request with a proxy via a proxy server
-                    const response = await fetch(checkUrl, {
-                        method: 'GET',
-                        headers: {
-                            // You might need to use a specific proxy service for this, this header might need adjustment
-                        },
-                        mode: 'cors', // Ensure CORS policy allows this request
-                        cache: 'no-cache',
-                        // Customizing request to utilize a proxy server, e.g., by using a CORS proxy service
-                    });
-                    
-                    if (response.ok) {
-                        resultsContainer.innerHTML += `<p>Proxy ${proxy} is working.</p>`;
-                    } else {
-                        resultsContainer.innerHTML += `<p>Proxy ${proxy} failed with status: ${response.status}</p>`;
-                    }
-                } catch (error) {
-                    resultsContainer.innerHTML += `<p>Proxy ${proxy} failed with error: ${error.message}</p>`;
+        // Fungsi untuk mengambil file proxy_list.txt dan menampilkan isinya
+        window.onload = async function() {
+            try {
+                // Mengambil file proxy_list.txt dari server
+                const response = await fetch('proxy_list.txt');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch the proxy list');
                 }
+
+                // Membaca isi file sebagai teks
+                const fileContent = await response.text();
+                const proxyList = fileContent.split('\n').map(proxy => proxy.trim()).filter(proxy => proxy !== "");
+
+                // Menampilkan daftar proxy dalam elemen <ul>
+                const listContainer = document.getElementById('proxyList');
+                proxyList.forEach(proxy => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = proxy;  // Set teks untuk setiap proxy
+                    listContainer.appendChild(listItem); // Tambahkan ke dalam <ul>
+                });
+            } catch (error) {
+                console.error('Error loading proxy list:', error);
             }
-        }
+        };
     </script>
 </body>
 </html>
