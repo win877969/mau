@@ -41,7 +41,10 @@ body {
       margin: 0;
       font-family: Arial, sans-serif; /* Font sederhana dan bersih */
     }
-
+.flag-icon {
+    position: relative; /* Pastikan posisinya tidak fixed atau absolute */
+    z-index: 1; /* Memberi prioritas lebih rendah daripada header */
+}
     header, footer {
       background-color: #4CAF50;
       color: white;
