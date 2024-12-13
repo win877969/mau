@@ -20,17 +20,19 @@
             resultsContainer.innerHTML = ''; // Clear previous results
 
             const checkUrl = "https://p01--boiling-frame--kw6dd7bjv2nr.code.run/check";
-            
+
             for (const proxy of proxyList) {
                 if (proxy === '') continue;
                 try {
+                    // Create a request with a proxy via a proxy server
                     const response = await fetch(checkUrl, {
                         method: 'GET',
                         headers: {
-                            'Proxy': proxy // Set the proxy in request headers (customize based on your server's requirement)
+                            // You might need to use a specific proxy service for this, this header might need adjustment
                         },
-                        mode: 'cors',
-                        cache: 'no-cache'
+                        mode: 'cors', // Ensure CORS policy allows this request
+                        cache: 'no-cache',
+                        // Customizing request to utilize a proxy server, e.g., by using a CORS proxy service
                     });
                     
                     if (response.ok) {
