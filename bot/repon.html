@@ -18,37 +18,37 @@
       color: #333;
     }
 
-    /* Container utama */
+    /* Kontainer Utama */
     .container {
       display: flex;
-      flex-wrap: wrap; /* Pastikan fleksibel */
+      flex-wrap: wrap; /* Supaya elemen turun jika tidak muat */
       max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
+      margin: 20px auto;
       gap: 20px;
     }
 
-    /* Kolom kiri */
+    /* Kolom Kiri */
     .left-column {
-      flex: 0 0 40%; /* Kolom kiri 40% */
+      flex: 0 0 40%; /* Default 40% */
       background-color: #222;
       color: #fff;
       padding: 20px;
       border-radius: 8px;
     }
 
-    /* Kolom kanan */
+    /* Kolom Kanan */
     .right-column {
-      flex: 0 0 60%; /* Kolom kanan 60% */
+      flex: 0 0 60%; /* Default 60% */
       background-color: #fff;
       padding: 20px;
       border-radius: 8px;
     }
 
-    /* Responsif untuk layar kecil */
+    /* Media Query */
     @media (max-width: 768px) {
-      .left-column, .right-column {
-        flex: 0 0 100%; /* Kolom penuh di layar kecil */
+      .left-column,
+      .right-column {
+        flex: 0 0 100%; /* Kolom penuh pada layar kecil */
       }
     }
   </style>
@@ -57,21 +57,21 @@
   <header style="text-align: center; padding: 20px; background-color: #333; color: white;">
     <h1>Responsive Layout</h1>
   </header>
-  
+
   <div class="container">
     <!-- Kolom Kiri -->
     <div class="left-column">
       <h2>Kolom Kiri</h2>
-      <p>Konten untuk kolom kiri. Lebar ini adalah 40% pada layar besar.</p>
+      <p>Lebar kolom ini adalah 40% pada layar besar.</p>
     </div>
-    
+
     <!-- Kolom Kanan -->
     <div class="right-column">
       <h2>Kolom Kanan</h2>
-      <p>Konten untuk kolom kanan. Lebar ini adalah 60% pada layar besar.</p>
+      <p>Lebar kolom ini adalah 60% pada layar besar.</p>
     </div>
   </div>
-  
+
   <footer style="text-align: center; padding: 20px; background-color: #333; color: white;">
     <p>&copy; 2024 Responsive Layout</p>
   </footer>
