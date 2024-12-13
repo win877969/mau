@@ -11,7 +11,31 @@
       background-color: #f0f0f0;
       color: #333;
     }
+    .colkiri, .colkanan {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 5px;
+    }
 
+    .colkiri a {
+      display: block;
+      margin: 5px 0;
+      color: blue;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .colkiri a:hover {
+      text-decoration: underline;
+    }
+
+    .content-item {
+      display: none; /* Default: sembunyikan semua konten */
+    }
+
+    .content-item.active {
+      display: block; /* Tampilkan hanya konten aktif */
+    }
     header, footer {
       background-color: #007bff;
       color: white;
@@ -110,34 +134,31 @@
 
     <div class="row">
       <!-- Bagian kanan -->
-      <div class="col-md-5">
-        <div class="filters">
-          <div>
-            <label for="items-per-page">Item Page:</label>
-            <select id="items-per-page">
-              <option value="10">10 Baris</option>
-              <option value="25">25 Baris</option>
-              <option value="50">50 Baris</option>
-              <option value="100">100 Baris</option>
-            </select>
-          </div>
-          <div>
-            <label for="search-bar">Search:</label>
-            <input type="text" id="search-bar" placeholder="Cari berdasarkan negara, ISP, atau penyedia layanan...">
-          </div>
-        </div>
+              <div class="col-md-5">
+    <div class="colkiri">
+      <a href="#" data-target="content-1">Link 1</a>
+      <a href="#" data-target="content-2">Link 2</a>
+      <a href="#" data-target="content-3">Link 3</a>
+      <a href="#" data-target="content-4">Link 4</a>
+    </div>    </div>
 
-        <div class="proxy-list" id="proxy-list">
-          <!-- Proxy items will be dynamically rendered here -->
-        </div>
-
-        <div class="pagination1" id="pagination"></div>
+    <!-- Bagian Kanan -->
+    <div class="col-md-7">
+    <div class="colkanan">
+      <div id="content-1" class="content-item">
+        <p>Konten 1: Ini adalah konten pertama.</p>
       </div>
-
-      <!-- Bagian kiri -->
-      <div class="col-md-7">
-        <p>KIRI BAWAH</p>
+      <div id="content-2" class="content-item">
+        <p>Konten 2: Ini adalah konten kedua.</p>
       </div>
+      <div id="content-3" class="content-item">
+        <p>Konten 3: Ini adalah konten ketiga.</p>
+      </div>
+      <div id="content-4" class="content-item">
+        <p>Konten 4: Ini adalah konten keempat.</p>
+              </div>
+      </div>
+    </div>
     </div>
   </div>
 
@@ -145,102 +166,27 @@
     <p>&copy; 2024 Proxy List Manager</p>
   </footer>
 
-  <script>
-    let proxyPerPage = 10;
-    let currentPage = 1;
-    let filteredProxies = [];
-    let allProxies = [];
+    <script>
+    // Pilih semua link di kolom kiri
+    const links = document.querySelectorAll('.col-md-5 a');
+    const contents = document.querySelectorAll('.content-item');
 
-    // Render proxies
-    function renderProxies(proxies) {
-      const proxyList = document.getElementById("proxy-list");
-      const start = (currentPage - 1) * proxyPerPage;
-      const end = start + proxyPerPage;
-      const currentPageProxies = proxies.slice(start, end);
+    // Tambahkan event listener ke setiap link
+    links.forEach(link => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault(); // Hentikan aksi default link
 
-      proxyList.innerHTML = ""; // Clear list
-      currentPageProxies.forEach((proxy, index) => {
-        const [ip, port, country, provider] = proxy.split(",");
-        const row = document.createElement("p");
-        row.classList.add("proxy-item");
+        // Hapus kelas "active" dari semua konten
+        contents.forEach(content => content.classList.remove('active'));
 
-        // Alternating background colors for each row
-        row.style.backgroundColor = index % 2 === 0 ? "#e0e0e0" : "#c0c0c0";
-        row.textContent = `${country} | ${provider}`;
-        proxyList.appendChild(row);
+        // Ambil ID target dari atribut data-target
+        const targetId = this.getAttribute('data-target');
+
+        // Tampilkan konten yang sesuai
+        document.getElementById(targetId).classList.add('active');
       });
-
-      renderPagination(proxies);
-    }
-
-    // Render pagination
-    function renderPagination(proxies) {
-      const pagination = document.getElementById("pagination");
-      const totalPages = Math.ceil(proxies.length / proxyPerPage);
-      const maxVisibleButtons = 5;
-      const startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
-      const endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
-
-      pagination.innerHTML = "";
-
-      // Previous button
-      const prevButton = document.createElement("button");
-      prevButton.textContent = "<<";
-      prevButton.disabled = currentPage === 1;
-      prevButton.addEventListener("click", () => updatePage(currentPage - 1, proxies));
-      pagination.appendChild(prevButton);
-
-      // Page buttons
-      for (let i = startPage; i <= endPage; i++) {
-        const pageButton = document.createElement("button");
-        pageButton.textContent = i;
-        pageButton.classList.toggle("active", i === currentPage);
-        pageButton.addEventListener("click", () => updatePage(i, proxies));
-        pagination.appendChild(pageButton);
-      }
-
-      // Next button
-      const nextButton = document.createElement("button");
-      nextButton.textContent = ">>";
-      nextButton.disabled = currentPage === totalPages;
-      nextButton.addEventListener("click", () => updatePage(currentPage + 1, proxies));
-      pagination.appendChild(nextButton);
-    }
-
-    // Update page
-    function updatePage(page, proxies) {
-      currentPage = page;
-      renderProxies(filteredProxies);
-    }
-
-    // Filter proxies
-    function filterProxies(searchTerm) {
-      filteredProxies = allProxies.filter((proxy) =>
-        proxy.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      currentPage = 1;
-      renderProxies(filteredProxies);
-    }
-
-    // Event listeners
-    document.getElementById("search-bar").addEventListener("input", (e) => {
-      filterProxies(e.target.value);
     });
-
-    document.getElementById("items-per-page").addEventListener("change", (e) => {
-      proxyPerPage = parseInt(e.target.value);
-      renderProxies(filteredProxies);
-    });
-
-    // Fetch proxies
-    fetch("proxy_list.txt")
-      .then((response) => response.text())
-      .then((data) => {
-        allProxies = data.split("\n").filter((line) => line.trim() !== "");
-        filteredProxies = allProxies;
-        renderProxies(filteredProxies);
-      })
-      .catch((error) => console.error("Error fetching proxy data:", error));
   </script>
+    
 </body>
 </html>
