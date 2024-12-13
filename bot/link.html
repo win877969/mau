@@ -29,178 +29,211 @@
   <style>
  
     
-/* Global Styles */
+
+
+
+
+
+
 body {
-  font-family: 'Rajdhani', sans-serif; /* Menggunakan Rajdhani sebagai font utama */
-  background: linear-gradient(45deg, #000, #0f0f0f); /* Latar belakang gradasi */
-  color: #fff;
-  margin: 0;
-  padding: 0;
-  height: 100vh; /* Tinggi penuh layar */
-  overflow-x: hidden; /* Menghindari scroll horizontal */
-}
+      background-color: ; /* Hitam pekat (dark mode) */
+      color: #4CAF50; /* Teks hijau agar kontras dengan background */
+      margin: 0;
+      font-family: Arial, sans-serif; /* Font sederhana dan bersih */
+    }
 
-/* Animasi gradasi neon pada latar belakang */
-body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, #000, #0f0f0f, #111, #333);
-  animation: moveBackground 8s linear infinite;
-  z-index: -1;
-}
+    header, footer {
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: fixed;
+      width: 100%;
+      left: 0;
+    }
 
-/* Keyframes untuk animasi latar */
-@keyframes moveBackground {
-  0% { background-position: 0 0; }
-  50% { background-position: 100% 100%; }
-  100% { background-position: 0 0; }
-}
+    header {
+      top: 0;
+    }
 
-/* Header dan Footer */
-header, footer {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  z-index: 1000;
-  background: rgba(0, 0, 0, 0.9); /* Transparansi latar */
-}
+    footer {
+      bottom: 0;
+    }
+   .service-selector {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #4CAF50; /* Border warna hijau */
+        border-radius: 5px; /* Sudut membulat */
+        background-color: #f9f9f9; /* Warna latar belakang */
+        color: #333; /* Warna teks */
+        transition: background-color 0.3s, border-color 0.3s;
+    }
 
-header {
-  top: 0;
-}
+    .service-selector:hover {
+        background-color: #e0f7fa; /* Warna latar belakang saat hover */
+        border-color: #00796b; /* Warna border saat hover */
+    }
 
-footer {
-  bottom: 0;
-}
+    .service-selector option {
+        padding: 10px;
+    }  
+    .container {
+      flex: 1;
+      padding-top: 115px; /* To avoid content being hidden under the header */
+      padding-bottom: 115px; /* To avoid content being hidden under the footer */
+      padding-left: 10px;
+      padding-right: 10px;
+      display: flex;
+      flex-direction: column;
+      max-width: 960px;
+      align-items: center;
+    }
 
-/* Container Utama */
-.container {
-  background-color: #000;
-  flex: 1;
-  padding: 100px 10px 115px; /* Untuk menghindari overlap dengan header/footer */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 960px;
-  margin: 0 auto;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  animation: floatAnimation 3s ease-in-out infinite; /* Animasi melayang */
-}
+    .filters {
+      display: flex;
+      justify-content: space-between;
+      width: 70%;
+      margin-bottom: 20px;
+    }
 
-/* Animasi melayang */
-@keyframes floatAnimation {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
+    .filter-label {
+      margin-right: 10px;
+    }
 
-/* Judul dengan efek neon */
-h1, h2 {
-  color: #fff;
-  text-align: center;
-  text-shadow: 0 0 5px rgba(0, 123, 255, 0.8),
-               0 0 10px rgba(0, 123, 255, 0.8),
-               0 0 20px rgba(0, 123, 255, 0.8);
-}
+    /* Memberikan sudut melengkung pada tabel */
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 2px solid #4CAF50; /* Warna border hijau */
+      border-radius: 10px; /* Sudut melengkung */
+      overflow: hidden;
+      width: 100%; /* Membuat tabel lebar penuh */
+    }
 
-h1 {
-  font-size: 8vw;
-  font-weight: bold;
-}
+    /* Membungkus tabel dalam elemen scroll */
+    .table-container {
+      width: 100%;
+      overflow-x: auto; /* Mengaktifkan scroll horizontal */
+      margin-bottom: 20px;
+    }
 
-h2 {
-  font-size: 4vw;
-}
+    th {
+      background-color: #4CAF50; /* Warna hijau */
+      color: white; /* Warna teks putih */
+      font-weight: bold;
+      padding: 10px;
+      text-align: center;
+    }
 
-/* Tabel dengan gaya modern */
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 10px;
-  overflow: hidden;
-}
+    td {
+      padding: 10px;
+      text-align: center;
+      background-color: rgba(76, 175, 80, 0.1); /* Warna hijau transparan */
+      color: #333; /* Warna teks */
+      border-bottom: 1px solid #ddd; /* Garis pembatas antar baris */
+      transition: background-color 0.3s ease; /* Efek transisi */
+    }
 
-th, td {
-  text-align: center;
-  padding: 10px;
-}
+    td:hover {
+      background-color: rgba(76, 175, 80, 0.2); /* Warna hijau lebih gelap saat dihover */
+    }
 
-th {
-  background-color: rgba(132, 0, 0, 0.86); /* Warna merah gelap */
-  color: #fff;
-  font-weight: bold;
-}
+    tr:nth-child(odd) td {
+      background-color: rgba(240, 240, 240, 0.5); /* Warna abu terang */
+    }
 
-td {
-  background-color: rgba(2, 1, 45, 0.83); /* Warna biru gelap */
-  color: #fff;
-  transition: background-color 0.3s ease;
-}
+    tr:hover td {
+      background-color: #e0f7fa; /* Warna latar biru muda saat baris dihover */
+      color: #00796b; /* Warna teks saat dihover */
+    }
 
-tr:hover td {
-  background-color: rgba(0, 123, 255, 0.8); /* Warna biru terang saat hover */
-}
+    .copy-vless, .cekproxy, .copy-vless1, .copy-trojan, .copy-ss {
+      margin: 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
 
-/* Tombol */
-button, .copy-vless, .cekproxy, .service-selector {
-  font-family: 'Rajdhani', sans-serif;
-  margin: 5px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  background-color: rgba(242, 91, 0, 0.85); /* Warna oranye */
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.8);
-  transition: background-color 0.3s ease;
-}
+    .copy-vless:hover, .cekproxy:hover, .copy-vless1:hover, .copy-trojan:hover, .copy-ss:hover {
+      background-color: #0069d9;
+    }
 
-button:hover, .copy-vless:hover, .cekproxy:hover {
-  background-color: #0069d9; /* Warna biru gelap saat hover */
-}
+    .copy-vless-clash, .copy-vless2, .copy-trojan-clash, .copy-ss1 {
+      margin: 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+    }
 
-/* Formulir dan Input */
-#search-bar, #items-per-page {
-  font-family: 'Rajdhani', sans-serif;
-  background-color: red;
-  color: #fff;
-  padding: 10px;
-  width: 150px;
-  border: 1px solid rgba(0, 123, 255, 0.8);
-  border-radius: 4px;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.8);
-}
+    .copy-vless-clash:hover, .copy-vless2:hover, .copy-trojan-clash:hover, .copy-ss1:hover {
+      background-color: #4CAF50;
+    }
 
-#search-bar::placeholder {
-  color: white; /* Placeholder warna putih */
-}
+    .pagination {
+      text-align: center;
+    }
 
-/* Pagination */
-.pagination button {
-  margin: 5px;
-  padding: 10px 20px;
-  background-color: rgba(2, 1, 45, 0.83);
-  color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.8);
-}
+    .pagination button {
+      margin: 2px;
+      padding: 5px 10px;
+      border: 1px solid #000;
+      border-radius: 5px; 
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
 
-.pagination .active {
-  background-color: rgba(0, 192, 176, 0.81); /* Warna hijau terang */
-}
+    .pagination button:hover {
+      background-color: #0069d9;
+    }
 
-.pagination button:hover {
-  background-color: #0069d9; /* Warna biru gelap */
-}
+    .pagination .active {
+      background-color: #4CAF50;
+    }
 
+    #search-bar, #items-per-page {
+      padding: 10px;
+      width: 150px;
+      max-width: 100px;
+      border: 2px solid #4CAF50;
+      border-radius: 5px; 
+    }
+
+    /* Responsif */
+    @media (max-width: 600px) {
+      header, footer {
+        padding: 5px;
+      }
+
+      table {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      #search-bar, #items-per-page {
+        width: 60px;
+        max-width: none;
+        margin-bottom: 10px;
+        border-radius: 5px; 
+      }
+
+      .pagination button {
+        padding: 5px;
+        font-size: 12px;
+      }
+
+      .copy-vless, .copy-vless1, .copy-trojan, .copy-ss {
+        padding: 4px 8px;
+        font-size: 12px;
+      }
+    }
      
     
                 
@@ -209,7 +242,7 @@ button:hover, .copy-vless:hover, .cekproxy:hover {
 </head>
 <body>
   <header>
-  <h877>FREE PROXY CF BMKG.XYZ</h877>
+  <h1>FREE PROXY CF BMKG.XYZ</h1>
 </header>
 
 <div class="container">
