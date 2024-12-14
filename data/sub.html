@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Generator</title>
+    <script>
+        function generateLinks() {
+            // Ambil nilai dari select box
+            var serviceType = document.getElementById("service-type").value;
+            var countryCode = document.getElementById("country-code").value;
+            var wildcard = document.getElementById("wildcard").value;
+            var count = document.getElementById("cons").value;
+
+            // Buat URL berdasarkan input
+            var link1 = `https://sub.bmkg.xyz/${serviceType}?sub1=${countryCode}&count=${count}&wildcard=${wildcard}`;
+            var link2 = `https://sub.bmkg.xyz/${serviceType}?sub2=${countryCode}&count=${count}&wildcard=${wildcard}`;
+
+            // Tampilkan kedua link pada halaman
+            document.getElementById("link1").textContent = link1;
+            document.getElementById("link2").textContent = link2;
+
+            // Update form action untuk tombol copy
+            document.getElementById("copyLink1").setAttribute("data-link", link1);
+            document.getElementById("copyLink2").setAttribute("data-link", link2);
+        }
+
+        function copyLink(button) {
+            var link = button.getAttribute("data-link");
+            navigator.clipboard.writeText(link).then(function() {
+                alert("Link copied to clipboard!");
+            });
+        }
+    </script>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>TYPE</th>
+                <th>COUNTRY</th>
+                <th>WILDCARD</th>
+                <th>COUNT</th>
+                <th>SUB LINK</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select class="service-selector" id="service-type">
+                        <option value="vless">VLESS</option>
+                        <option value="trojan">TROJAN</option>
+                        <option value="ss">SS</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="service-selector" id="country-code">
+                        <option value="RANDOM">RANDOM</option>
+                        <option value="ID">Indonesia</option>
+                        <option value="SG">Singapore</option>
+                        <option value="US">United States</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="service-selector" id="wildcard">
+                        <option value="">NO WILDCARD</option>
+                        <option value="bug.com">bug.com</option>
+                        <option value="ava.game.naver.com">ava.game.naver.com</option>
+                        <option value="graph.instagram.com">graph.instagram.com</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="service-selector" id="cons">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </td>
+                <td>
+                    <div>
+                        <span id="link1"></span><br>
+                        <span id="link2"></span>
+                    </div>
+                </td>
+                <td>
+                    <button id="copyLink1" onclick="copyLink(this)" data-link="">COPY LINK 1</button>
+                    <button id="copyLink2" onclick="copyLink(this)" data-link="">COPY LINK 2</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="generateLinks()">Generate Links</button>
+</body>
+</html>
