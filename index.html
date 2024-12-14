@@ -841,11 +841,6 @@ function renderProxies(proxies, proxyList, pagination) {
     // Event listeners for copy buttons
     
     
-      
-    
-
-      
-    
   row.querySelector('.copy-vless').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz";
     const domain = selectedService === "tp1.bmkg.xyz" ? "tp1.bmkg.xyz" : `${selectedService}.tp1.bmkg.xyz`;
@@ -978,7 +973,7 @@ function renderProxies(proxies, proxyList, pagination) {
     });
   });
 
-  row.querySelector('.copy-vless1').addEventListener('click', () => {
+  document.querySelector('.copy-vless1').addEventListener('click', () => {
     const VLESS1 = `vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#(${selectedService})+${negara}+${penyedia}`;
     navigator.clipboard.writeText(VLESS1);
     Swal.fire({
@@ -994,7 +989,7 @@ function renderProxies(proxies, proxyList, pagination) {
     });
   });
 
-  row.querySelector('.copy-vless2').addEventListener('click', () => {
+  document.querySelector('.copy-vless2').addEventListener('click', () => {
     const VLESS2 = `- name: (${selectedService})+${negara}+${penyedia}
   server: tp1.bmkg.xyz
   port: 80
