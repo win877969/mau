@@ -31,6 +31,17 @@
                 alert("Link copied to clipboard!");
             });
         }
+
+        // Tambahkan event listener untuk setiap select box
+        document.addEventListener("DOMContentLoaded", function() {
+            var selects = document.querySelectorAll(".service-selector");
+            selects.forEach(function(select) {
+                select.addEventListener("change", generateLinks);
+            });
+
+            // Generate initial links
+            generateLinks();
+        });
     </script>
 </head>
 <body>
@@ -80,15 +91,12 @@
                 </td>
                 <td>
                     <input type="text" id="link1" readonly style="width: 100%; margin-bottom: 10px;">
-                    <input type="text" id="link2" readonly style="width: 100%;">
-                </td>
-                <td>
                     <button id="copyLink1" onclick="copyLink(this)" data-link="">COPY LINK 1</button>
+                    <input type="text" id="link2" readonly style="width: 100%;">
                     <button id="copyLink2" onclick="copyLink(this)" data-link="">COPY LINK 2</button>
                 </td>
             </tr>
         </tbody>
     </table>
-    <button onclick="generateLinks()">Generate Links</button>
 </body>
 </html>
