@@ -380,7 +380,7 @@ thhhh {
   <h1>FREE PROXY CF BMKG.XYZ</h1>
     </header>
   <main class="content">
-    <center><button class="button" onclick="showPopup()">SHOW LINK SUB</button></center>
+    <center><button class="button" onclick="showPopup('sub-link')">SHOW LINK SUB</button></center>
 
     <div class="filters">
       <div>
@@ -415,7 +415,7 @@ thhhh {
     <div class="total-proxy" id="total-proxy"></div>
     <div class="pagination" id="pagination"></div>
   </div> 
-<div class="popup" id="myPopup">
+<div class="popup" id="sub-link">
 <div class="popup-content">
 <div class="row"><hr/><span class="highlight-text">LINK SUB GENERATE</span><hr/>
      <div class="col">
@@ -708,7 +708,7 @@ thhhh {
             <div class="button-container">
                 <button id="copyLink2" onclick="copyLink(this)" data-link="">COPY LINK 2</button>
             </div>
-        </div><button onclick="hidePopup()">Close</button>
+        </div><button onclick="hidePopup(sub-link)">Close</button>
  
     </div>
     </div>
@@ -789,14 +789,16 @@ thhhh {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     // Function to show the popup
-    function showPopup() {
-      document.getElementById("myPopup").style.display = "flex";
-    }
+    // Function to show a popup
+function showPopup(popupId) {
+  document.getElementById(popupId).style.display = "flex";
+}
 
-    // Function to hide the popup
-    function hidePopup() {
-      document.getElementById("myPopup").style.display = "none";
-    }
+// Function to hide a popup
+function hidePopup(popupId) {
+  document.getElementById(popupId).style.display = "none";
+}
+
   </script>
     <script>
 let proxyPerPage = 15;
