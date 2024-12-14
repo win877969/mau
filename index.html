@@ -429,7 +429,7 @@ thhhh {
     <div class="col">
       <label for="country-code">COUNTRY</label>
       <select class="service-selector" id="country-code">
-     <option value="ID">Indonesia</option>
+     <option value="RANDOM">RANDOM</option>
     <option value="SG">Singapore</option>
     <option value="US">United States</option>
     <option value="AF">Afghanistan</option>
@@ -710,22 +710,29 @@ thhhh {
 <script>
   // Function to generate the link
   function generateLink() {
-    const serviceType = document.getElementById('service-type').value;
-    const countryCode = document.getElementById('country-code').value;
-    const wildcard = document.getElementById('wildcard').value;
-    const cons = document.getElementById('cons').value;
+  function generateLinks() {
+            // Ambil nilai dari select box
+            var serviceType = document.getElementById("service-type").value;
+            var countryCode = document.getElementById("country-code").value;
+            var wildcard = document.getElementById("wildcard").value;
+            var count = document.getElementById("cons").value;
 
-    // Base URL for the link
-    let baseURL = `https://sub.bmkg.xyz/${serviceType}?sub1=${countryCode}&count=${cons}`;
+            // Membuat parameter wildcard hanya jika wildcard tidak kosong
+            var wildcardParam = wildcard ? `&wildcard=${wildcard}` : '';
 
-    // If wildcard is selected, append it to the URL
-    if (wildcard) {
-      baseURL += `&wildcard=${wildcard}`;
-    }
+            // Buat URL berdasarkan input
+            var link1 = `https://sub1.bmkg.xyz/${serviceType}?sub1=${countryCode}&count=${count}${wildcardParam}`;
+            var link2 = `https://sub1.bmkg.xyz/${serviceType}?sub2=${countryCode}&count=${count}${wildcardParam}`;
 
-    // Set the generated URL to the input field
-    document.getElementById('link-sub').value = baseURL;
-  }
+            // Tampilkan kedua link pada input box
+            document.getElementById("link1").value = link1;
+            document.getElementById("link2").value = link2;
+
+            // Update form action untuk tombol copy
+            document.getElementById("copyLink1").setAttribute("data-link", link1);
+            document.getElementById("copyLink2").setAttribute("data-link", link2);
+        }
+
 
   // Add event listeners to the selects to trigger link generation
   document.getElementById('service-type').addEventListener('change', generateLink);
