@@ -16,8 +16,8 @@
             var wildcardParam = wildcard ? `&wildcard=${wildcard}` : '';
 
             // Buat URL berdasarkan input
-            var link1 = `https://sub.bmkg.xyz/${serviceType}?sub1=${countryCode}&count=${count}${wildcardParam}`;
-            var link2 = `https://sub.bmkg.xyz/${serviceType}?sub2=${countryCode}&count=${count}${wildcardParam}`;
+            var link1 = `https://sub1.bmkg.xyz/${serviceType}?sub1=${countryCode}&count=${count}${wildcardParam}`;
+            var link2 = `https://sub2.bmkg.xyz/${serviceType}?sub2=${countryCode}&count=${count}${wildcardParam}`;
 
             // Tampilkan kedua link pada input box
             document.getElementById("link1").value = link1;
