@@ -4,6 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link Generator</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+        }
+        .row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .row label {
+            width: 100px;
+        }
+        .col {
+            display: flex;
+            flex-direction: column;
+            margin-right: 15px;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+        }
+        .col input, .col select, .button-container button {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+        }
+    </style>
     <script>
         function generateLinks() {
             // Ambil nilai dari select box
@@ -48,58 +77,61 @@
     </script>
 </head>
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th>TYPE</th>
-                <th>COUNTRY</th>
-                <th>WILDCARD</th>
-                <th>COUNT</th>
-                <th>SUB LINK</th>
-                <th>ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <select class="service-selector" id="service-type">
-                        <option value="vless">VLESS</option>
-                        <option value="trojan">TROJAN</option>
-                        <option value="ss">SS</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="service-selector" id="country-code">
-                        <option value="RANDOM">RANDOM</option>
-                        <option value="ID">Indonesia</option>
-                        <option value="SG">Singapore</option>
-                        <option value="US">United States</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="service-selector" id="wildcard">
-                        <option value="">NO WILDCARD</option>
-                        <option value="bug.com">bug.com</option>
-                        <option value="ava.game.naver.com">ava.game.naver.com</option>
-                        <option value="graph.instagram.com">graph.instagram.com</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="service-selector" id="cons">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                    </select>
-                </td>
-                <td>
-                    <input type="text" id="link1" readonly style="width: 100%; margin-bottom: 10px;">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <label for="service-type">TYPE</label>
+                <select class="service-selector" id="service-type">
+                    <option value="vless">VLESS</option>
+                    <option value="trojan">TROJAN</option>
+                    <option value="ss">SS</option>
+                </select>
+            </div>
+            <div class="col">
+                <label for="country-code">COUNTRY</label>
+                <select class="service-selector" id="country-code">
+                    <option value="RANDOM">RANDOM</option>
+                    <option value="ID">Indonesia</option>
+                    <option value="SG">Singapore</option>
+                    <option value="US">United States</option>
+                </select>
+            </div>
+            <div class="col">
+                <label for="wildcard">WILDCARD</label>
+                <select class="service-selector" id="wildcard">
+                    <option value="">NO WILDCARD</option>
+                    <option value="bug.com">bug.com</option>
+                    <option value="ava.game.naver.com">ava.game.naver.com</option>
+                    <option value="graph.instagram.com">graph.instagram.com</option>
+                </select>
+            </div>
+            <div class="col">
+                <label for="cons">COUNT</label>
+                <select class="service-selector" id="cons">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="link1">SUB LINK 1</label>
+                <input type="text" id="link1" readonly>
+                <div class="button-container">
                     <button id="copyLink1" onclick="copyLink(this)" data-link="">COPY LINK 1</button>
-                    <input type="text" id="link2" readonly style="width: 100%;">
+                </div>
+            </div>
+            <div class="col">
+                <label for="link2">SUB LINK 2</label>
+                <input type="text" id="link2" readonly>
+                <div class="button-container">
                     <button id="copyLink2" onclick="copyLink(this)" data-link="">COPY LINK 2</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
