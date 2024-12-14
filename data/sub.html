@@ -16,9 +16,9 @@
             var link1 = `https://sub.bmkg.xyz/${serviceType}?sub1=${countryCode}&count=${count}&wildcard=${wildcard}`;
             var link2 = `https://sub.bmkg.xyz/${serviceType}?sub2=${countryCode}&count=${count}&wildcard=${wildcard}`;
 
-            // Tampilkan kedua link pada halaman
-            document.getElementById("link1").textContent = link1;
-            document.getElementById("link2").textContent = link2;
+            // Tampilkan kedua link pada input box
+            document.getElementById("link1").value = link1;
+            document.getElementById("link2").value = link2;
 
             // Update form action untuk tombol copy
             document.getElementById("copyLink1").setAttribute("data-link", link1);
@@ -79,10 +79,8 @@
                     </select>
                 </td>
                 <td>
-                    <div>
-                        <span id="link1"></span><br>
-                        <span id="link2"></span>
-                    </div>
+                    <input type="text" id="link1" readonly style="width: 100%; margin-bottom: 10px;">
+                    <input type="text" id="link2" readonly style="width: 100%;">
                 </td>
                 <td>
                     <button id="copyLink1" onclick="copyLink(this)" data-link="">COPY LINK 1</button>
