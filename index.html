@@ -973,7 +973,8 @@ function renderProxies(proxies, proxyList, pagination) {
     });
   });
 
-  document.querySelector('.copy-vless1').addEventListener('click', () => {
+  row.querySelector('.copy-vless1').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // Pastikan ini ada di dalam event listener
     const VLESS1 = `vless://${uuid}@tp1.bmkg.xyz:80?encryption=none&type=ws&host=tp1.bmkg.xyz&path=%2F${ip}-${port}&security=none&sni=#(${selectedService})+${negara}+${penyedia}`;
     navigator.clipboard.writeText(VLESS1);
     Swal.fire({
@@ -989,7 +990,8 @@ function renderProxies(proxies, proxyList, pagination) {
     });
   });
 
-  document.querySelector('.copy-vless2').addEventListener('click', () => {
+  row.querySelector('.copy-vless2').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.bmkg.xyz"; // Pastikan ini ada di dalam event listener
     const VLESS2 = `- name: (${selectedService})+${negara}+${penyedia}
   server: tp1.bmkg.xyz
   port: 80
