@@ -12,9 +12,12 @@
             var wildcard = document.getElementById("wildcard").value;
             var count = document.getElementById("cons").value;
 
+            // Membuat parameter wildcard hanya jika wildcard tidak kosong
+            var wildcardParam = wildcard ? `&wildcard=${wildcard}` : '';
+
             // Buat URL berdasarkan input
-            var link1 = `https://sub.bmkg.xyz/${serviceType}?sub1=${countryCode}&count=${count}&wildcard=${wildcard}`;
-            var link2 = `https://sub.bmkg.xyz/${serviceType}?sub2=${countryCode}&count=${count}&wildcard=${wildcard}`;
+            var link1 = `https://sub.bmkg.xyz/${serviceType}?sub1=${countryCode}&count=${count}${wildcardParam}`;
+            var link2 = `https://sub.bmkg.xyz/${serviceType}?sub2=${countryCode}&count=${count}${wildcardParam}`;
 
             // Tampilkan kedua link pada input box
             document.getElementById("link1").value = link1;
