@@ -695,10 +695,21 @@ thhhh {
       </select>
       </div>
     <div class="col">
-      <label for="link-sub">SUB LINK</label>
-      <input type="text" id="link-sub" value="" readonly />
-      <button class="sub" onclick="copyLink()">COPY LINK</button>
-    <button onclick="hidePopup()">Close</button>
+      <div class="col">
+            <label for="link1">SUB LINK 1</label>
+            <input type="text" id="link1" readonly>
+            <div class="button-container">
+                <button id="copyLink1" onclick="copyLink(this)" data-link="">COPY LINK 1</button>
+            </div>
+        </div>
+
+        <div class="col">
+            <label for="link2">SUB LINK 2</label>
+            <input type="text" id="link2" readonly>
+            <div class="button-container">
+                <button id="copyLink2" onclick="copyLink(this)" data-link="">COPY LINK 2</button>
+            </div>
+        </div><button onclick="hidePopup()">Close</button>
  
     </div>
     </div>
@@ -709,7 +720,6 @@ thhhh {
   </footer>
 <script>
   // Function to generate the link
-  function generateLink() {
   function generateLinks() {
             // Ambil nilai dari select box
             var serviceType = document.getElementById("service-type").value;
@@ -733,16 +743,13 @@ thhhh {
             document.getElementById("copyLink2").setAttribute("data-link", link2);
         }
 
+        
 
-  // Add event listeners to the selects to trigger link generation
-  document.getElementById('service-type').addEventListener('change', generateLink);
-  document.getElementById('country-code').addEventListener('change', generateLink);
-  document.getElementById('wildcard').addEventListener('change', generateLink);
-  document.getElementById('cons').addEventListener('change', generateLink);
-
+            // Generate initial links
+            
   // Function to copy the link to clipboard
   function copyLink() {
-    const inputField = document.getElementById('link-sub');
+    const inputField = document.getElementById('data-link');
     const link = inputField.value;
 
     // Salin teks ke clipboard
