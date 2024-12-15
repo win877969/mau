@@ -937,6 +937,7 @@ function renderProxies(proxies, proxyList, pagination) {
       <td> <span class="aha">${penyedia} | ${negara} </span><span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
       <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>          
+      <span class="latency-cell"></span>
       </td>
       <td>
         <select class="service-selector">
