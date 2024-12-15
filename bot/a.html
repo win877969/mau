@@ -382,7 +382,7 @@ thhhh {
       align-items: center;
       z-index: 100;
     }
-  .1button {
+  .button877 {
       margin: 10px;
       padding: 10px 10px;
       border: 1px solid rgba(197, 51, 6, 0.89); /* Border dengan warna abu-abu */
@@ -393,7 +393,7 @@ thhhh {
       cursor: pointer;
     }
     
-    .1popup-content {
+    .popup-content {
       background-color: rgba(0, 3, 63, 0.84);
       padding: 20px;
       border: 1px solid rgba(197, 51, 6, 0.89); /* Border dengan warna abu-abu */
@@ -401,7 +401,7 @@ thhhh {
       text-align: center;
       z-index: 101;
     }
-    .popup 1button {
+    .popup button877 {
       margin: 10px;
       padding: 10px 10px;
       border: 1px solid rgba(197, 51, 6, 0.89); 
@@ -411,7 +411,7 @@ thhhh {
       cursor: pointer;
       
     }
-    .button1 {
+    .button877 {
       padding: 10px;
       background-color: rgba(255, 0, 0, 0.86);
       color: white;
@@ -419,20 +419,11 @@ thhhh {
       cursor: pointer;
       
     }
-    .1popup 1button:hover {
+    .popup button877:hover {
       background-color: rgba(255, 108, 0, 0.86);
     }
         /* Optional: Backdrop for popup */
-    .popup::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: -1;
-    }
+    
   
 .highlight-text {
     color: #007bff; /* Warna biru */
@@ -925,7 +916,7 @@ function renderProxies(proxies, proxyList, pagination) {
       <hr/>SERVER 2<br><button class="copy-vless877">COPY VLESS 443</button>
       <br><button class="copy-vless-clash877">COPY CLASH 443</button>
       <hr/>
-      <button onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
+      <button class="button877" onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
 </div>
 </div></td><td>
       <button class="button" onclick="showPopup('vntls${ip}:${port}')">VLESS-NTLS</button>
@@ -940,7 +931,7 @@ function renderProxies(proxies, proxyList, pagination) {
       <hr/>SERVER 2<br><button class="copy-vless1877">COPY VLESS 80</button>
       <br><button class="copy-vless2877">COPY CLASH 80</button>
       <hr/>
-      <button onclick="hidePopup('vntls${ip}:${port}')">Close</button> 
+      <button class="button877" onclick="hidePopup('vntls${ip}:${port}')">Close</button> 
     </div>
     </div></td><td>
       <button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN</button>
@@ -955,7 +946,7 @@ function renderProxies(proxies, proxyList, pagination) {
       <hr/>SERVER 2<br><button class="copy-trojan877">COPY TROJAN 443</button>
       <br><button class="copy-trojan-clash877">COPY CLASH 443</button> 
       <hr/>
-      <button onclick="hidePopup('trojan${ip}:${port}')">Close</button> 
+      <button class="button877" onclick="hidePopup('trojan${ip}:${port}')">Close</button> 
     </div>
     </div></td><td>
       <button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
@@ -967,7 +958,7 @@ function renderProxies(proxies, proxyList, pagination) {
       <hr/>SERVER 1<br>
       <button class="copy-ss">COPY SHADOWSOCK</button>
       <br><button class="copy-ss1">COPY CLASH</button>
-     <hr/> <button onclick="hidePopup('ss${ip}:${port}')">Close</button> 
+     <hr/> <button class="button877" onclick="hidePopup('ss${ip}:${port}')">Close</button> 
     </div>
     </div></td>
     `;
