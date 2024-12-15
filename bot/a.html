@@ -722,7 +722,8 @@ thhhh {
             <center>  <p>Note: Server 2 Tidak Suport Shadowsocks </p></center>
                 <button id="copyLink2" onclick="copyLink(this)" data-link="">COPY LINK SERVER 2</button>
             </div>
-        </div><button onclick="hidePopup('sub-link')">Close</button>
+        </div>
+  <button onclick="hidePopup('sub-link')">Close</button>
  
     </div>
     </div>
@@ -860,8 +861,15 @@ function renderProxies(proxies, proxyList, pagination) {
           <option value="api.midtrans.com">api.midtrans.com</option>
         </select>
       </td>
-      <td><button class="copy-vless">COPY VLESS 443</button>
-      <button class="copy-vless-clash">COPY CLASH 443</button></td>
+      <td><button class="button" onclick="showPopup('${ip}:${port}')">SHOW LINK SUB</button>
+<div class="popup" id="${ip}:${port}">
+<div class="popup-content">
+<button class="copy-vless">COPY VLESS 443</button>
+      <button class="copy-vless-clash">COPY CLASH 443</button>
+        <button onclick="hidePopup('${ip}:${port}')">Close</button>
+ 
+    </div>
+    </div></td>
       <td><button class="copy-vless1">COPY VLESS 80</button>
       <button class="copy-vless2">COPY CLASH 80</button></td>
       <td><button class="copy-trojan">COPY TROJAN 443</button>
