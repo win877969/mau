@@ -910,10 +910,10 @@ function renderProxies(proxies, proxyList, pagination) {
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
       <hr/>SERVER 1<br>
-      <button id="copy-vless" class="warna1">COPY VLESS 443</button>
-      <br><button id="copy-vless-clash" class="warna2">COPY CLASH 443</button>
-      <hr/>SERVER 2<br><button id="copy-vless877" class="warna1">COPY VLESS 443</button>
-      <br><button id="copy-vless-clash877" class="warna2">COPY CLASH 443</button>
+      <button class="copy-vless" id="warna1">COPY VLESS 443</button>
+      <br><button class="copy-vless-clash" id="warna2">COPY CLASH 443</button>
+      <hr/>SERVER 2<br><button class="copy-vless877" id="warna1">COPY VLESS 443</button>
+      <br><button class="copy-vless-clash877" id="warna2">COPY CLASH 443</button>
       <hr/>
       <button class="button877" onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
 </div>
@@ -925,10 +925,10 @@ function renderProxies(proxies, proxyList, pagination) {
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
       <hr/>SERVER 1<br>
-      <button id="copy-vless1" class="warna1">COPY VLESS 80</button>
-      <br><button id="copy-vless2" class="warna2">COPY CLASH 80</button>
-      <hr/>SERVER 2<br><button id="copy-vless1877" class="warna1">COPY VLESS 80</button>
-      <br><button id="copy-vless2877" class="warna2">COPY CLASH 80</button>
+      <button class="copy-vless1" id="warna1">COPY VLESS 80</button>
+      <br><button class="copy-vless2" id="warna2">COPY CLASH 80</button>
+      <hr/>SERVER 2<br><button class="copy-vless1877" id="warna1">COPY VLESS 80</button>
+      <br><button class="copy-vless2877" id="warna2">COPY CLASH 80</button>
       <hr/>
       <button class="button877" onclick="hidePopup('vntls${ip}:${port}')">Close</button> 
     </div>
@@ -940,10 +940,10 @@ function renderProxies(proxies, proxyList, pagination) {
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
       <hr/>SERVER 1<br>
-      <button id="copy-trojan" class="warna1">COPY TROJAN 443</button>
-      <br><button id="copy-trojan-clash" class="warna2">COPY CLASH 443</button> 
-      <hr/>SERVER 2<br><button id="copy-trojan877" class="warna1">COPY TROJAN 443</button>
-      <br><button id="copy-trojan-clash877" class="warna2">COPY CLASH 443</button> 
+      <button class="copy-trojan" id="warna1">COPY TROJAN 443</button>
+      <br><button class="copy-trojan-clash" id="warna2">COPY CLASH 443</button> 
+      <hr/>SERVER 2<br><button class="copy-trojan877" id="warna1">COPY TROJAN 443</button>
+      <br><button class="copy-trojan-clash877" id="warna2">COPY CLASH 443</button> 
       <hr/>
       <button class="button877" onclick="hidePopup('trojan${ip}:${port}')">Close</button> 
     </div>
@@ -955,8 +955,8 @@ function renderProxies(proxies, proxyList, pagination) {
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
       <hr/>SERVER 1<br>
-      <button id="copy-ss" class="warna1">COPY SHADOWSOCK</button>
-      <br><button id="copy-ss1" class="warna2">COPY CLASH</button>
+      <button class="copy-ss" id="warna1">COPY SHADOWSOCK</button>
+      <br><button class="copy-ss1" id="warna2">COPY CLASH</button>
      <hr/> <button class="button877" onclick="hidePopup('ss${ip}:${port}')">Close</button> 
     </div>
     </div></td>
