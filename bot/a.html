@@ -864,18 +864,31 @@ function renderProxies(proxies, proxyList, pagination) {
       <td><button class="button" onclick="showPopup('${ip}:${port}')">SHOW LINK SUB</button>
 <div class="popup" id="${ip}:${port}">
 <div class="popup-content">
-<button class="copy-vless">COPY VLESS 443</button>
+      <button class="copy-vless">COPY VLESS 443</button>
       <button class="copy-vless-clash">COPY CLASH 443</button>
-        <button onclick="hidePopup('${ip}:${port}')">Close</button>
+      <button onclick="hidePopup('${ip}:${port}')">Close</button> 
+</div>
+</div></td>
+      <td><div class="popup" id="${ip}:${port}">
+<div class="popup-content">
+      <button class="copy-vless1">COPY VLESS 80</button>
+      <button class="copy-vless2">COPY CLASH 80</button>
+      <button onclick="hidePopup('${ip}:${port}')">Close</button> 
+    </div>
+    </div></td>
+    <td><div class="popup" id="${ip}:${port}">
+<div class="popup-content">
+<button class="copy-trojan">COPY TROJAN 443</button>
+      <button class="copy-trojan-clash">COPY CLASH 443</button> <button onclick="hidePopup('${ip}:${port}')">Close</button>
  
     </div>
     </div></td>
-      <td><button class="copy-vless1">COPY VLESS 80</button>
-      <button class="copy-vless2">COPY CLASH 80</button></td>
-      <td><button class="copy-trojan">COPY TROJAN 443</button>
-      <button class="copy-trojan-clash">COPY CLASH 443</button></td>
-      <td><button class="copy-ss">COPY SHADOWSOCK</button>
-      <button class="copy-ss1">COPY CLASH</button></td>
+      <td><div class="popup" id="${ip}:${port}">
+<div class="popup-content"><button class="copy-ss">COPY SHADOWSOCK</button>
+      <button class="copy-ss1">COPY CLASH</button><button class="copy-trojan-clash">COPY CLASH 443</button> <button onclick="hidePopup('${ip}:${port}')">Close</button>
+ 
+    </div>
+    </div></td>
     `;
     proxyList.appendChild(row);
 
