@@ -860,36 +860,37 @@ function renderProxies(proxies, proxyList, pagination) {
           <option value="io.ruangguru.com">io.ruangguru.com</option>
           <option value="api.midtrans.com">api.midtrans.com</option>
         </select>
-      </td>
-      <td><button class="button" onclick="showPopup('vtls${ip}:${port}')">VLESS-TLS</button>
-<div class="popup" id="vtls${ip}:${port}">
-<div class="popup-content">
+      </td><td>
+      <button class="button" onclick="showPopup('vtls${ip}:${port}')">VLESS-TLS</button>
+      <div class="popup" id="vtls${ip}:${port}">
+      <div class="popup-content">
       <button class="copy-vless">COPY VLESS 443</button>
       <button class="copy-vless-clash">COPY CLASH 443</button>
       <button onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
 </div>
-</div></td><button class="button" onclick="showPopup('vntls${ip}:${port}')">VLESS-NTLS</button>
-      <td><div class="popup" id="vntls${ip}:${port}">
-<div class="popup-content">
+</div></td><td>
+      <button class="button" onclick="showPopup('vntls${ip}:${port}')">VLESS-NTLS</button>
+      <div class="popup" id="vntls${ip}:${port}">
+      <div class="popup-content">
       <button class="copy-vless1">COPY VLESS 80</button>
       <button class="copy-vless2">COPY CLASH 80</button>
       <button onclick="hidePopup('vntls${ip}:${port}')">Close</button> 
     </div>
-    </div></td><td><button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN</button>
-    <div class="popup" id="trojan${ip}:${port}">
-<div class="popup-content">
+    </div></td><td>
+      <button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN</button>
+      <div class="popup" id="trojan${ip}:${port}">
+      <div class="popup-content">
       <button class="copy-trojan">COPY TROJAN 443</button>
       <button class="copy-trojan-clash">COPY CLASH 443</button> 
-      <button onclick="hidePopup('trojan${ip}:${port}')">Close</button>
- 
+      <button onclick="hidePopup('trojan${ip}:${port}')">Close</button> 
     </div>
-    </div></td><td><button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
+    </div></td><td>
+      <button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
       <div class="popup" id="ss${ip}:${port}">
-<div class="popup-content">
+      <div class="popup-content">
       <button class="copy-ss">COPY SHADOWSOCK</button>
       <button class="copy-ss1">COPY CLASH</button>
-      <button onclick="hidePopup('ss${ip}:${port}')">Close</button>
- 
+      <button onclick="hidePopup('ss${ip}:${port}')">Close</button> 
     </div>
     </div></td>
     `;
