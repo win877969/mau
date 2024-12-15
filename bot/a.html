@@ -937,7 +937,7 @@ function renderProxies(proxies, proxyList, pagination) {
       <td> <span class="aha">${penyedia} | ${negara} </span><span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
       <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>          
-      <span class="latency-cell"></span></td>
+      </td>
       <td>
         <select class="service-selector">
           <option value="">NO WILDCARD</option>
@@ -1419,7 +1419,7 @@ function checkProxyStatus(proxy, button) {
         button.textContent = 'NGACENG';
         button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
         button.style.color = 'white'; // Set text color to white for active proxy
-        latencyCell.textContent = `${latency} ms`; // Display latency in the same column
+        latencyCell.textContent = ``; // Display latency in the same column
 
         // Display latency in a popup
         Swal.fire({
