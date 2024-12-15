@@ -1,3 +1,4 @@
+  
 <!DOCTYPE html>
 <html>
 <head>
@@ -151,6 +152,11 @@ body {
       align-items: center;
     /* overflow: hidden;*/
     }
+.contentd {
+  padding: 60px 20px 40px; /* Memberikan ruang untuk header dan footer */
+  height: 100%;
+  overflow-y: auto;
+}
     .filters {
       display: flex;
       justify-content: space-between;
@@ -188,7 +194,17 @@ body {
 }
 
 
-
+thhhh {
+    background-color: rgba(26, 4, 83, 0.81); /* Warna latar belakang */
+    color: white; /* Warna teks putih */
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    position: sticky; /* Menempelkan elemen saat digulir */
+    top: 0; /* Menempel di bagian atas tabel */
+    z-index: 1; /* Memberikan prioritas tampilan lebih tinggi */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Bayangan untuk efek */
+}
     th {
       background-color: rgba(26, 4, 83, 0.81); /* Warna hijau */
       color: white; /* Warna teks putih */
@@ -238,15 +254,15 @@ body {
     .button { background-color: rgba(39, 28, 224, 0.83); color: white; border: 1px solid rgba(197, 51, 6, 0.89); border-radius: 8px; }
     .copy-vless, .copy-vless1 .copy-trojan, .copy-ss { background-color: #e74c3c; color: white; }
     .copy-vless-clash, .copy-vless2 .copy-trojan-clash, .copy-ss1 { background-color: #27ae60; color: white; }
-    .copy-vless877, .copy-vless1877, .copy-trojan877 { background-color: #e74c3c; color: white; }
-    .copy-vless-clash877 .copy-vless2877, .copy-trojan-clash877 { background-color: #27ae60; color: white; }
+    .copy-vless877, .copy-vless1877, .copy-trojan877 { background-color: #8e44ad; color: white; }
+    .copy-vless-clash877 .copy-vless2877, .copy-trojan-clash877 { background-color: #f39c12; color: white; }
 
     /* Hover Effects */
     .button:hover { background-color: #2980b9; border: 1px solid rgba(197, 51, 6, 0.89); border-radius: 8px; }
     .copy-vless:hover, .copy-vless1:hover, .copy-trojan:hover, .copy-ss:hover { background-color: #c0392b; }
     .copy-vless-clash:hover, .copy-vless2:hover, .copy-trojan-clash:hover, .copy-ss1:hover { background-color: #229954; }
-    .copy-vless877:hover, .copy-vless1877:hover, .copy-trojan877:hover, { background-color: #c0392b; }
-    .copy-vless-clash877:hover, .copy-vless2877:hover, .copy-trojan-clash877:hover, { background-color: #229954; }
+    .copy-vless877:hover, .copy-vless1877:hover, .copy-trojan877:hover, { background-color: #71368a; }
+    .copy-vless-clash877:hover, .copy-vless2877:hover, .copy-trojan-clash877:hover, { background-color: #d35400; }
 
     /* Click Effects */
     .button:active, .copy-vless:active, .copy-vless-clash:active, .copy-vless877:active, .copy-vless-clash877:active, .copy-vless1:active, .copy-vless2:active, .copy-vless1877:active, .copy-vless2877:active, .copy-trojan:active, .copy-trojan-clash:active, .copy-trojan877:active, .copy-trojan-clash877:active, .copy-ss:active, .copy-ss1:active {
@@ -288,6 +304,34 @@ body {
       transform: scale(0.95); /* Sedikit mengecil saat diklik */
       border-color: #1c5980; /* Border menjadi lebih gelap */
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Shadow lebih redup */
+    }
+  
+    .1cekproxy, .copy1-vless, .1copy-vless1, .1copy-trojan, .1copy-ss {
+      margin: 5px;
+      padding: 5px 10px;
+      border: 1px solid rgba(197, 51, 6, 0.89); /* Border dengan warna abu-abu */
+      border-radius: 10px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .1cekproxy:hover, .1copy-vless:hover, .1copy-vless1:hover, .1copy-trojan:hover, .1copy-ss:hover {
+      background-color: #0069d9;
+    }
+
+    .1copy-vless-clash, .1copy-vless2, .qcopy-trojan-clash, .1copy-ss1 {
+      margin: 5px;
+      padding: 5px 10px;
+      border: 1px solid rgba(197, 51, 6, 0.89); /* Border dengan warna abu-abu */
+      border-radius: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .1copy-vless-clash:hover, .1copy-vless2:hover, .1copy-trojan-clash:hover, .1copy-ss1:hover {
+      background-color: #4CAF50;
     }
 
     .pagination {
@@ -342,6 +386,13 @@ body {
         padding: 12px;
         font-size: 18px;
       }
+
+      .1copy-vless, .1copy-vless1, .1copy-trojan, .c1opy-ss {
+        padding: 4px 8px;
+        border: 1px solid rgba(197, 51, 6, 0.89); /* Border dengan warna abu-abu */
+        border-radius: 10px;
+        font-size: 12px;
+      }
     }
      
     
@@ -362,7 +413,7 @@ body {
   .button877 {
       margin: 10px;
       padding: 10px 10px;
-      border: 1px solid #fff; /* Border dengan warna abu-abu */
+      border: 1px solid rgba(197, 51, 6, 0.89); /* Border dengan warna abu-abu */
       border-radius: 10px;
       border-radius: 5px;
       background-color: rgba(255, 0, 0, 0.86);
@@ -381,10 +432,18 @@ body {
     .popup button877 {
       margin: 10px;
       padding: 10px 10px;
-      border: 1px solid #fff; 
+      border: 1px solid rgba(197, 51, 6, 0.89); 
       border-radius: 5px;
       background-color: rgba(255, 0, 0, 0.86);
       color: #fff;
+      cursor: pointer;
+      
+    }
+    .button877 {
+      padding: 10px;
+      background-color: rgba(255, 0, 0, 0.86);
+      color: white;
+      border: none;
       cursor: pointer;
       
     }
