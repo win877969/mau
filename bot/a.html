@@ -278,7 +278,35 @@ thhhh {
       box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 255, 255, 0.5);
     }
 
-    .cekproxy, .copy1-vless, .1copy-vless1, .1copy-trojan, .1copy-ss {
+    
+    /* Styling for the cekproxy button */
+    .cekproxy {
+      padding: 10px 20px;
+      background-color: #3498db; /* Warna dasar biru */
+      color: white; /* Warna teks */
+      border: 2px solid #2980b9; /* Border biru tua */
+      border-radius: 8px; /* Membuat sudut tombol melengkung */
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out; /* Animasi halus */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow default */
+    }
+
+    /* Hover effect */
+    .cekproxy:hover {
+      background-color: #2980b9; /* Biru lebih gelap saat hover */
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3), 0 0 10px rgba(52, 152, 219, 0.5); /* Tambahan glow biru */
+    }
+
+    /* Active (click) effect */
+    .cekproxy:active {
+      transform: scale(0.95); /* Sedikit mengecil saat diklik */
+      border-color: #1c5980; /* Border menjadi lebih gelap */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Shadow lebih redup */
+    }
+  
+    .1cekproxy, .copy1-vless, .1copy-vless1, .1copy-trojan, .1copy-ss {
       margin: 5px;
       padding: 5px 10px;
       border: 1px solid rgba(197, 51, 6, 0.89); /* Border dengan warna abu-abu */
@@ -288,7 +316,7 @@ thhhh {
       cursor: pointer;
     }
 
-    .cekproxy:hover, .1copy-vless:hover, .1copy-vless1:hover, .1copy-trojan:hover, .1copy-ss:hover {
+    .1cekproxy:hover, .1copy-vless:hover, .1copy-vless1:hover, .1copy-trojan:hover, .1copy-ss:hover {
       background-color: #0069d9;
     }
 
