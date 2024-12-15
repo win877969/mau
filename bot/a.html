@@ -152,11 +152,7 @@ body {
       align-items: center;
     /* overflow: hidden;*/
     }
-.contentd {
-  padding: 60px 20px 40px; /* Memberikan ruang untuk header dan footer */
-  height: 100%;
-  overflow-y: auto;
-}
+
     .filters {
       display: flex;
       justify-content: space-between;
@@ -194,17 +190,7 @@ body {
 }
 
 
-thhhh {
-    background-color: rgba(26, 4, 83, 0.81); /* Warna latar belakang */
-    color: white; /* Warna teks putih */
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
-    position: sticky; /* Menempelkan elemen saat digulir */
-    top: 0; /* Menempel di bagian atas tabel */
-    z-index: 1; /* Memberikan prioritas tampilan lebih tinggi */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Bayangan untuk efek */
-}
+
     th {
       background-color: rgba(26, 4, 83, 0.81); /* Warna hijau */
       color: white; /* Warna teks putih */
@@ -240,7 +226,7 @@ thhhh {
 
     
     /* General Button Styling */
-    .button, .copy-vless, .copy-vless-clash, .copy-vless877, .copy-vless-clash877, .copy-vless1, .copy-vless2, .copy-vless1877, .copy-vless2877, .copy-trojan, .copy-trojan-clash, .copy-trojan877, .copy-trojan-clash877, .copy-ss, .copy-ss1 {
+    .button {
       padding: 10px 20px;
       margin: 10px 5px;
       border: 1px solid #fff;
@@ -252,32 +238,58 @@ thhhh {
 
     /* Button Colors */
     .button { background-color: rgba(39, 28, 224, 0.83); color: white; border: 1px solid rgba(197, 51, 6, 0.89); border-radius: 8px; }
-    .copy-vless, .copy-vless1 .copy-trojan, .copy-ss { background-color: #e74c3c; color: white; }
-    .copy-vless-clash, .copy-vless2 .copy-trojan-clash, .copy-ss1 { background-color: #27ae60; color: white; }
-    .copy-vless877, .copy-vless1877, .copy-trojan877 { background-color: #8e44ad; color: white; }
-    .copy-vless-clash877 .copy-vless2877, .copy-trojan-clash877 { background-color: #f39c12; color: white; }
-
+    
     /* Hover Effects */
     .button:hover { background-color: #2980b9; border: 1px solid rgba(197, 51, 6, 0.89); border-radius: 8px; }
-    .copy-vless:hover, .copy-vless1:hover, .copy-trojan:hover, .copy-ss:hover { background-color: #c0392b; }
-    .copy-vless-clash:hover, .copy-vless2:hover, .copy-trojan-clash:hover, .copy-ss1:hover { background-color: #229954; }
-    .copy-vless877:hover, .copy-vless1877:hover, .copy-trojan877:hover, { background-color: #71368a; }
-    .copy-vless-clash877:hover, .copy-vless2877:hover, .copy-trojan-clash877:hover, { background-color: #d35400; }
-
+    
     /* Click Effects */
-    .button:active, .copy-vless:active, .copy-vless-clash:active, .copy-vless877:active, .copy-vless-clash877:active, .copy-vless1:active, .copy-vless2:active, .copy-vless1877:active, .copy-vless2877:active, .copy-trojan:active, .copy-trojan-clash:active, .copy-trojan877:active, .copy-trojan-clash877:active, .copy-ss:active, .copy-ss1:active {
+    .button:active {
       transform: scale(0.95);
       border: 2px solid #333;
     }
 
     /* Shadow/Glow Effects */
-    .button, .copy-vless, .copy-vless-clash, .copy-vless877, .copy-vless-clash877, .copy-vless1, .copy-vless2, .copy-vless1877, .copy-vless2877, .copy-trojan, .copy-trojan-clash, .copy-trojan877, .copy-trojan-clash877, .copy-ss, .copy-ss1 {
+    .button {
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
-    .button:hover, .copy-vless:hover, .copy-vless-clash:hover, .copy-vless877:hover, .copy-vless-clash877:hover, .copy-vless1:hover, .copy-vless2:hover, .copy-vless1877:hover, .copy-vless2877:hover, .copy-trojan:hover, .copy-trojan-clash:hover, .copy-trojan877:hover, .copy-trojan-clash877:hover, .copy-ss:hover, .copy-ss1:hover {
+    .button:hover {
       box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 255, 255, 0.5);
     }
+/* Warna 1 - Orange Gelap */
+    .warna1 {
+      background-color: #D35400; /* Orange Gelap */
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    .warna1:active {
+      background-color: #E67E22; /* Warna berubah saat diklik */
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+      transform: scale(0.98);
+    }
 
+    /* Warna 2 - Hijau Gelap */
+    .warna2 {
+      background-color: #196F3D; /* Hijau Gelap */
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    .warna2:active {
+      background-color: #27AE60; /* Warna berubah saat diklik */
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+      transform: scale(0.98);
+    }
     
     /* Styling for the cekproxy button */
     .cekproxy {
@@ -898,10 +910,10 @@ function renderProxies(proxies, proxyList, pagination) {
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
       <hr/>SERVER 1<br>
-      <button class="copy-vless">COPY VLESS 443</button>
-      <br><button class="copy-vless-clash">COPY CLASH 443</button>
-      <hr/>SERVER 2<br><button class="copy-vless877">COPY VLESS 443</button>
-      <br><button class="copy-vless-clash877">COPY CLASH 443</button>
+      <button id="copy-vless" class="warna1">COPY VLESS 443</button>
+      <br><button id="copy-vless-clash" class="warna2">COPY CLASH 443</button>
+      <hr/>SERVER 2<br><button id="copy-vless877" class="warna1">COPY VLESS 443</button>
+      <br><button id="copy-vless-clash877" class="warna2">COPY CLASH 443</button>
       <hr/>
       <button class="button877" onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
 </div>
@@ -913,10 +925,10 @@ function renderProxies(proxies, proxyList, pagination) {
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
       <hr/>SERVER 1<br>
-      <button class="copy-vless1">COPY VLESS 80</button>
-      <br><button class="copy-vless2">COPY CLASH 80</button>
-      <hr/>SERVER 2<br><button class="copy-vless1877">COPY VLESS 80</button>
-      <br><button class="copy-vless2877">COPY CLASH 80</button>
+      <button id="copy-vless1" class="warna1">COPY VLESS 80</button>
+      <br><button id="copy-vless2" class="warna2">COPY CLASH 80</button>
+      <hr/>SERVER 2<br><button id="copy-vless1877" class="warna1">COPY VLESS 80</button>
+      <br><button id="copy-vless2877" class="warna2">COPY CLASH 80</button>
       <hr/>
       <button class="button877" onclick="hidePopup('vntls${ip}:${port}')">Close</button> 
     </div>
@@ -928,10 +940,10 @@ function renderProxies(proxies, proxyList, pagination) {
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
       <hr/>SERVER 1<br>
-      <button class="copy-trojan">COPY TROJAN 443</button>
-      <br><button class="copy-trojan-clash">COPY CLASH 443</button> 
-      <hr/>SERVER 2<br><button class="copy-trojan877">COPY TROJAN 443</button>
-      <br><button class="copy-trojan-clash877">COPY CLASH 443</button> 
+      <button id="copy-trojan" class="warna1">COPY TROJAN 443</button>
+      <br><button id="copy-trojan-clash" class="warna2">COPY CLASH 443</button> 
+      <hr/>SERVER 2<br><button id="copy-trojan877" class="warna1">COPY TROJAN 443</button>
+      <br><button id="copy-trojan-clash877" class="warna2">COPY CLASH 443</button> 
       <hr/>
       <button class="button877" onclick="hidePopup('trojan${ip}:${port}')">Close</button> 
     </div>
@@ -943,8 +955,8 @@ function renderProxies(proxies, proxyList, pagination) {
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
       <hr/>SERVER 1<br>
-      <button class="copy-ss">COPY SHADOWSOCK</button>
-      <br><button class="copy-ss1">COPY CLASH</button>
+      <button id="copy-ss" class="warna1">COPY SHADOWSOCK</button>
+      <br><button id="copy-ss1" class="warna2">COPY CLASH</button>
      <hr/> <button class="button877" onclick="hidePopup('ss${ip}:${port}')">Close</button> 
     </div>
     </div></td>
