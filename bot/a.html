@@ -393,7 +393,7 @@ thhhh {
       cursor: pointer;
     }
     
-    .popup-content {
+    .1popup-content {
       background-color: rgba(0, 3, 63, 0.84);
       padding: 20px;
       border: 1px solid rgba(197, 51, 6, 0.89); /* Border dengan warna abu-abu */
@@ -419,9 +419,20 @@ thhhh {
       cursor: pointer;
       
     }
-    .popup 1button:hover {
+    .1popup 1button:hover {
       background-color: rgba(255, 108, 0, 0.86);
     }
+        /* Optional: Backdrop for popup */
+    .popup::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 0, 0, 0.86);
+    }
+  
 .highlight-text {
     color: #007bff; /* Warna biru */
     font-size: 18px; /* Ukuran teks */
