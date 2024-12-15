@@ -222,7 +222,15 @@ body {
       background-color: rgba(0, 0, 0, 0.38); /* Warna latar biru muda saat baris dihover */
       color: #fff; /* Warna teks saat dihover */
     }
-
+    .column-1 {
+      width: 30%; /* Kolom pertama 30% dari tabel */
+    }
+    .column-2 {
+      width: 50%; /* Kolom kedua 50% dari tabel */
+    }
+    .column-3 {
+      width: 20%; /* Kolom ketiga 20% dari tabel */
+    }
     
     /* General Button Styling */
     .button {
@@ -499,9 +507,9 @@ body {
           <th>ISP | COUNTRY</th>
           <th>STATUS</th>
           <th>WILDCARD</th>
-          <th>VLEDS-TLS</th>
-          <th>VLESS-NTLS</th>
-          <th>TRORAN-TLS</th>
+          <th class="column-1">VLESS-TLS</th>
+          <th class="column-1">VLESS-NTLS</th>
+          <th class="column-1">TRORAN-TLS</th>
           <th>SHADOWSOCKS</th>
         </tr>
       </thead>
@@ -943,7 +951,7 @@ function renderProxies(proxies, proxyList, pagination) {
           <option value="io.ruangguru.com">io.ruangguru.com</option>
           <option value="api.midtrans.com">api.midtrans.com</option>
         </select>
-      </td><td>
+      </td><td class="column-1">
       <button class="button" onclick="showPopup('vtls${ip}:${port}')">VLESS-TLS</button>
       <div class="popup" id="vtls${ip}:${port}">
       <div class="popup-content"><hr/><br>
@@ -958,7 +966,7 @@ function renderProxies(proxies, proxyList, pagination) {
       <hr/>
       <button class="button8" onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
 </div>
-</div></td><td>
+</div></td><td class="column-1">
       <button class="button" onclick="showPopup('vntls${ip}:${port}')">VLESS-NTLS</button>
       <div class="popup" id="vntls${ip}:${port}">
       <div class="popup-content"><hr/><br>
@@ -973,7 +981,7 @@ function renderProxies(proxies, proxyList, pagination) {
       <hr/>
       <button class="button8" onclick="hidePopup('vntls${ip}:${port}')">Close</button> 
     </div>
-    </div></td><td>
+    </div></td><td class="column-1">
       <button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN</button>
       <div class="popup" id="trojan${ip}:${port}">
       <div class="popup-content"><hr/><br>
