@@ -875,17 +875,20 @@ function renderProxies(proxies, proxyList, pagination) {
       <button class="copy-vless2">COPY CLASH 80</button>
       <button onclick="hidePopup('vntls${ip}:${port}')">Close</button> 
     </div>
-    </div></td><button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN</button>
-    <td><div class="popup" id="trojan${ip}:${port}">
+    </div></td><td><button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN</button>
+    <div class="popup" id="trojan${ip}:${port}">
 <div class="popup-content">
-<button class="copy-trojan">COPY TROJAN 443</button>
-      <button class="copy-trojan-clash">COPY CLASH 443</button> <button onclick="hidePopup('trojan${ip}:${port}')">Close</button>
+      <button class="copy-trojan">COPY TROJAN 443</button>
+      <button class="copy-trojan-clash">COPY CLASH 443</button> 
+      <button onclick="hidePopup('trojan${ip}:${port}')">Close</button>
  
     </div>
-    </div></td><button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
-      <td><div class="popup" id="ss${ip}:${port}">
-<div class="popup-content"><button class="copy-ss">COPY SHADOWSOCK</button>
-      <button class="copy-ss1">COPY CLASH</button><button class="copy-trojan-clash">COPY CLASH 443</button> <button onclick="hidePopup('ss${ip}:${port}')">Close</button>
+    </div></td><td><button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
+      <div class="popup" id="ss${ip}:${port}">
+<div class="popup-content">
+      <button class="copy-ss">COPY SHADOWSOCK</button>
+      <button class="copy-ss1">COPY CLASH</button>
+      <button onclick="hidePopup('ss${ip}:${port}')">Close</button>
  
     </div>
     </div></td>
