@@ -1390,17 +1390,20 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
       // Fetch proxy list and render
 
     // Mengambil daftar proxy dari proxy_list.txt
+        // Fungsi untuk mengambil daftar proxy dari file `proxy_list.txt`
 fetch('proxy_list.txt')
-  .then((response) => response.text())
+  .then((response) => response.text())  // Mengambil isi file dalam format teks
   .then((data) => {
-    // Pisahkan proxy berdasarkan baris
+    // Memisahkan proxy berdasarkan baris dan menghapus baris kosong
     const proxies = data.split("\n").filter((line) => line.trim() !== "");
-    
+
     // Menampilkan setiap proxy dalam daftar
     proxies.forEach((proxy) => {
-      // Panggil fungsi checkProxyStatus untuk setiap proxy
+      // Membuat tombol baru untuk setiap proxy
       const button = document.createElement("button");
-      document.body.appendChild(button); // Menambahkan button untuk tiap proxy
+      button.textContent = "Check Proxy";
+      document.body.appendChild(button); // Menambahkan tombol ke halaman
+      // Memeriksa status proxy dengan memanggil fungsi checkProxyStatus
       checkProxyStatus(proxy, button);
     });
   })
@@ -1408,43 +1411,42 @@ fetch('proxy_list.txt')
 
 // Fungsi untuk memeriksa status proxy
 function checkProxyStatus(proxy, button) {
-  button.textContent = "Loading...";
-  button.style.backgroundColor = "yellow"; // Loading color
+  button.textContent = "Loading...";  // Menampilkan status Loading
+  button.style.backgroundColor = "yellow";  // Mengubah warna tombol
   button.style.color = "black";
 
-  const latencyCell = button.parentElement?.querySelector(".latency-cell"); // Find latency cell
-  const controller = new AbortController(); // Controller for timeout
-  const timeout = 5000; // 5 seconds timeout
+  const controller = new AbortController();  // Kontrol untuk timeout
+  const timeout = 5000;  // Set timeout 5 detik
 
-  const startTime = performance.now();
+  const startTime = performance.now();  // Waktu mulai
 
-  // Set timeout to abort fetch
+  // Set timeout untuk membatalkan fetch jika tidak berhasil dalam 5 detik
   const timeoutId = setTimeout(() => {
     controller.abort();
   }, timeout);
 
+  // Mengirimkan permintaan ke server untuk memeriksa status proxy
   fetch("https://cek.bmkg.xyz/check-proxy", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ proxy }),
-    signal: controller.signal,
+    body: JSON.stringify({ proxy }),  // Mengirim proxy dalam body JSON
+    signal: controller.signal,  // Menggunakan signal untuk kontrol timeout
   })
-    .then((response) => response.json())
+    .then((response) => response.json())  // Parsing response JSON
     .then((data) => {
-      clearTimeout(timeoutId); // Clear timeout
-      const endTime = performance.now();
-      const latency = (endTime - startTime).toFixed(2);
+      clearTimeout(timeoutId);  // Menghentikan timeout
+      const endTime = performance.now();  // Waktu selesai
+      const latency = (endTime - startTime).toFixed(2);  // Menghitung latensi
 
+      // Jika statusnya 'NGACENG'
       if (data.status === 'NGACENG') {
-        // Success state
-        button.textContent = "NGACENG";
-        button.style.backgroundColor = "green";
+        button.textContent = "NGACENG";  // Menampilkan status NGACENG
+        button.style.backgroundColor = "green";  // Mengubah warna tombol menjadi hijau
         button.style.color = "white";
-        if (latencyCell) latencyCell.textContent = `${latency} ms`;
 
-        // Display latency in a popup
+        // Menampilkan latency
         Swal.fire({
           title: "Proxy Status: NGACENG",
           text: `Latency: ${latency} ms.`,
@@ -1457,17 +1459,17 @@ function checkProxyStatus(proxy, button) {
           confirmButtonColor: "#3085d6",
         });
       } else {
+        // Jika statusnya tidak 'NGACENG', tampilkan error
         throw new Error("TURU");
       }
     })
     .catch((error) => {
-      // Error or timeout state
-      button.textContent = "TURU";
-      button.style.backgroundColor = "red";
+      // Menangani error atau timeout
+      button.textContent = "TURU";  // Menampilkan status TURU
+      button.style.backgroundColor = "red";  // Mengubah warna tombol menjadi merah
       button.style.color = "white";
-      if (latencyCell) latencyCell.textContent = "Timeout";
 
-      // Display error in a popup
+      // Menampilkan error di popup
       Swal.fire({
         title: "Proxy Status: TURU",
         text: error.name === "AbortError" ? "Request timed out" : error.message,
@@ -1481,6 +1483,7 @@ function checkProxyStatus(proxy, button) {
       });
     });
 }
+
 
 
 
