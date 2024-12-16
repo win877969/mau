@@ -1388,24 +1388,31 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 // Fetching proxy data
 
       // Fetch proxy list and render
-fetch("proxy_list.txt")
+
+    // Mengambil daftar proxy dari proxy_list.txt
+fetch('proxy_list.txt')
   .then((response) => response.text())
   .then((data) => {
-    allProxies = data.split("\n").filter((line) => line.trim() !== "");
-    filteredProxies = allProxies;
-    const proxyList = document.getElementById("proxy-list");
-    const pagination = document.getElementById("pagination");
-    renderProxies(filteredProxies, proxyList, pagination);
+    // Pisahkan proxy berdasarkan baris
+    const proxies = data.split("\n").filter((line) => line.trim() !== "");
+    
+    // Menampilkan setiap proxy dalam daftar
+    proxies.forEach((proxy) => {
+      // Panggil fungsi checkProxyStatus untuk setiap proxy
+      const button = document.createElement("button");
+      document.body.appendChild(button); // Menambahkan button untuk tiap proxy
+      checkProxyStatus(proxy, button);
+    });
   })
-  .catch((error) => console.error("Error fetching proxy data:", error));
+  .catch((error) => console.error("Error fetching proxy list:", error));
 
-// Function to check proxy status
+// Fungsi untuk memeriksa status proxy
 function checkProxyStatus(proxy, button) {
   button.textContent = "Loading...";
   button.style.backgroundColor = "yellow"; // Loading color
   button.style.color = "black";
 
-  const latencyCell = button.parentElement.querySelector(".latency-cell"); // Find latency cell
+  const latencyCell = button.parentElement?.querySelector(".latency-cell"); // Find latency cell
   const controller = new AbortController(); // Controller for timeout
   const timeout = 5000; // 5 seconds timeout
 
@@ -1416,25 +1423,26 @@ function checkProxyStatus(proxy, button) {
     controller.abort();
   }, timeout);
 
-  fetch("https://p01--boiling-frame--kw6dd7bjv2nr.code.run/check", {
-    method: "GET",
+  fetch("https://cek.bmkg.xyz/check-proxy", {
+    method: "POST",
     headers: {
-      // Note: Custom proxy routing should be handled on the server
-      Proxy: `http://${proxy}`,
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify({ proxy }),
     signal: controller.signal,
   })
-    .then((response) => {
+    .then((response) => response.json())
+    .then((data) => {
       clearTimeout(timeoutId); // Clear timeout
       const endTime = performance.now();
       const latency = (endTime - startTime).toFixed(2);
 
-      if (response.ok) {
+      if (data.status === 'NGACENG') {
         // Success state
         button.textContent = "NGACENG";
         button.style.backgroundColor = "green";
         button.style.color = "white";
-        latencyCell.textContent = `${latency} ms`;
+        if (latencyCell) latencyCell.textContent = `${latency} ms`;
 
         // Display latency in a popup
         Swal.fire({
@@ -1457,7 +1465,7 @@ function checkProxyStatus(proxy, button) {
       button.textContent = "TURU";
       button.style.backgroundColor = "red";
       button.style.color = "white";
-      latencyCell.textContent = "Timeout";
+      if (latencyCell) latencyCell.textContent = "Timeout";
 
       // Display error in a popup
       Swal.fire({
@@ -1473,6 +1481,7 @@ function checkProxyStatus(proxy, button) {
       });
     });
 }
+
 
 
 </script>
