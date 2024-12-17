@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy Counter with Details</title>
+    <title>Proxy Counter with Country View</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,6 +28,9 @@
         #details {
             margin-top: 20px;
         }
+        #details h2 {
+            text-transform: capitalize;
+        }
         #details ul {
             list-style-type: none;
             padding: 0;
@@ -39,7 +42,7 @@
     </style>
 </head>
 <body>
-    <h1>Proxy Counter with Details</h1>
+    <h1>Proxy Counter with Country View</h1>
     <p>Jumlah proxy berdasarkan kode negara dari file <strong>proxy_list.txt</strong>:</p>
     <table id="resultTable" style="display:none;">
         <thead>
@@ -52,8 +55,8 @@
     </table>
 
     <div id="details" style="display:none;">
-        <h2>Detail Proxy</h2>
-        <p>Daftar proxy untuk negara: <strong id="countryName"></strong></p>
+        <h2 id="countryName"></h2>
+        <p><strong>IP:Port</strong></p>
         <ul id="proxyList"></ul>
     </div>
 
@@ -79,10 +82,12 @@
                     const parts = line.trim().split(',');
                     if (parts.length >= 3) {
                         const country = parts[2].toLowerCase();
+                        const ipPort = `${parts[0]}:${parts[1]}`;
+
                         if (!countryProxies[country]) {
                             countryProxies[country] = [];
                         }
-                        countryProxies[country].push(line.trim());
+                        countryProxies[country].push(ipPort);
                         countryCount[country] = (countryCount[country] || 0) + 1;
                     }
                 });
@@ -105,12 +110,19 @@
                     const countryName = document.getElementById('countryName');
                     const proxyList = document.getElementById('proxyList');
 
-                    countryName.textContent = country.toUpperCase();
+                    // Mengonversi kode negara menjadi nama negara (opsional)
+                    const countryNames = {
+                        id: 'Indonesia',
+                        kr: 'Korea',
+                        sg: 'Singapore',
+                    };
+                    countryName.textContent = countryNames[country] || country;
+
                     proxyList.innerHTML = '';
 
-                    (countryProxies[country] || []).forEach(proxy => {
+                    (countryProxies[country] || []).forEach(ipPort => {
                         const listItem = document.createElement('li');
-                        listItem.textContent = proxy;
+                        listItem.textContent = ipPort;
                         proxyList.appendChild(listItem);
                     });
 
