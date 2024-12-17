@@ -1418,7 +1418,7 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
   const startTime = performance.now();
 
   // Ganti URL dengan yang lebih akurat
-  fetch('https://api.myip.com', {
+  fetch('https://httpbin.org/get', {
     method: 'GET',
     headers: {
       'Proxy': `http://${proxy}`,  // Menggunakan proxy yang diberikan
