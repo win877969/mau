@@ -96,7 +96,7 @@
                     id: 'Indonesia',
                     kr: 'Korea',
                     sg: 'Singapore',
-                    us: 'United States', // Menambahkan beberapa contoh negara
+                    us: 'United States',
                     jp: 'Japan',
                 };
 
@@ -119,8 +119,9 @@
                 const tbody = table.querySelector('tbody');
 
                 for (const [country, count] of Object.entries(countryCount)) {
+                    const countryName = countryNames[country] || country.toUpperCase(); // Menampilkan kode negara jika tidak ada di daftar
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td><a href="#" onclick="showDetails('${country}')">${countryNames[country] || country}</a></td><td>${count}</td>`;
+                    row.innerHTML = `<td><a href="#" onclick="showDetails('${country}')">${countryName}</a></td><td>${count}</td>`;
                     tbody.appendChild(row);
                 }
 
@@ -132,8 +133,8 @@
                     const countryName = document.getElementById('countryName');
                     const proxyList = document.getElementById('proxyList');
 
-                    // Menampilkan nama negara sesuai dengan kode negara
-                    countryName.textContent = countryNames[country] || country;
+                    // Menampilkan nama negara sesuai dengan kode negara atau kode negara jika tidak ada
+                    countryName.textContent = countryNames[country] || country.toUpperCase();
 
                     proxyList.innerHTML = '';
 
