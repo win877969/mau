@@ -1392,7 +1392,7 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
     // Mengambil daftar proxy dari proxy_list.txt
         // Fungsi untuk mengambil daftar proxy dari file `proxy_list.txt`
 
-      fetch("proxy_list.txt")
+      fetch("ip_list.txt")
   .then(response => response.text())  // Mengambil data dari file txt
   .then(data => {
     // Split the proxy list by new lines and filter out empty lines
