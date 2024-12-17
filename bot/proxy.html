@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy Counter with Country View</title>
+    <title>Proxy Counter with Country Name</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,10 +12,20 @@
         h1 {
             color: #333;
         }
-        table {
-            width: 50%;
-            border-collapse: collapse;
+        .container {
+            display: flex;
+            justify-content: space-between;
             margin-top: 20px;
+        }
+        .table-container {
+            width: 45%;
+        }
+        .details-container {
+            width: 45%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
         th, td {
             border: 1px solid #ccc;
@@ -24,9 +34,6 @@
         }
         th {
             background-color: #f4f4f4;
-        }
-        #details {
-            margin-top: 20px;
         }
         #details h2 {
             text-transform: capitalize;
@@ -42,22 +49,28 @@
     </style>
 </head>
 <body>
-    <h1>Proxy Counter with Country View</h1>
+    <h1>Proxy Counter with Country Name</h1>
     <p>Jumlah proxy berdasarkan kode negara dari file <strong>proxy_list.txt</strong>:</p>
-    <table id="resultTable" style="display:none;">
-        <thead>
-            <tr>
-                <th>Kode Negara</th>
-                <th>Total Proxy</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <div class="container">
+        <!-- Tabel Negara -->
+        <div class="table-container">
+            <table id="resultTable" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>Kode Negara</th>
+                        <th>Total Proxy</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
 
-    <div id="details" style="display:none;">
-        <h2 id="countryName"></h2>
-        <p><strong>IP:Port</strong></p>
-        <ul id="proxyList"></ul>
+        <!-- Detail Proxy -->
+        <div class="details-container" id="details" style="display:none;">
+            <h2 id="countryName"></h2>
+            <p><strong>IP:Port</strong></p>
+            <ul id="proxyList"></ul>
+        </div>
     </div>
 
     <script>
@@ -77,6 +90,15 @@
                 const lines = proxyData.trim().split('\n');
                 const countryProxies = {};
                 const countryCount = {};
+
+                // Mapping kode negara ke nama negara
+                const countryNames = {
+                    id: 'Indonesia',
+                    kr: 'Korea',
+                    sg: 'Singapore',
+                    us: 'United States', // Menambahkan beberapa contoh negara
+                    jp: 'Japan',
+                };
 
                 lines.forEach(line => {
                     const parts = line.trim().split(',');
@@ -98,7 +120,7 @@
 
                 for (const [country, count] of Object.entries(countryCount)) {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td><a href="#" onclick="showDetails('${country}')">${country}</a></td><td>${count}</td>`;
+                    row.innerHTML = `<td><a href="#" onclick="showDetails('${country}')">${countryNames[country] || country}</a></td><td>${count}</td>`;
                     tbody.appendChild(row);
                 }
 
@@ -110,12 +132,7 @@
                     const countryName = document.getElementById('countryName');
                     const proxyList = document.getElementById('proxyList');
 
-                    // Mengonversi kode negara menjadi nama negara (opsional)
-                    const countryNames = {
-                        id: 'Indonesia',
-                        kr: 'Korea',
-                        sg: 'Singapore',
-                    };
+                    // Menampilkan nama negara sesuai dengan kode negara
                     countryName.textContent = countryNames[country] || country;
 
                     proxyList.innerHTML = '';
