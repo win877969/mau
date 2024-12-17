@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        input {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Proxy Counter</h1>
+    <p>Upload file <strong>proxy_list.txt</strong> dengan format: <code>ip,port,country,isp</code></p>
+    <input type="file" id="fileInput" accept=".txt">
+    <table id="resultTable" style="display:none;">
+        <thead>
+            <tr>
+                <th>Kode Negara</th>
+                <th>Total Proxy</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                alert('Silakan pilih file.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                const lines = content.split('\n');
+                const countryCount = {};
+
+                lines.forEach(line => {
+                    const parts = line.trim().split(',');
+                    if (parts.length >= 3) {
+                        const country = parts[2].toLowerCase();
+                        countryCount[country] = (countryCount[country] || 0) + 1;
+                    }
+                });
+
+                const table = document.getElementById('resultTable');
+                const tbody = table.querySelector('tbody');
+                tbody.innerHTML = ''; // Clear previous results
+
+                for (const [country, count] of Object.entries(countryCount)) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${country}</td><td>${count}</td>`;
+                    tbody.appendChild(row);
+                }
+
+                table.style.display = 'table'; // Show the table
+            };
+
+            reader.onerror = function() {
+                alert('Gagal membaca file.');
+            };
+
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>
