@@ -1389,78 +1389,80 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 
 // Fetching proxy data
 
-      // Fetch proxy list and render
-
-    // Mengambil daftar proxy dari proxy_list.txt
-        // Fungsi untuk mengambil daftar proxy dari file `proxy_list.txt`
-
-      fetch("ip_list.txt")
+fetch("ip_list.txt")
   .then(response => response.text())  // Mengambil data dari file txt
   .then(data => {
-    // Split the proxy list by new lines and filter out empty lines
+    // Memecah daftar proxy berdasarkan baris baru dan menyaring baris kosong
     const allProxies = data.split("\n").filter(line => line.trim() !== "");
-    const filteredProxies = allProxies;  // You can filter this list based on your requirements
+    const filteredProxies = allProxies;  // Anda bisa menyaring daftar ini sesuai kebutuhan
     const proxyList = document.getElementById('proxy-list');
     const pagination = document.getElementById('pagination');
 
-    // Call a function to render the proxy list (assuming you have a render function)
+    // Panggil fungsi untuk merender daftar proxy (asumsi Anda sudah memiliki fungsi render)
     renderProxies(filteredProxies, proxyList, pagination);
   })
-  .catch(error => console.error("Error fetching proxy data:", error)); // Handle errors in fetching proxy list
+  .catch(error => console.error("Error fetching proxy data:", error)); // Menangani error dalam pengambilan daftar proxy
 
-      
-      
-    function checkProxyStatus(proxy, button) {
+function checkProxyStatus(proxy, button) {
   button.textContent = 'Loading...';
   button.style.backgroundColor = 'yellow';
   button.style.color = 'black';
+  button.disabled = true; // Menonaktifkan tombol sementara saat status sedang dicek
 
   const latencyCell = button.parentElement.querySelector('.latency-cell');
 
   const startTime = performance.now();
 
+  // Membuat AbortController untuk menangani timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // Timeout 5 detik
+
   // Ganti URL dengan yang lebih akurat
-  fetch('https://httpbin.org/get', {
+  fetch('https://p01--boiling-frame--kw6dd7bjv2nr.code.run/check', {
     method: 'GET',
     headers: {
       'Proxy': `http://${proxy}`,  // Menggunakan proxy yang diberikan
     },
-    timeout: 5000 // Timeout 5 detik
+    signal: controller.signal // Menambahkan kontrol timeout ke fetch
   })
     .then(response => {
+      clearTimeout(timeoutId); // Hapus timeout setelah respons diterima
+      if (!response.ok) {
+        throw new Error('TURU');
+      }
+      return response.json(); // Anggap responsnya dalam format JSON
+    })
+    .then(data => {
       const endTime = performance.now();
       const latency = (endTime - startTime).toFixed(2);
 
-      if (response.ok) {
-        button.textContent = 'NGACENG';
-        button.style.backgroundColor = 'green';
-        button.style.color = 'white';
-        latencyCell.textContent = `${latency} ms`;
+      button.textContent = 'NGACENG';
+      button.style.backgroundColor = 'green';
+      button.style.color = 'white';
+      latencyCell.textContent = `${latency} ms`;
 
-        Swal.fire({
-          title: 'Proxy Status: NGACENG',
-          text: `Latency: ${latency} ms.`,
-          icon: 'success',
-          background: 'rgba(6, 18, 67, 0.89)',
-          color: 'white',
-          customClass: {
-            popup: 'rounded-popup',
-          },
-          confirmButtonColor: '#3085d6',
-        });
-      } else {
-        throw new Error('TURU');
-      }
+      Swal.fire({
+        title: 'Status Proxy: NGACENG',
+        text: `Latency: ${latency} ms.`,
+        icon: 'success',
+        background: 'rgba(6, 18, 67, 0.89)',
+        color: 'white',
+        customClass: {
+          popup: 'rounded-popup',
+        },
+        confirmButtonColor: '#3085d6',
+      });
     })
     .catch(error => {
+      clearTimeout(timeoutId); // Hapus timeout jika ada kesalahan
       button.textContent = 'TURU';
       button.style.backgroundColor = 'red';
       button.style.color = 'white';
       latencyCell.textContent = '';
 
       Swal.fire({
-        title: 'Proxy Status: TURU',
-        text: error.message || 'Request failed.',
+        title: 'Status Proxy: TURU',
+        text: error.message || 'Permintaan gagal.',
         icon: 'error',
         background: 'rgba(6, 18, 67, 0.89)',
         color: 'white',
@@ -1469,6 +1471,15 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
         },
         confirmButtonColor: '#d33',
       });
+    })
+    .finally(() => {
+      button.disabled = false; // Mengaktifkan kembali tombol setelah pengecekan selesai
     });
 }
-    </script></body></html>
+
+            
+    </script>
+
+
+
+</body></html>
