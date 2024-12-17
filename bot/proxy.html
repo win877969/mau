@@ -382,7 +382,7 @@
 
                     const proxies = countryProxies[country] || [];
                     proxies.forEach(proxy => {
-                        const proxyDetail = `${proxy.ip}\n${proxy.port}\n${proxy.country}`;
+                        const proxyDetail = `${proxy.ip}:${proxy.port}`;
                         const listItem = document.createElement('pre');
                         listItem.textContent = proxyDetail;
                         proxyList.appendChild(listItem);
