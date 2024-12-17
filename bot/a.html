@@ -1418,7 +1418,7 @@ function checkProxyStatus(proxy, button) {
   const timeoutId = setTimeout(() => controller.abort(), 5000); // Timeout 5 detik
 
   // Ganti URL dengan yang lebih akurat
-  fetch('https://p01--boiling-frame--kw6dd7bjv2nr.code.run/check', {
+  fetch('https://www.cloudflare.com/cdn-cgi/trace', {
     method: 'GET',
     headers: {
       'Proxy': `http://${proxy}`,  // Menggunakan proxy yang diberikan
