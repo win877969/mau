@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy Counter</title>
+    <title>Proxy Counter with Details</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,10 +25,21 @@
         th {
             background-color: #f4f4f4;
         }
+        #details {
+            margin-top: 20px;
+        }
+        #details ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #details li {
+            margin: 5px 0;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
-    <h1>Proxy Counter</h1>
+    <h1>Proxy Counter with Details</h1>
     <p>Jumlah proxy berdasarkan kode negara dari file <strong>proxy_list.txt</strong>:</p>
     <table id="resultTable" style="display:none;">
         <thead>
@@ -39,6 +50,12 @@
         </thead>
         <tbody></tbody>
     </table>
+
+    <div id="details" style="display:none;">
+        <h2>Detail Proxy</h2>
+        <p>Daftar proxy untuk negara: <strong id="countryName"></strong></p>
+        <ul id="proxyList"></ul>
+    </div>
 
     <script>
         // Fungsi untuk membaca file proxy_list.txt
@@ -55,12 +72,17 @@
 
                 // Memproses data
                 const lines = proxyData.trim().split('\n');
+                const countryProxies = {};
                 const countryCount = {};
 
                 lines.forEach(line => {
                     const parts = line.trim().split(',');
                     if (parts.length >= 3) {
                         const country = parts[2].toLowerCase();
+                        if (!countryProxies[country]) {
+                            countryProxies[country] = [];
+                        }
+                        countryProxies[country].push(line.trim());
                         countryCount[country] = (countryCount[country] || 0) + 1;
                     }
                 });
@@ -71,11 +93,29 @@
 
                 for (const [country, count] of Object.entries(countryCount)) {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td>${country}</td><td>${count}</td>`;
+                    row.innerHTML = `<td><a href="#" onclick="showDetails('${country}')">${country}</a></td><td>${count}</td>`;
                     tbody.appendChild(row);
                 }
 
                 table.style.display = 'table'; // Menampilkan tabel
+
+                // Fungsi untuk menampilkan detail proxy
+                window.showDetails = function (country) {
+                    const detailsDiv = document.getElementById('details');
+                    const countryName = document.getElementById('countryName');
+                    const proxyList = document.getElementById('proxyList');
+
+                    countryName.textContent = country.toUpperCase();
+                    proxyList.innerHTML = '';
+
+                    (countryProxies[country] || []).forEach(proxy => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = proxy;
+                        proxyList.appendChild(listItem);
+                    });
+
+                    detailsDiv.style.display = 'block';
+                };
             } catch (error) {
                 console.error(error);
                 alert('Gagal memproses data: ' + error.message);
