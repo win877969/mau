@@ -1389,10 +1389,9 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 
 // Fetching proxy data
 
-fetch("ip_list.txt")
+        fetch("ip_list.txt")
   .then(response => response.text())  // Mengambil data dari file txt
   .then(data => {
-    // Memecah daftar proxy berdasarkan baris baru dan menyaring baris kosong
     const allProxies = data.split("\n").filter(line => line.trim() !== "");
     const filteredProxies = allProxies;  // Anda bisa menyaring daftar ini sesuai kebutuhan
     const proxyList = document.getElementById('proxy-list');
@@ -1410,6 +1409,7 @@ function checkProxyStatus(proxy, button) {
   button.disabled = true; // Menonaktifkan tombol sementara saat status sedang dicek
 
   const latencyCell = button.parentElement.querySelector('.latency-cell');
+  const speedCell = button.parentElement.querySelector('.speed-cell');  // Untuk menampilkan hasil speedtest
 
   const startTime = performance.now();
 
@@ -1440,6 +1440,9 @@ function checkProxyStatus(proxy, button) {
       button.style.backgroundColor = 'green';
       button.style.color = 'white';
       latencyCell.textContent = `${latency} ms`;
+
+      // Mulai pengujian kecepatan
+      testSpeed(proxy, speedCell);
 
       Swal.fire({
         title: 'Status Proxy: NGACENG',
@@ -1474,6 +1477,25 @@ function checkProxyStatus(proxy, button) {
     })
     .finally(() => {
       button.disabled = false; // Mengaktifkan kembali tombol setelah pengecekan selesai
+    });
+}
+
+// Fungsi untuk menguji kecepatan menggunakan Fast.com API
+function testSpeed(proxy, speedCell) {
+  fetch('https://api.fast.com/netflix/speedtest?https=true', {
+    method: 'GET',
+    headers: {
+      'Proxy': `http://${proxy}`,  // Menggunakan proxy yang diberikan
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      const downloadSpeed = (data.downloadSpeed / 1e6).toFixed(2);  // Mengubah kecepatan download menjadi Mbps
+      const uploadSpeed = (data.uploadSpeed / 1e6).toFixed(2);      // Mengubah kecepatan upload menjadi Mbps
+      speedCell.textContent = `Download: ${downloadSpeed} Mbps, Upload: ${uploadSpeed} Mbps`;
+    })
+    .catch(error => {
+      speedCell.textContent = 'Speedtest failed';
     });
 }
 
