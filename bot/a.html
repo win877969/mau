@@ -910,6 +910,8 @@ function hidePopup(popupId) {
 
   </script>
     <script>
+
+    
 let proxyPerPage = 10; // Set jumlah proxy per halaman
 let currentPage = 1;
 let proxyListData = [];
@@ -925,7 +927,6 @@ fetch("proxy_list.txt")
     });
 
     renderProxyList(proxyListData); // Menampilkan daftar proxy di halaman
-    checkProxy(proxyListData); // Memeriksa status proxy
     renderPagination(proxyListData); // Menampilkan kontrol pagination
   })
   .catch((error) => console.error("Error loading proxy list:", error));
@@ -951,6 +952,8 @@ function renderProxyList(proxyList) {
 
     container.appendChild(proxyElement);
   });
+
+  checkProxy(proxiesToDisplay); // Memeriksa status proxy untuk halaman saat ini
 }
 
 // Fungsi untuk memeriksa status proxy
