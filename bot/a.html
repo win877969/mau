@@ -825,7 +825,7 @@ body {
   </div>
   <footer class="footer">
     <h2><p>&copy; 2024 FREE PROXY CF NDESO.WEB.ID</p></h2>
-  </footer>
+  </footer></main>
 <script>
   // Function to generate the link
   function generateLinks() {
@@ -1396,7 +1396,7 @@ fetch("proxy_list.txt")
     const pagination = document.getElementById('pagination');
     renderProxies(filteredProxies, proxyList, pagination);
   })
-  .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
+  .catch(error => console.error("Error fetching proxy data:", error));
 
 // Fungsi untuk cek status Proxy
 function checkProxyStatus(proxy, button) {
@@ -1405,8 +1405,8 @@ function checkProxyStatus(proxy, button) {
   button.style.color = 'black'; // Set warna teks menjadi hitam saat loading
   const latencyCell = button.parentElement.querySelector('.latency-cell'); // Cari elemen latensi di sel yang sama
 
-  // Tes koneksi menggunakan speedtest.net terlebih dahulu
-  testConnection().then(() => {
+  // Tes koneksi menggunakan Cloudflare sebelum pengecekan proxy
+  testConnectionWithCloudflare().then(() => {
     // Jika tes koneksi berhasil, lanjutkan pengecekan proxy
     const startTime = performance.now();
     fetch('https://httpbin.org/ip', {
@@ -1482,23 +1482,19 @@ function checkProxyStatus(proxy, button) {
   });
 }
 
-// Fungsi untuk tes koneksi menggunakan speedtest.net
-function testConnection() {
+// Fungsi untuk tes koneksi menggunakan Cloudflare
+function testConnectionWithCloudflare() {
   return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.src = "https://www.speedtest.net/ico/speedtest-logo.png"; // Gambar kecil untuk tes koneksi
-
-    img.onload = () => {
-      resolve(); // Koneksi berhasil
-    };
-    
-    img.onerror = () => {
-      reject(); // Koneksi gagal
-    };
+    fetch('https://1.1.1.1/cdn-cgi/trace', { method: 'GET', timeout: 5000 }) // Coba koneksi ke Cloudflare
+      .then(response => {
+        if (response.ok) {
+          resolve(); // Koneksi berhasil
+        } else {
+          reject(); // Koneksi gagal
+        }
+      })
+      .catch(() => reject()); // Koneksi gagal jika terjadi error
   });
 }
-
 </script>
-  
-</body>
-</html>
+</body></html>
