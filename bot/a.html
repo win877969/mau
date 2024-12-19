@@ -1389,6 +1389,7 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 
 // Fetching proxy data
 
+// Fetch proxy list from a file (proxy_list.txt)
 fetch("proxy_list.txt")
   .then(response => response.text())
   .then(data => {
@@ -1407,8 +1408,12 @@ function checkProxyStatus(proxy, button) {
   button.style.color = 'black'; // Set text color to black during loading
   const latencyCell = button.parentElement.querySelector('.latency-cell'); // Find the latency span in the same cell
 
+  // Set target and tls values
+  const target = proxy;  // Set proxy as the target
+  const tls = true;      // Assuming tls is true, you can change this as needed
+
   const startTime = performance.now();
-  fetch('https://nautica.foolvpn.me/check?target=${target}&tls=${tls}', {
+  fetch(`https://nautica.foolvpn.me/check?target=${target}&tls=${tls}`, {
     method: 'GET',
     headers: {
       'Proxy': `http://${proxy}`,
@@ -1423,7 +1428,7 @@ function checkProxyStatus(proxy, button) {
         button.textContent = 'NGACENG';
         button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
         button.style.color = 'white'; // Set text color to white for active proxy
-        latencyCell.textContent = ``; // Display latency in the same column
+        latencyCell.textContent = `${latency} ms`; // Display latency in the same column
 
         // Display latency in a popup
         Swal.fire({
@@ -1461,9 +1466,4 @@ function checkProxyStatus(proxy, button) {
       });
     });
 }
-
-
-                          
-// Memuat file proxy_list.txt
-// Memuat file proxy_list.txt
 </script></main></body></html>
