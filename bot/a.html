@@ -1390,87 +1390,101 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 // Fetching proxy data
 
 // Memuat file proxy_list.txt
+// Memuat file proxy_list.txt
 fetch("proxy_list.txt")
-  .then((response) => response.text())
-  .then((data) => {
-    const proxyData = data.split("\n").filter((line) => line.trim() !== ""); // Memisahkan setiap baris
-    const proxyList = proxyData.map((line) => {
-      const [ip, port, id, isp] = line.split(","); // Parsing data berdasarkan format
-      return { ip, port, id, isp };
-    });
-
-    renderProxyList(proxyList); // Menampilkan daftar proxy di halaman
-    checkProxy(proxyList); // Memeriksa status proxy
+  .then(response => response.text())
+  .then(data => {
+    allProxies = data.split("\n").filter(line => line.trim() !== "");
+    filteredProxies = allProxies;
+    
+    // Menampilkan daftar proxy ke dalam elemen HTML
+    const proxyList = document.getElementById('proxy-list');
+    const pagination = document.getElementById('pagination');
+    renderProxies(filteredProxies, proxyList, pagination);
   })
-  .catch((error) => console.error("Error loading proxy list:", error));
+  .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
 
-// Fungsi untuk merender daftar proxy ke halaman
-function renderProxyList(proxyList) {
-  const container = document.getElementById("proxy-list");
-  container.innerHTML = ""; // Membersihkan kontainer sebelumnya
+// Fungsi untuk merender daftar proxy ke dalam elemen HTML
+function renderProxies(filteredProxies, proxyList, pagination) {
+  proxyList.innerHTML = ""; // Membersihkan daftar sebelumnya
 
-  proxyList.forEach((proxy, index) => {
+  filteredProxies.forEach((proxy, index) => {
+    const [ip, port, id, isp] = proxy.split(",");
+    
+    // Membuat elemen daftar proxy
     const proxyElement = document.createElement("div");
     proxyElement.className = "proxy-item";
     proxyElement.id = `ping-${index}`;
-
+    
     proxyElement.innerHTML = `
-      <span class="proxy-info">${proxy.ip}:${proxy.port} (${proxy.isp})</span>
-      <span class="proxy-status" id="status-${index}">Idle</span>
+      <span class="proxy-info">${ip}:${port} (${isp})</span>
+      <button onclick="checkProxyStatus('${ip}:${port}', this)" class="check-status-button">Check Status</button>
+      <span class="latency-cell"></span>
     `;
-
-    container.appendChild(proxyElement);
+    
+    proxyList.appendChild(proxyElement);
   });
 }
 
 // Fungsi untuk memeriksa status proxy
-function checkProxy(proxyList) {
-  proxyList.forEach((proxy, index) => {
-    const target = `${proxy.ip}:${proxy.port}`;
-    const pingElement = document.getElementById(`ping-${index}`);
-    const statusElement = document.getElementById(`status-${index}`);
+function checkProxyStatus(proxy, button) {
+  button.textContent = 'Loading';
+  button.style.backgroundColor = 'yellow'; // Set background color to yellow when loading
+  button.style.color = 'black'; // Set text color to black during loading
+  const latencyCell = button.parentElement.querySelector('.latency-cell'); // Find the latency span in the same cell
 
-    if (!pingElement) return;
+  const startTime = performance.now();
+  const target = proxy;  // Menggunakan proxy sebagai target
+  let isActive = false;
 
-    statusElement.textContent = "Checking...";
-    statusElement.classList.remove("text-green-600", "text-red-600");
-    statusElement.classList.add("text-blue-600");
+  // Cek status proxy menggunakan Nautica API dengan TLS true/false
+  new Promise(async (resolve) => {
+    for (const tls of [true, false]) {
+      const res = await fetch(`https://nautica.foolvpn.me/check?target=${target}&tls=${tls}`)
+        .then(async (res) => {
+          const endTime = performance.now();
+          const latency = (endTime - startTime).toFixed(2); // Menghitung latensi
 
-    let isActive = false;
+          if (res.status == 200) {
+            const jsonResp = await res.json();
+            if (jsonResp.proxyip) {
+              isActive = true;
+              button.textContent = 'NGACENG';
+              button.style.backgroundColor = 'green'; // Set background color to green if the proxy is working
+              button.style.color = 'white'; // Set text color to white for active proxy
+              latencyCell.textContent = `${latency} ms`; // Display latency in the same column
 
-    new Promise(async (resolve) => {
-      for (const tls of [true, false]) {
-        await fetch(`https://nautica.foolvpn.me/check?target=${target}&tls=${tls}`)
-          .then(async (res) => {
-            if (isActive) return;
-            if (res.status === 200) {
-              const jsonResp = await res.json();
-              if (jsonResp.proxyip) {
-                isActive = true;
-                statusElement.textContent = "Active";
-                statusElement.classList.remove("text-blue-600");
-                statusElement.classList.add("text-green-600");
-              } else {
-                statusElement.textContent = "Inactive";
-                statusElement.classList.remove("text-blue-600");
-                statusElement.classList.add("text-red-600");
-              }
+              // Menampilkan popup dengan latensi
+              Swal.fire({
+                title: 'Proxy Status: NGACENG',
+                text: `${latency} ms.`,
+                icon: 'success',
+                background: 'rgba(6, 18, 67, 0.89)', // Background color
+                color: 'white', // Text color
+                customClass: {
+                  popup: 'rounded-popup',
+                },
+                confirmButtonColor: '#3085d6',
+              });
             } else {
-              statusElement.textContent = "Check Failed!";
+              button.textContent = 'TURU';
+              button.style.backgroundColor = 'red'; // Set background color to red if the proxy failed
+              button.style.color = 'white'; // Set text color to white for failed proxy
+              latencyCell.textContent = ''; // Clear latency cell text on failure
             }
-          })
-          .catch(() => {
-            statusElement.textContent = "Error";
-            statusElement.classList.remove("text-blue-600");
-            statusElement.classList.add("text-red-600");
-          })
-          .finally(() => {
-            resolve();
-          });
-      }
-    });
+          } else {
+            button.textContent = 'Check Failed';
+          }
+        })
+        .finally(() => {
+          resolve();
+        });
+    }
   });
 }
+
+// Fungsi untuk memeriksa status proxy
+
 
 
 
