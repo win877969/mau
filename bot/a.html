@@ -606,8 +606,8 @@ fetch("proxy_list.txt")
   .then((data) => {
     const proxyData = data.split("\n").filter((line) => line.trim() !== "");
     proxyListData = proxyData.map((line) => {
-      const [ip, port, id, isp] = line.split(",");
-      return { ip, port, id, isp };
+      const [ip, port, country, isp] = line.split(",");
+      return { ip, port, country, isp };
     });
     filteredProxyList = [...proxyListData]; // Set filtered proxies to all initially
     renderProxyList(filteredProxyList);
@@ -615,27 +615,50 @@ fetch("proxy_list.txt")
   })
   .catch((error) => console.error("Error loading proxy list:", error));
 
-// Fungsi untuk merender daftar proxy ke halaman
+// Fungsi untuk merender daftar proxy ke halaman dalam bentuk tabel
 function renderProxyList(proxyList) {
   const container = document.getElementById("proxy-list");
   container.innerHTML = ""; // Clear previous proxies
 
+  const table = document.createElement("table");
+  table.className = "proxy-table";
+
+  // Membuat header tabel
+  const thead = document.createElement("thead");
+  thead.innerHTML = `
+    <tr>
+      <th>IP:PORT</th>
+      <th>Country</th>
+      <th>ISP</th>
+      <th>Status</th>
+      <th>Latency</th>
+    </tr>
+  `;
+  table.appendChild(thead);
+
+  // Membuat tubuh tabel
+  const tbody = document.createElement("tbody");
   const start = (currentPage - 1) * proxyPerPage;
   const end = start + proxyPerPage;
   const proxiesToDisplay = proxyList.slice(start, end);
 
   proxiesToDisplay.forEach((proxy, index) => {
-    const proxyElement = document.createElement("div");
-    proxyElement.className = "proxy-item";
-    proxyElement.id = `ping-${index}`;
+    const row = document.createElement("tr");
+    row.id = `ping-${index}`;
 
-    proxyElement.innerHTML = `
-      <span class="proxy-info">${proxy.ip}:${proxy.port} (${proxy.isp})</span>
-      <span class="proxy-status" id="status-${index}">Idle</span>
+    row.innerHTML = `
+      <td>${proxy.ip}:${proxy.port}</td>
+      <td>${proxy.country}</td>
+      <td>${proxy.isp}</td>
+      <td><span class="proxy-status" id="status-${index}">Idle</span></td>
+      <td><span id="latency-${index}">-</span></td>
     `;
 
-    container.appendChild(proxyElement);
+    tbody.appendChild(row);
   });
+
+  table.appendChild(tbody);
+  container.appendChild(table);
 
   checkProxy(proxiesToDisplay);
 }
@@ -644,12 +667,13 @@ function renderProxyList(proxyList) {
 function checkProxy(proxyList) {
   proxyList.forEach((proxy, index) => {
     const target = `${proxy.ip}:${proxy.port}`;
-    const pingElement = document.getElementById(`ping-${index}`);
     const statusElement = document.getElementById(`status-${index}`);
+    const latencyElement = document.getElementById(`latency-${index}`);
 
     statusElement.textContent = "Checking...";
     statusElement.classList.remove("text-green-600", "text-red-600");
     statusElement.classList.add("text-blue-600");
+    latencyElement.textContent = "-";
 
     let isActive = false;
 
@@ -660,15 +684,19 @@ function checkProxy(proxyList) {
             if (isActive) return;
             if (res.status === 200) {
               const jsonResp = await res.json();
+              const latency = jsonResp.latency || 0;
+
               if (jsonResp.proxyip) {
                 isActive = true;
                 statusElement.textContent = "Active";
                 statusElement.classList.remove("text-blue-600");
                 statusElement.classList.add("text-green-600");
+                latencyElement.textContent = `${latency} ms`;
               } else {
                 statusElement.textContent = "Inactive";
                 statusElement.classList.remove("text-blue-600");
                 statusElement.classList.add("text-red-600");
+                latencyElement.textContent = "-";
               }
             } else {
               statusElement.textContent = "Check Failed!";
@@ -678,6 +706,7 @@ function checkProxy(proxyList) {
             statusElement.textContent = "Error";
             statusElement.classList.remove("text-blue-600");
             statusElement.classList.add("text-red-600");
+            latencyElement.textContent = "-";
           })
           .finally(() => {
             resolve();
@@ -761,7 +790,8 @@ function filterProxyList(searchTerm) {
   filteredProxyList = proxyListData.filter((proxy) =>
     proxy.ip.toLowerCase().includes(searchTerm) ||
     proxy.port.includes(searchTerm) ||
-    proxy.isp.toLowerCase().includes(searchTerm)
+    proxy.isp.toLowerCase().includes(searchTerm) ||
+    proxy.country.toLowerCase().includes(searchTerm)
   );
   currentPage = 1; // Reset ke halaman pertama setelah filter
   renderProxyList(filteredProxyList);
@@ -783,8 +813,5 @@ document.getElementById('search-bar').addEventListener('input', (e) => {
 
 // Event listener untuk dropdown items per page
 document.getElementById('items-per-page').addEventListener('change', changeItemsPerPage);
-
-
-
 
 </script></body></html>
