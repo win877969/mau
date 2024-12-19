@@ -1388,116 +1388,77 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 });
 
 // Fetching proxy data
-
-              fetch("proxy_list.txt")
+// Memuat file proxy_list.txt
+fetch("proxy_list.txt")
   .then((response) => response.text())
   .then((data) => {
-    // Memuat daftar proxy
-    allProxies = data.split("\n").filter((line) => line.trim() !== "");
-    filteredProxies = allProxies;
-
-    const proxyList = document.getElementById("proxy-list");
-    const pagination = document.getElementById("pagination");
-
-    // Render proxy list dengan elemen UI
-    renderProxies(filteredProxies, proxyList, pagination);
-  })
-  .catch((error) => console.error("Error fetching proxy data:", error));
-
-// Fungsi untuk memeriksa status proxy
-function checkProxyStatus(proxy, button) {
-  button.textContent = "Loading";
-  button.style.backgroundColor = "yellow";
-  button.style.color = "black";
-
-  const latencyCell = button.parentElement.querySelector(".latency-cell");
-
-  const startTime = performance.now();
-  fetch("https://httpbin.org/ip", {
-    method: "GET",
-    headers: {
-      Proxy: `http://${proxy}`,
-    },
-    timeout: 5000,
-  })
-    .then((response) => {
-      const endTime = performance.now();
-      const latency = (endTime - startTime).toFixed(2);
-
-      if (response.ok) {
-        button.textContent = "NGACENG";
-        button.style.backgroundColor = "green";
-        button.style.color = "white";
-        latencyCell.textContent = `${latency} ms`;
-
-        Swal.fire({
-          title: "Proxy Status: NGACENG",
-          text: `${latency} ms.`,
-          icon: "success",
-          background: "rgba(6, 18, 67, 0.89)",
-          color: "white",
-          customClass: {
-            popup: "rounded-popup",
-          },
-          confirmButtonColor: "#3085d6",
-        });
-      } else {
-        throw new Error("TURU");
-      }
-    })
-    .catch(() => {
-      button.textContent = "TURU";
-      button.style.backgroundColor = "red";
-      button.style.color = "white";
-      latencyCell.textContent = "";
-
-      Swal.fire({
-        title: "Proxy Status: TURU",
-        text: "",
-        icon: "error",
-        background: "rgba(6, 18, 67, 0.89)",
-        color: "white",
-        customClass: {
-          popup: "rounded-popup",
-        },
-        confirmButtonColor: "#d33",
-      });
+    const proxyData = data.split("\n").filter((line) => line.trim() !== ""); // Memisahkan setiap baris
+    const proxyList = proxyData.map((line) => {
+      const [ip, port, id, isp] = line.split(","); // Parsing data berdasarkan format
+      return { ip, port, id, isp };
     });
-}
 
-// Fungsi untuk memeriksa semua proxy di daftar
-function checkAllProxies() {
-  const proxyElements = document.querySelectorAll("#proxy-list .proxy-item");
+    const proxyListElement = document.getElementById("proxy-list");
+    renderProxyList(proxyList, proxyListElement); // Menampilkan daftar proxy
 
-  proxyElements.forEach((proxyElement) => {
-    const proxy = proxyElement.getAttribute("data-proxy");
-    const button = proxyElement.querySelector(".check-button");
+    checkAllProxies(proxyList); // Memeriksa status semua proxy
+  })
+  .catch((error) => console.error("Error fetching proxy list:", error));
 
-    if (proxy && button) {
-      checkProxyStatus(proxy, button);
-    }
-  });
-}
+// Fungsi untuk merender daftar proxy ke dalam elemen DOM
+function renderProxyList(proxyList, container) {
+  container.innerHTML = ""; // Membersihkan kontainer sebelumnya
+  proxyList.forEach((proxy, index) => {
+    const proxyElement = document.createElement("div");
+    proxyElement.className = "proxy-item";
+    proxyElement.id = `ping-${index}`;
 
-// Fungsi render daftar proxy
-function renderProxies(proxies, proxyList, pagination) {
-  proxyList.innerHTML = "";
-  proxies.forEach((proxy, index) => {
-    const listItem = document.createElement("div");
-    listItem.classList.add("proxy-item");
-    listItem.setAttribute("data-proxy", proxy);
-
-    listItem.innerHTML = `
-      <span class="proxy-address">${proxy}</span>
-      <span class="latency-cell"></span>
-      <button class="check-button" onclick="checkProxyStatus('${proxy}', this)">Check</button>
+    proxyElement.innerHTML = `
+      <span class="proxy-info">${proxy.ip}:${proxy.port} (${proxy.isp})</span>
+      <span class="proxy-status" id="status-${index}">Idle</span>
     `;
 
-    proxyList.appendChild(listItem);
+    container.appendChild(proxyElement);
   });
-
-  // Tambahkan logika untuk pagination jika diperlukan
 }
+
+// Fungsi untuk memeriksa status semua proxy secara otomatis
+function checkAllProxies(proxyList) {
+  proxyList.forEach((proxy, index) => {
+    const target = `${proxy.ip}:${proxy.port}`;
+    const statusElement = document.getElementById(`status-${index}`);
+    statusElement.textContent = "Checking...";
+    statusElement.classList.remove("text-green-600", "text-red-600", "text-yellow-600");
+    statusElement.classList.add("text-blue-600");
+
+    fetch(`https://p01--boiling-frame--kw6dd7bjv2nr.code.run/check?target=${target}`)
+      .then(async (response) => {
+        if (response.status === 200) {
+          const result = await response.json();
+          if (result.proxyip || result.status === "active") {
+            statusElement.textContent = "Active";
+            statusElement.classList.remove("text-blue-600");
+            statusElement.classList.add("text-green-600");
+          } else {
+            statusElement.textContent = "Inactive";
+            statusElement.classList.remove("text-blue-600");
+            statusElement.classList.add("text-red-600");
+          }
+        } else {
+          throw new Error("Invalid Response");
+        }
+      })
+      .catch(() => {
+        statusElement.textContent = "Error";
+        statusElement.classList.remove("text-blue-600");
+        statusElement.classList.add("text-yellow-600");
+      });
+  });
+}
+
+                      
+  // Tambahkan logika untuk pagination jika diperlukan
+
 
     </script>
 
