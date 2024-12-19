@@ -1387,11 +1387,20 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 });
 
 // Fetching proxy data
-fetch("proxy_list.txt")
+
+            
+      fetch("proxyips.txt")
   .then(response => response.text())
   .then(data => {
-    allProxies = data.split("\n").filter(line => line.trim() !== "");
-    filteredProxies = allProxies;
+    const allProxies = data.split("\n").filter(line => line.trim() !== "");
+
+    // Memisahkan setiap bagian dari proxy
+    const proxies = allProxies.map(line => {
+      const [proxy, id, isp] = line.split(','); // Memisahkan ip:port, id, dan isp
+      return { proxy, id, isp };
+    });
+
+    const filteredProxies = proxies;
     const proxyList = document.getElementById('proxy-list');
     const pagination = document.getElementById('pagination');
     renderProxies(filteredProxies, proxyList, pagination);
@@ -1412,7 +1421,7 @@ function checkProxyStatus(proxy, button) {
     fetch('https://httpbin.org/ip', {
       method: 'GET',
       headers: {
-        'Proxy': `http://${proxy}`,
+        'Proxy': `http://${proxy}`,  // Pastikan format proxy adalah ip:port
       },
       timeout: 5000
     })
@@ -1442,7 +1451,8 @@ function checkProxyStatus(proxy, button) {
           throw new Error('TURU');
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Proxy check error: ', error);
         button.textContent = 'TURU';
         button.style.backgroundColor = 'red'; // Set background color menjadi merah jika proxy gagal
         button.style.color = 'white'; // Set warna teks menjadi putih untuk proxy yang gagal
@@ -1461,7 +1471,8 @@ function checkProxyStatus(proxy, button) {
           confirmButtonColor: '#d33',
         });
       });
-  }).catch(() => {
+  }).catch((error) => {
+    console.error('Connection check error: ', error);
     // Jika tes koneksi gagal, set status menjadi TURU
     button.textContent = 'TURU';
     button.style.backgroundColor = 'red'; // Set background color menjadi merah
@@ -1482,19 +1493,5 @@ function checkProxyStatus(proxy, button) {
   });
 }
 
-// Fungsi untuk tes koneksi menggunakan Cloudflare
-function testConnectionWithCloudflare() {
-  return new Promise((resolve, reject) => {
-    fetch('https://1.1.1.1/cdn-cgi/trace', { method: 'GET', timeout: 5000 }) // Coba koneksi ke Cloudflare
-      .then(response => {
-        if (response.ok) {
-          resolve(); // Koneksi berhasil
-        } else {
-          reject(); // Koneksi gagal
-        }
-      })
-      .catch(() => reject()); // Koneksi gagal jika terjadi error
-  });
-}
 </script>
 </body></html>
