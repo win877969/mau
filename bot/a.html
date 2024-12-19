@@ -1046,7 +1046,7 @@ fetch("proxy_list.txt")
 // Function to check proxy status without button, updating the status and latency directly in the table
 function checkProxyStatus(proxy, statusCell, latencyCell) {
   statusCell.textContent = 'Checking...';
-  const target = "https://www.speedtest.net/id"; // Set your target here
+  const target = "www.speedtest.net"; // Set your target here
   const tls = "true"; // Set TLS value
 
   const controller = new AbortController();
