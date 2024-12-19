@@ -910,8 +910,6 @@ function hidePopup(popupId) {
 
   </script>
     <script>
-
-    
 let proxyPerPage = 10; // Set jumlah proxy per halaman
 let currentPage = 1;
 let proxyListData = [];
@@ -1011,29 +1009,50 @@ function renderPagination(proxyList) {
   paginationContainer.innerHTML = ""; // Clear pagination controls
 
   const totalPages = Math.ceil(proxyList.length / proxyPerPage);
-  
-  // Previous button
+
+  // Create a div wrapper for pagination controls to apply flexbox styling
+  const paginationWrapper = document.createElement("div");
+  paginationWrapper.className = "pagination-wrapper";
+
+  // Previous and First Buttons
   const prevButton = document.createElement("button");
-  prevButton.textContent = "Previous";
+  prevButton.textContent = "<< First";
   prevButton.disabled = currentPage === 1;
-  prevButton.addEventListener("click", () => changePage(currentPage - 1, proxyList));
-  paginationContainer.appendChild(prevButton);
+  prevButton.addEventListener("click", () => changePage(1, proxyList));
+  paginationWrapper.appendChild(prevButton);
+
+  const prevPageButton = document.createElement("button");
+  prevPageButton.textContent = "<< Prev";
+  prevPageButton.disabled = currentPage === 1;
+  prevPageButton.addEventListener("click", () => changePage(currentPage - 1, proxyList));
+  paginationWrapper.appendChild(prevPageButton);
 
   // Page number buttons
+  const pageNumbers = document.createElement("div");
+  pageNumbers.className = "page-numbers";
   for (let i = 1; i <= totalPages; i++) {
     const pageButton = document.createElement("button");
     pageButton.textContent = i;
     pageButton.disabled = i === currentPage;
     pageButton.addEventListener("click", () => changePage(i, proxyList));
-    paginationContainer.appendChild(pageButton);
+    pageNumbers.appendChild(pageButton);
   }
+  paginationWrapper.appendChild(pageNumbers);
 
-  // Next button
-  const nextButton = document.createElement("button");
-  nextButton.textContent = "Next";
-  nextButton.disabled = currentPage === totalPages;
-  nextButton.addEventListener("click", () => changePage(currentPage + 1, proxyList));
-  paginationContainer.appendChild(nextButton);
+  // Next and Last Buttons
+  const nextPageButton = document.createElement("button");
+  nextPageButton.textContent = "Next >>";
+  nextPageButton.disabled = currentPage === totalPages;
+  nextPageButton.addEventListener("click", () => changePage(currentPage + 1, proxyList));
+  paginationWrapper.appendChild(nextPageButton);
+
+  const lastButton = document.createElement("button");
+  lastButton.textContent = "Last >>";
+  lastButton.disabled = currentPage === totalPages;
+  lastButton.addEventListener("click", () => changePage(totalPages, proxyList));
+  paginationWrapper.appendChild(lastButton);
+
+  paginationContainer.appendChild(paginationWrapper);
 }
 
 // Fungsi untuk mengganti halaman
