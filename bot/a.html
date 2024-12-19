@@ -910,179 +910,152 @@ function hidePopup(popupId) {
 
   </script>
     <script>
-let proxyPerPage = 15;
+let proxyPerPage = 10; // Set jumlah proxy per halaman
 let currentPage = 1;
-let filteredProxies = [];
-let allProxies = [];
+let proxyListData = [];
 
-// Function to handle UUID generation
-function uuidv4() {
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  );
-}
-
-// Function to render proxies
-function renderProxies(proxies, proxyList, pagination) {
-  const start = (currentPage - 1) * proxyPerPage;
-  const end = start + proxyPerPage;
-  const currentPageProxies = proxies.slice(start, end);
-
-  proxyList.innerHTML = ''; // Clear previous list
-
-  currentPageProxies.forEach(proxy => {
-    const [ip, port, negara, penyedia] = proxy.split(",");
-    const uuid = uuidv4();
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td> <span class="aha">${penyedia} | ${negara} </span><span class="flag-icon flag-icon-${negara.toLowerCase()}"></span></td>
-      <td><span class="status-cell">Checking...</span>
-      <span class="latency-cell"></span></td>
-    `;
-    proxyList.appendChild(row);
-
-    // Call checkProxyStatus for each proxy and update the status and latency cells
-    const statusCell = row.querySelector('.status-cell');
-    const latencyCell = row.querySelector('.latency-cell');
-    checkProxyStatus(`${ip}:${port}`, statusCell, latencyCell);
-  });
-
-  // Display total proxies
-  const totalProxies = proxies.length;
-  const totalProxyElement = document.getElementById('total-proxy');
-  if (totalProxyElement) {
-    totalProxyElement.textContent = `Total Proxies: ${totalProxies}`;
-  }
-
-  renderPagination(proxies, pagination);
-}
-
-// Function to render pagination
-function renderPagination(proxies, pagination) {
-  const totalPages = Math.ceil(proxies.length / proxyPerPage);
-  const maxButtons = 6;
-  pagination.innerHTML = '';
-
-  if (currentPage > 1) {
-    const firstButton = document.createElement('button');
-    firstButton.textContent = '<< First';
-    firstButton.addEventListener('click', () => updatePage(1, proxies, pagination));
-    pagination.appendChild(firstButton);
-
-    const prevButton = document.createElement('button');
-    prevButton.textContent = '<< Previous';
-    prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
-    pagination.appendChild(prevButton);
-  }
-
-  const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-  const endPage = Math.min(totalPages, startPage + maxButtons - 1);
-
-  for (let i = startPage; i <= endPage; i++) {
-    const pageButton = document.createElement('button');
-    pageButton.textContent = i;
-    if (i === currentPage) {
-      pageButton.classList.add('active');
-    }
-    pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
-    pagination.appendChild(pageButton);
-  }
-
-  if (currentPage < totalPages) {
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next >>';
-    nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
-    pagination.appendChild(nextButton);
-
-    const lastButton = document.createElement('button');
-    lastButton.textContent = 'Last >>';
-    lastButton.addEventListener('click', () => updatePage(totalPages, proxies, pagination));
-    pagination.appendChild(lastButton);
-  }
-}
-
-// Function to update page
-function updatePage(page, proxies, pagination) {
-  currentPage = page;
-  const proxyList = document.getElementById('proxy-list');
-  renderProxies(proxies, proxyList, pagination);
-}
-
-// Function to filter proxies
-function filterProxies(searchTerm) {
-  searchTerm = searchTerm.toLowerCase();
-  filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
-  currentPage = 1;
-  const proxyList = document.getElementById('proxy-list');
-  const pagination = document.getElementById('pagination');
-  renderProxies(filteredProxies, proxyList, pagination);
-}
-
-// Event listener for search bar
-document.getElementById('search-bar').addEventListener('input', (e) => {
-  filterProxies(e.target.value);
-});
-
-// Event listener for items per page dropdown
-document.getElementById('items-per-page').addEventListener('change', (e) => {
-  proxyPerPage = parseInt(e.target.value);
-  const proxyList = document.getElementById('proxy-list');
-  const pagination = document.getElementById('pagination');
-  renderProxies(filteredProxies, proxyList, pagination);
-});
-
-// Fetching proxy data
+// Memuat file proxy_list.txt
 fetch("proxy_list.txt")
   .then((response) => response.text())
   .then((data) => {
-    allProxies = data.split("\n").filter((line) => line.trim() !== "");
-    filteredProxies = allProxies;
-    const proxyList = document.getElementById("proxy-list");
-    const pagination = document.getElementById("pagination");
-    renderProxies(filteredProxies, proxyList, pagination);
+    const proxyData = data.split("\n").filter((line) => line.trim() !== ""); // Memisahkan setiap baris
+    proxyListData = proxyData.map((line) => {
+      const [ip, port, id, isp] = line.split(","); // Parsing data berdasarkan format
+      return { ip, port, id, isp };
+    });
+
+    renderProxyList(proxyListData); // Menampilkan daftar proxy di halaman
+    checkProxy(proxyListData); // Memeriksa status proxy
+    renderPagination(proxyListData); // Menampilkan kontrol pagination
   })
   .catch((error) => console.error("Error loading proxy list:", error));
 
-// Function to check proxy status without button, updating the status and latency directly in the table
-function checkProxyStatus(proxy, statusCell, latencyCell) {
-  statusCell.textContent = 'Checking...';
-  const target = "https://www.speedtest.net/id"; // Set your target here
-  const tls = "true"; // Set TLS value
+// Fungsi untuk merender daftar proxy ke halaman
+function renderProxyList(proxyList) {
+  const container = document.getElementById("proxy-list");
+  container.innerHTML = ""; // Membersihkan kontainer sebelumnya
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000);  // Set timeout after 5 seconds
+  const start = (currentPage - 1) * proxyPerPage;
+  const end = start + proxyPerPage;
+  const proxiesToDisplay = proxyList.slice(start, end); // Ambil proxy untuk halaman ini
 
-  const startTime = performance.now();
-  fetch(`https://nautica.foolvpn.me/check?target=${encodeURIComponent(target)}&tls=${encodeURIComponent(tls)}`, {
-    method: 'GET',
-    headers: {
-      // Remove the 'Proxy' header, assuming it's handled by a proxy server or the environment
-      'User-Agent': 'Mozilla/5.0',  // You can set a user-agent or omit it
-    },
-    signal: controller.signal,  // Attach AbortController signal
-  })
-  .then(response => {
-    clearTimeout(timeoutId);  // Clear timeout if the response arrives
-    const endTime = performance.now();
-    const latency = (endTime - startTime).toFixed(2);
+  proxiesToDisplay.forEach((proxy, index) => {
+    const proxyElement = document.createElement("div");
+    proxyElement.className = "proxy-item";
+    proxyElement.id = `ping-${index}`;
 
-    if (response.ok) {
-      statusCell.textContent = 'Active';
-      statusCell.style.color = 'green';
-      latencyCell.textContent = `${latency} ms`;
-    } else {
-      statusCell.textContent = 'Inactive';
-      statusCell.style.color = 'red';
-      latencyCell.textContent = '';
-    }
-  })
-  .catch(() => {
-    clearTimeout(timeoutId);  // Clear timeout if the request fails or is aborted
-    statusCell.textContent = 'Error';
-    statusCell.style.color = 'red';
-    latencyCell.textContent = '';
+    proxyElement.innerHTML = `
+      <span class="proxy-info">${proxy.ip}:${proxy.port} (${proxy.isp})</span>
+      <span class="proxy-status" id="status-${index}">Idle</span>
+    `;
+
+    container.appendChild(proxyElement);
   });
 }
+
+// Fungsi untuk memeriksa status proxy
+function checkProxy(proxyList) {
+  proxyList.forEach((proxy, index) => {
+    const target = `${proxy.ip}:${proxy.port}`;
+    const pingElement = document.getElementById(`ping-${index}`);
+    const statusElement = document.getElementById(`status-${index}`);
+
+    if (!pingElement) return;
+
+    statusElement.textContent = "Checking...";
+    statusElement.classList.remove("text-green-600", "text-red-600");
+    statusElement.classList.add("text-blue-600");
+
+    let isActive = false;
+
+    new Promise(async (resolve) => {
+      for (const tls of [true, false]) {
+        await fetch(`https://nautica.foolvpn.me/check?target=${target}&tls=${tls}`)
+          .then(async (res) => {
+            if (isActive) return;
+            if (res.status === 200) {
+              const jsonResp = await res.json();
+              if (jsonResp.proxyip) {
+                isActive = true;
+                statusElement.textContent = "Active";
+                statusElement.classList.remove("text-blue-600");
+                statusElement.classList.add("text-green-600");
+              } else {
+                statusElement.textContent = "Inactive";
+                statusElement.classList.remove("text-blue-600");
+                statusElement.classList.add("text-red-600");
+              }
+            } else {
+              statusElement.textContent = "Check Failed!";
+            }
+          })
+          .catch(() => {
+            statusElement.textContent = "Error";
+            statusElement.classList.remove("text-blue-600");
+            statusElement.classList.add("text-red-600");
+          })
+          .finally(() => {
+            resolve();
+          });
+      }
+    });
+  });
+}
+
+// Fungsi untuk merender kontrol pagination
+function renderPagination(proxyList) {
+  const paginationContainer = document.getElementById("pagination");
+  paginationContainer.innerHTML = ""; // Clear pagination controls
+
+  const totalPages = Math.ceil(proxyList.length / proxyPerPage);
+  
+  // Previous button
+  const prevButton = document.createElement("button");
+  prevButton.textContent = "Previous";
+  prevButton.disabled = currentPage === 1;
+  prevButton.addEventListener("click", () => changePage(currentPage - 1, proxyList));
+  paginationContainer.appendChild(prevButton);
+
+  // Page number buttons
+  for (let i = 1; i <= totalPages; i++) {
+    const pageButton = document.createElement("button");
+    pageButton.textContent = i;
+    pageButton.disabled = i === currentPage;
+    pageButton.addEventListener("click", () => changePage(i, proxyList));
+    paginationContainer.appendChild(pageButton);
+  }
+
+  // Next button
+  const nextButton = document.createElement("button");
+  nextButton.textContent = "Next";
+  nextButton.disabled = currentPage === totalPages;
+  nextButton.addEventListener("click", () => changePage(currentPage + 1, proxyList));
+  paginationContainer.appendChild(nextButton);
+}
+
+// Fungsi untuk mengganti halaman
+function changePage(page, proxyList) {
+  currentPage = page;
+  renderProxyList(proxyList); // Tampilkan proxy untuk halaman baru
+  renderPagination(proxyList); // Update kontrol pagination
+}
+
+// Optional: Fungsi untuk memfilter proxy berdasarkan pencarian
+function filterProxies(searchTerm) {
+  searchTerm = searchTerm.toLowerCase();
+  const filteredProxies = proxyListData.filter(proxy =>
+    proxy.ip.toLowerCase().includes(searchTerm) ||
+    proxy.isp.toLowerCase().includes(searchTerm)
+  );
+  currentPage = 1; // Reset halaman saat filter diterapkan
+  renderProxyList(filteredProxies);
+  renderPagination(filteredProxies);
+}
+
+// Event listener untuk pencarian proxy
+document.getElementById("search-bar").addEventListener("input", (e) => {
+  filterProxies(e.target.value);
+});
 
 
 </script></body></html>
