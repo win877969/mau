@@ -664,57 +664,46 @@ function renderProxyList(proxyList) {
 }
 
 // Fungsi untuk memeriksa status proxy
-function checkProxy(proxyList) {
-  proxyList.forEach((proxy, index) => {
-    const target = `${proxy.ip}:${proxy.port}`;
-    const statusElement = document.getElementById(`status-${index}`);
-    const latencyElement = document.getElementById(`latency-${index}`);
+function checkProxyStatus(proxy, statusCell, latencyCell) {
+  statusCell.textContent = 'Checking...';
+  const target = "https://www.speedtest.net/id"; // Target URL
+  const tls = "true"; // TLS value
 
-    statusElement.textContent = "Checking...";
-    statusElement.classList.remove("text-green-600", "text-red-600");
-    statusElement.classList.add("text-blue-600");
-    latencyElement.textContent = "-";
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);  // Timeout after 5 seconds
 
-    let isActive = false;
+  const startTime = Date.now();  // Start time using Date.now()
+  fetch(`https://nautica.foolvpn.me/check?target=${encodeURIComponent(target)}&tls=${encodeURIComponent(tls)}`, {
+    method: 'GET',
+    headers: {
+      'Proxy': `http://${proxy}`,
+    },
+    signal: controller.signal,  // Attach AbortController signal
+  })
+  .then(response => {
+    clearTimeout(timeoutId);  // Clear timeout if the response arrives
+    const endTime = Date.now();  // End time using Date.now()
+    const latency = (endTime - startTime);  // Measure latency based on response time
 
-    new Promise(async (resolve) => {
-      for (const tls of [true, false]) {
-        await fetch(`https://nautica.foolvpn.me/check?target=${target}&tls=${tls}`)
-          .then(async (res) => {
-            if (isActive) return;
-            if (res.status === 200) {
-              const jsonResp = await res.json();
-              const latency = jsonResp.latency || 0;
-
-              if (jsonResp.proxyip) {
-                isActive = true;
-                statusElement.textContent = "Active";
-                statusElement.classList.remove("text-blue-600");
-                statusElement.classList.add("text-green-600");
-                latencyElement.textContent = `${latency} ms`;
-              } else {
-                statusElement.textContent = "Inactive";
-                statusElement.classList.remove("text-blue-600");
-                statusElement.classList.add("text-red-600");
-                latencyElement.textContent = "-";
-              }
-            } else {
-              statusElement.textContent = "Check Failed!";
-            }
-          })
-          .catch(() => {
-            statusElement.textContent = "Error";
-            statusElement.classList.remove("text-blue-600");
-            statusElement.classList.add("text-red-600");
-            latencyElement.textContent = "-";
-          })
-          .finally(() => {
-            resolve();
-          });
-      }
-    });
+    if (response.ok) {
+      statusCell.textContent = 'Active';
+      statusCell.style.color = 'green';
+      latencyCell.textContent = `${latency} ms`;  // Display latency
+    } else {
+      statusCell.textContent = 'Inactive';
+      statusCell.style.color = 'red';
+      latencyCell.textContent = '';  // Clear latency if inactive
+    }
+  })
+  .catch(() => {
+    clearTimeout(timeoutId);  // Clear timeout if the request fails or is aborted
+    statusCell.textContent = 'Error';
+    statusCell.style.color = 'red';
+    latencyCell.textContent = '';  // Clear latency if error occurs
   });
 }
+
+  
 
 // Fungsi untuk merender pagination
 function renderPagination(proxyList) {
