@@ -1388,7 +1388,7 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 });
 
 // Fetching proxy data
-// Memuat file proxy_list.txt
+
 // Memuat file proxy_list.txt
 fetch("proxy_list.txt")
   .then((response) => response.text())
@@ -1399,16 +1399,16 @@ fetch("proxy_list.txt")
       return { ip, port, id, isp };
     });
 
-    const proxyListElement = document.getElementById("proxy-list");
-    renderProxyList(proxyList, proxyListElement); // Menampilkan daftar proxy
-
-    checkAllProxies(proxyList); // Memeriksa status semua proxy
+    renderProxyList(proxyList); // Menampilkan daftar proxy di halaman
+    checkProxy(proxyList); // Memeriksa status proxy
   })
-  .catch((error) => console.error("Error fetching proxy list:", error));
+  .catch((error) => console.error("Error loading proxy list:", error));
 
-// Fungsi untuk merender daftar proxy ke dalam elemen DOM
-function renderProxyList(proxyList, container) {
+// Fungsi untuk merender daftar proxy ke halaman
+function renderProxyList(proxyList) {
+  const container = document.getElementById("proxy-list");
   container.innerHTML = ""; // Membersihkan kontainer sebelumnya
+
   proxyList.forEach((proxy, index) => {
     const proxyElement = document.createElement("div");
     proxyElement.className = "proxy-item";
@@ -1423,39 +1423,55 @@ function renderProxyList(proxyList, container) {
   });
 }
 
-// Fungsi untuk memeriksa status semua proxy secara otomatis
-function checkAllProxies(proxyList) {
+// Fungsi untuk memeriksa status proxy
+function checkProxy(proxyList) {
   proxyList.forEach((proxy, index) => {
     const target = `${proxy.ip}:${proxy.port}`;
+    const pingElement = document.getElementById(`ping-${index}`);
     const statusElement = document.getElementById(`status-${index}`);
+
+    if (!pingElement) return;
+
     statusElement.textContent = "Checking...";
-    statusElement.classList.remove("text-green-600", "text-red-600", "text-yellow-600");
+    statusElement.classList.remove("text-green-600", "text-red-600");
     statusElement.classList.add("text-blue-600");
 
-    fetch(`https://nautica.foolvpn.me/check?target=${target}`)
-      .then(async (response) => {
-        if (response.status === 200) {
-          const result = await response.json();
-          if (result.proxyip || result.status === "active") {
-            statusElement.textContent = "Active";
-            statusElement.classList.remove("text-blue-600");
-            statusElement.classList.add("text-green-600");
-          } else {
-            statusElement.textContent = "Inactive";
+    let isActive = false;
+
+    new Promise(async (resolve) => {
+      for (const tls of [true, false]) {
+        await fetch(`https://nautica.foolvpn.me/check?target=${target}&tls=${tls}`)
+          .then(async (res) => {
+            if (isActive) return;
+            if (res.status === 200) {
+              const jsonResp = await res.json();
+              if (jsonResp.proxyip) {
+                isActive = true;
+                statusElement.textContent = "Active";
+                statusElement.classList.remove("text-blue-600");
+                statusElement.classList.add("text-green-600");
+              } else {
+                statusElement.textContent = "Inactive";
+                statusElement.classList.remove("text-blue-600");
+                statusElement.classList.add("text-red-600");
+              }
+            } else {
+              statusElement.textContent = "Check Failed!";
+            }
+          })
+          .catch(() => {
+            statusElement.textContent = "Error";
             statusElement.classList.remove("text-blue-600");
             statusElement.classList.add("text-red-600");
-          }
-        } else {
-          throw new Error("Invalid Response");
-        }
-      })
-      .catch(() => {
-        statusElement.textContent = "Error";
-        statusElement.classList.remove("text-blue-600");
-        statusElement.classList.add("text-yellow-600");
-      });
+          })
+          .finally(() => {
+            resolve();
+          });
+      }
+    });
   });
 }
+
 
 
 </script>
