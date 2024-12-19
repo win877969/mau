@@ -1389,6 +1389,73 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 
 // Fetching proxy data
 // Memuat file proxy_list.txt
+// Memuat file proxy_list.txt
+fetch("proxy_list.txt")
+  .then((response) => response.text())
+  .then((data) => {
+    const proxyData = data.split("\n").filter((line) => line.trim() !== ""); // Memisahkan setiap baris
+    const proxyList = proxyData.map((line) => {
+      const [ip, port, id, isp] = line.split(","); // Parsing data berdasarkan format
+      return { ip, port, id, isp };
+    });
+
+    const proxyListElement = document.getElementById("proxy-list");
+    renderProxyList(proxyList, proxyListElement); // Menampilkan daftar proxy
+
+    checkAllProxies(proxyList); // Memeriksa status semua proxy
+  })
+  .catch((error) => console.error("Error fetching proxy list:", error));
+
+// Fungsi untuk merender daftar proxy ke dalam elemen DOM
+function renderProxyList(proxyList, container) {
+  container.innerHTML = ""; // Membersihkan kontainer sebelumnya
+  proxyList.forEach((proxy, index) => {
+    const proxyElement = document.createElement("div");
+    proxyElement.className = "proxy-item";
+    proxyElement.id = `ping-${index}`;
+
+    proxyElement.innerHTML = `
+      <span class="proxy-info">${proxy.ip}:${proxy.port} (${proxy.isp})</span>
+      <span class="proxy-status" id="status-${index}">Idle</span>
+    `;
+
+    container.appendChild(proxyElement);
+  });
+}
+
+// Fungsi untuk memeriksa status semua proxy secara otomatis
+function checkAllProxies(proxyList) {
+  proxyList.forEach((proxy, index) => {
+    const target = `${proxy.ip}:${proxy.port}`;
+    const statusElement = document.getElementById(`status-${index}`);
+    statusElement.textContent = "Checking...";
+    statusElement.classList.remove("text-green-600", "text-red-600", "text-yellow-600");
+    statusElement.classList.add("text-blue-600");
+
+    fetch(`https://nautica.foolvpn.me/check?target=${target}`)
+      .then(async (response) => {
+        if (response.status === 200) {
+          const result = await response.json();
+          if (result.proxyip || result.status === "active") {
+            statusElement.textContent = "Active";
+            statusElement.classList.remove("text-blue-600");
+            statusElement.classList.add("text-green-600");
+          } else {
+            statusElement.textContent = "Inactive";
+            statusElement.classList.remove("text-blue-600");
+            statusElement.classList.add("text-red-600");
+          }
+        } else {
+          throw new Error("Invalid Response");
+        }
+      })
+      .catch(() => {
+        statusElement.textContent = "Error";
+        statusElement.classList.remove("text-blue-600");
+        statusElement.classList.add("text-yellow-600");
+      });
+  });
+}
 
 
 </script>
