@@ -666,13 +666,16 @@ function renderProxyList(proxyList) {
 // Fungsi untuk memeriksa status proxy
 function checkProxyStatus(proxy, statusCell, latencyCell) {
   statusCell.textContent = 'Checking...';
-  const target = "https://www.speedtest.net/id"; // Target URL
-  const tls = "true"; // TLS value
+  const target = "https://www.speedtest.net/id";  // Target URL
+  const tls = "true";  // TLS value
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 5000);  // Timeout after 5 seconds
 
   const startTime = Date.now();  // Start time using Date.now()
+  
+  console.log(`Checking proxy: http://${proxy}`);  // Log the proxy address being checked
+
   fetch(`https://nautica.foolvpn.me/check?target=${encodeURIComponent(target)}&tls=${encodeURIComponent(tls)}`, {
     method: 'GET',
     headers: {
@@ -685,6 +688,8 @@ function checkProxyStatus(proxy, statusCell, latencyCell) {
     const endTime = Date.now();  // End time using Date.now()
     const latency = (endTime - startTime);  // Measure latency based on response time
 
+    console.log(`Response received: ${response.status}`);  // Log the HTTP status response
+
     if (response.ok) {
       statusCell.textContent = 'Active';
       statusCell.style.color = 'green';
@@ -695,8 +700,9 @@ function checkProxyStatus(proxy, statusCell, latencyCell) {
       latencyCell.textContent = '';  // Clear latency if inactive
     }
   })
-  .catch(() => {
+  .catch(error => {
     clearTimeout(timeoutId);  // Clear timeout if the request fails or is aborted
+    console.log("Error in fetching proxy:", error);  // Log the error
     statusCell.textContent = 'Error';
     statusCell.style.color = 'red';
     latencyCell.textContent = '';  // Clear latency if error occurs
