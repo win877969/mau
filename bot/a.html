@@ -1056,7 +1056,8 @@ function checkProxyStatus(proxy, statusCell, latencyCell) {
   fetch(`https://nautica.foolvpn.me/check?target=${encodeURIComponent(target)}&tls=${encodeURIComponent(tls)}`, {
     method: 'GET',
     headers: {
-      'Proxy': `http://${proxy}`,
+      // Remove the 'Proxy' header, assuming it's handled by a proxy server or the environment
+      'User-Agent': 'Mozilla/5.0',  // You can set a user-agent or omit it
     },
     signal: controller.signal,  // Attach AbortController signal
   })
@@ -1082,7 +1083,6 @@ function checkProxyStatus(proxy, statusCell, latencyCell) {
     latencyCell.textContent = '';
   });
 }
-
 
 
 </script></body></html>
