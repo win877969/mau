@@ -1494,7 +1494,7 @@ function checkProxyStatus(proxy, button) {
 }
 
 // Mengambil data proxy dari file proxy_list.txt dan menampilkannya
-fetch("proxyips.txt")
+fetch("proxy_list.txt")
   .then(response => response.text())
   .then(data => {
     console.log("Data proxy yang diambil:", data);  // Debug untuk melihat data yang diambil
