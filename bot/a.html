@@ -914,29 +914,27 @@ let proxyPerPage = 10; // Set jumlah proxy per halaman
 let currentPage = 1;
 let proxyListData = [];
 
-// Memuat file proxy_list.txt
 fetch("proxy_list.txt")
   .then((response) => response.text())
   .then((data) => {
-    const proxyData = data.split("\n").filter((line) => line.trim() !== ""); // Memisahkan setiap baris
+    const proxyData = data.split("\n").filter((line) => line.trim() !== "");
     proxyListData = proxyData.map((line) => {
-      const [ip, port, id, isp] = line.split(","); // Parsing data berdasarkan format
+      const [ip, port, id, isp] = line.split(",");
       return { ip, port, id, isp };
     });
 
-    renderProxyList(proxyListData); // Menampilkan daftar proxy di halaman
-    renderPagination(proxyListData); // Menampilkan kontrol pagination
+    renderProxyList(proxyListData);
+    renderPagination(proxyListData);
   })
   .catch((error) => console.error("Error loading proxy list:", error));
 
-// Fungsi untuk merender daftar proxy ke halaman
 function renderProxyList(proxyList) {
   const container = document.getElementById("proxy-list");
-  container.innerHTML = ""; // Membersihkan kontainer sebelumnya
+  container.innerHTML = ""; // Clear previous proxies
 
   const start = (currentPage - 1) * proxyPerPage;
   const end = start + proxyPerPage;
-  const proxiesToDisplay = proxyList.slice(start, end); // Ambil proxy untuk halaman ini
+  const proxiesToDisplay = proxyList.slice(start, end);
 
   proxiesToDisplay.forEach((proxy, index) => {
     const proxyElement = document.createElement("div");
@@ -951,17 +949,14 @@ function renderProxyList(proxyList) {
     container.appendChild(proxyElement);
   });
 
-  checkProxy(proxiesToDisplay); // Memeriksa status proxy untuk halaman saat ini
+  checkProxy(proxiesToDisplay);
 }
 
-// Fungsi untuk memeriksa status proxy
 function checkProxy(proxyList) {
   proxyList.forEach((proxy, index) => {
     const target = `${proxy.ip}:${proxy.port}`;
     const pingElement = document.getElementById(`ping-${index}`);
     const statusElement = document.getElementById(`status-${index}`);
-
-    if (!pingElement) return;
 
     statusElement.textContent = "Checking...";
     statusElement.classList.remove("text-green-600", "text-red-600");
@@ -1003,18 +998,16 @@ function checkProxy(proxyList) {
   });
 }
 
-// Fungsi untuk merender kontrol pagination
 function renderPagination(proxyList) {
   const paginationContainer = document.getElementById("pagination");
-  paginationContainer.innerHTML = ""; // Clear pagination controls
+  paginationContainer.innerHTML = "";
 
   const totalPages = Math.ceil(proxyList.length / proxyPerPage);
 
-  // Create a div wrapper for pagination controls to apply flexbox styling
   const paginationWrapper = document.createElement("div");
   paginationWrapper.className = "pagination-wrapper";
 
-  // Previous and First Buttons
+  // First and Prev buttons
   const prevButton = document.createElement("button");
   prevButton.textContent = "<< First";
   prevButton.disabled = currentPage === 1;
@@ -1030,7 +1023,17 @@ function renderPagination(proxyList) {
   // Page number buttons
   const pageNumbers = document.createElement("div");
   pageNumbers.className = "page-numbers";
-  for (let i = 1; i <= totalPages; i++) {
+
+  const maxButtons = 5; // Maximum number of buttons to show
+
+  let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+  let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+  if (endPage - startPage < maxButtons - 1) {
+    startPage = Math.max(1, endPage - maxButtons + 1);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
     const pageButton = document.createElement("button");
     pageButton.textContent = i;
     pageButton.disabled = i === currentPage;
@@ -1039,7 +1042,7 @@ function renderPagination(proxyList) {
   }
   paginationWrapper.appendChild(pageNumbers);
 
-  // Next and Last Buttons
+  // Next and Last buttons
   const nextPageButton = document.createElement("button");
   nextPageButton.textContent = "Next >>";
   nextPageButton.disabled = currentPage === totalPages;
@@ -1055,29 +1058,12 @@ function renderPagination(proxyList) {
   paginationContainer.appendChild(paginationWrapper);
 }
 
-// Fungsi untuk mengganti halaman
 function changePage(page, proxyList) {
   currentPage = page;
-  renderProxyList(proxyList); // Tampilkan proxy untuk halaman baru
-  renderPagination(proxyList); // Update kontrol pagination
+  renderProxyList(proxyList);
+  renderPagination(proxyList);
 }
 
-// Optional: Fungsi untuk memfilter proxy berdasarkan pencarian
-function filterProxies(searchTerm) {
-  searchTerm = searchTerm.toLowerCase();
-  const filteredProxies = proxyListData.filter(proxy =>
-    proxy.ip.toLowerCase().includes(searchTerm) ||
-    proxy.isp.toLowerCase().includes(searchTerm)
-  );
-  currentPage = 1; // Reset halaman saat filter diterapkan
-  renderProxyList(filteredProxies);
-  renderPagination(filteredProxies);
-}
-
-// Event listener untuk pencarian proxy
-document.getElementById("search-bar").addEventListener("input", (e) => {
-  filterProxies(e.target.value);
-});
 
 
 </script></body></html>
