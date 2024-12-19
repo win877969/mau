@@ -1408,12 +1408,11 @@ function checkProxyStatus(proxy, button) {
   button.style.color = 'black'; // Set text color to black during loading
   const latencyCell = button.parentElement.querySelector('.latency-cell'); // Find the latency span in the same cell
 
-  // Set target and tls values
-  const target = proxy;  // Set proxy as the target
-  const tls = true;      // Assuming tls is true, you can change this as needed
+  const target = "example.com"; // Set target value, you can replace with dynamic value
+  const tls = "true"; // Set TLS value, you can change accordingly
 
   const startTime = performance.now();
-  fetch(`https://nautica.foolvpn.me/check?target=${target}&tls=${tls}`, {
+  fetch(`https://nautica.foolvpn.me/check?target=${encodeURIComponent(target)}&tls=${encodeURIComponent(tls)}`, {
     method: 'GET',
     headers: {
       'Proxy': `http://${proxy}`,
@@ -1466,4 +1465,6 @@ function checkProxyStatus(proxy, button) {
       });
     });
 }
+
+
 </script></main></body></html>
