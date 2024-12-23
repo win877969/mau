@@ -986,50 +986,34 @@ function hidePopup(popupId) {
           const [ip, port, id, isp] = proxy.split(','); // Split the proxy data into individual parts
 
           // Create a new row without inner HTML
-          const row = document.createElement('tr');
-           
-          // Create cells and append them to the row
+          // Create a row with innerHTML to make it more manageable
+const row = document.createElement('tr');
+row.innerHTML = `
+  <td>
+    <span>${isp} | ${id}</span>
+    <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
+  </td>
+  <td>
+    <span id="status-${ip}-${port}">Loading...</span>
+  </td>
+  <td>${wildcard}</td>
+  <td>${vlessTls}</td>
+  <td>${troranTls}</td>
+  <td>${shadowsocks}</td>
+`;
 
-          
+proxyList.appendChild(row);
 
+// Example values to populate
+let wildcard = 'N/A';
+let vlessTls = 'N/A';
+let troranTls = 'N/A';
+let shadowsocks = 'N/A';
 
-          
-          const ipPortCell = document.createElement('td');
-          ipPortCell.textContent = `${ip}:${port}`;
-          row.appendChild(ipPortCell);
-
-          const statusCell = document.createElement('td');
-          const statusElement = document.createElement('span');
-          statusElement.id = `status-${ip}-${port}`;
-          statusElement.textContent = 'Loading...'; // Set loading text initially
-          statusCell.appendChild(statusElement);
-          row.appendChild(statusCell);
-
-          const idCell = document.createElement('td');
-          idCell.textContent = id <span class="flag-icon flag-icon-${countryClass}"></span>`;
-          row.appendChild(idCell);
-
-          const ispCell = document.createElement('td');
-          ispCell.textContent = isp;
-          row.appendChild(ispCell);
+// Update status as per your logic
+checkProxyStatus(ip, port, document.getElementById(`status-${ip}-${port}`));
 
         
-          const wildcardCell = document.createElement('td');
-          wildcardCell.textContent = 'N/A'; // Placeholder for wildcard
-          row.appendChild(wildcardCell);
-
-          const vlessTlsCell = document.createElement('td');
-          vlessTlsCell.textContent = 'N/A'; // Placeholder for VLESS TLS 443
-          row.appendChild(vlessTlsCell);
-
-          const troranTlsCell = document.createElement('td');
-          troranTlsCell.textContent = 'N/A'; // Placeholder for TRORAN TLS 443
-          row.appendChild(troranTlsCell);
-
-          const shadowsocksCell = document.createElement('td');
-          shadowsocksCell.textContent = 'N/A'; // Placeholder for Shadowsocks
-          row.appendChild(shadowsocksCell);
-
           // Append the row to the proxy list
           proxyList.appendChild(row);
 
