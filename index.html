@@ -23,8 +23,8 @@
     <meta name="twitter:image" content="https://png.pngtree.com/background/20231016/original/pngtree-high-definition-3d-wallpaper-in-black-and-red-picture-image_5583707.jpg"> <!-- Ganti dengan URL gambar yang sesuai -->
     <link href="https://png.pngtree.com/background/20231016/original/pngtree-high-definition-3d-wallpaper-in-black-and-red-picture-image_5583707.jpg" rel="icon" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icon-css/css/flag-icon.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.6.0/css/flag-icon.min.css">
+
   <style>
  
     
@@ -503,8 +503,10 @@ body {
     <table>
       <thead>
         <tr>          
-          <th>ISP || COUNTRY</th>
+          <th>IP:PORT</th>
           <th>STATUS</th>
+          <th>ID</th>
+          <th>ISP</th>
           <th>WILDCARD</th>
           <th>VLESS TLS 443</th>
           <th>TRORAN TLS 443</th>
@@ -514,7 +516,9 @@ body {
       <tbody id="proxy-list"></tbody>  
     </table>
         </div>
-    <div class="total-proxy" id="total-proxy"></div>
+<div class="total-proxy" id="total-proxy"></div>
+<div class="filtered-proxy" id="filtered-proxy"></div>
+
     <div class="pagination" id="pagination"></div>
   </div> 
 <div class="popup" id="sub-link">
@@ -899,167 +903,119 @@ body {
 
 </script>
 <script>
-  // URL untuk mendapatkan proxy list
-  fetch("https://ndeso.web.id/bot/proxy_list.txt")
-    .then(response => response.text())
-    .then(data => {
-      const allProxies = data.split("\n").filter(line => line.trim() !== "");
-      let filteredProxies = allProxies;
-      const proxyList = document.getElementById('proxy-list');
-      const pagination = document.getElementById('pagination');
-      const perPageSelect = document.getElementById('per-page'); // Dropdown untuk jumlah item per halaman
-      const searchInput = document.getElementById('search-input'); // Input pencarian
-      
-      // Set default items per page
-      let itemsPerPage = parseInt(perPageSelect.value, 10);
+fetch("https://ndeso.web.id/bot/proxy_list.txt")
+  .then(response => response.text())
+  .then(data => {
+    const allProxies = data.split("\n").filter(line => line.trim() !== "");
+    let filteredProxies = allProxies;
+    const proxyList = document.getElementById('proxy-list');
+    const pagination = document.getElementById('pagination');
+    const perPageSelect = document.getElementById('per-page');
+    const searchInput = document.getElementById('search-input');
+    const totalProxyElement = document.getElementById('total-proxy');
+    const filteredProxyElement = document.getElementById('filtered-proxy');
 
-      // Fungsi untuk memperbarui jumlah item per halaman
-      perPageSelect.addEventListener('change', () => {
-        itemsPerPage = parseInt(perPageSelect.value, 10);
-        renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
-      });
+    // Tampilkan total proxy keseluruhan
+    totalProxyElement.innerHTML = `<strong>Total Proxies:</strong> ${allProxies.length}`;
 
-      // Fungsi untuk pencarian
-      searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase();
-        filteredProxies = allProxies.filter(proxy => {
-          const [ip, port, id, isp] = proxy.split(',');
-          return ip.toLowerCase().includes(query) || port.includes(query) || id.toLowerCase().includes(query) || isp.toLowerCase().includes(query);
-        });
-        renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
-      });
+    // Fungsi untuk memperbarui jumlah proxy yang difilter
+    const updateFilteredProxies = () => {
+      filteredProxyElement.innerHTML = `<strong>Filtered Proxies:</strong> ${filteredProxies.length}`;
+    };
 
-      // Render proxies dengan pagination
+    let itemsPerPage = parseInt(perPageSelect.value, 10);
+
+    perPageSelect.addEventListener('change', () => {
+      itemsPerPage = parseInt(perPageSelect.value, 10);
       renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
-    })
-    .catch(error => console.error("Error fetching proxy data:", error));
+    });
 
-  // Fungsi untuk mengecek status proxy
-  function checkProxyStatus(ip, port, statusElement) {
-    statusElement.textContent = 'Loading...'; // Menampilkan Loading...
-
-    const startTime = performance.now();
-    const Status = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
-    
-    fetch(Status)
-      .then(response => response.json())
-      .then(data => {
-        const endTime = performance.now();
-        const latency = (endTime - startTime).toFixed(2); // Menghitung latency
-
-        // Menampilkan status proxy dan latency
-        if (data.proxyStatus === "ACTIVE") {
-          statusElement.textContent = `Aktif (${latency} ms)`;
-          statusElement.style.color = 'green';
-        } else if (data.proxyStatus === "DEAD") {
-          statusElement.textContent = `Dead (${latency} ms)`;
-          statusElement.style.color = 'red';
-        }
-      })
-      .catch(() => {
-        statusElement.textContent = 'Error';
-        statusElement.style.color = 'cyan';
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      filteredProxies = allProxies.filter(proxy => {
+        const [ip, port, id, isp] = proxy.split(',');
+        return ip.toLowerCase().includes(query) || port.includes(query) || id.toLowerCase().includes(query) || isp.toLowerCase().includes(query);
       });
-  }
+      updateFilteredProxies(); // Update jumlah proxy yang difilter
+      renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
+    });
 
-  // Fungsi untuk render proxies dengan pagination
-  function renderProxies(proxies, proxyList, pagination, itemsPerPage) {
-    const totalPages = Math.ceil(proxies.length / itemsPerPage);
-    let currentPage = 1;
+    const renderProxies = (proxies, proxyList, pagination, itemsPerPage) => {
+      const totalPages = Math.ceil(proxies.length / itemsPerPage);
+      let currentPage = 1;
 
-    function updatePage(page) {
-      if (page < 1 || page > totalPages) return;
-      currentPage = page;
+      const updatePage = (page) => {
+        if (page < 1 || page > totalPages) return;
+        currentPage = page;
 
-      const start = (currentPage - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
-      const pageProxies = proxies.slice(start, end);
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageProxies = proxies.slice(start, end);
 
-      // Clear existing proxy list
-      proxyList.innerHTML = '';
-
-      // Render proxies for the current page
-      pageProxies.forEach(proxy => {
-        const [ip, port, id, isp] = proxy.split(','); // Split the proxy data into individual parts
-        
-        // Set placeholder values (you can modify this to extract from proxy data if available)
-        const wildcard = 'N/A';
-        const vlessTls = 'N/A';
-        const troranTls = 'N/A';
-        const shadowsocks = 'N/A';
-
-        // Create a row with innerHTML to make it more manageable
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>
-            <span>${isp} | ${id}</span>
-            <span class="flag-icon flag-icon-${id.toLowerCase()}"></span> <!-- Display the flag -->
+        proxyList.innerHTML = '';
+        pageProxies.forEach(proxy => {
+          const [ip, port, id, isp] = proxy.split(',');
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <span>${isp} | ${id}</span>
+              <span class="flag-icon flag-icon-${id.toLowerCase()}"></span>
             </td>
-          <td>
-            <span id="status-${ip}-${port}">Loading...</span>
-          </td>
-          <td>${wildcard}</td>
-          <td>${vlessTls}</td>
-          <td>${troranTls}</td>
-          <td>${shadowsocks}</td>
-        `;
+            <td><span id="status-${ip}-${port}">Loading...</span></td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+          `;
+          proxyList.appendChild(row);
+          checkProxyStatus(ip, port, document.getElementById(`status-${ip}-${port}`));
+        });
 
-        // Append the row to the proxy list
-        proxyList.appendChild(row);
+        updatePagination();
+      };
 
-        // Update status as per your logic
-        checkProxyStatus(ip, port, document.getElementById(`status-${ip}-${port}`));
-      });
+      const updatePagination = () => {
+        pagination.innerHTML = '';
+        const prevButton = document.createElement('button');
+        prevButton.textContent = '<<';
+        prevButton.onclick = () => updatePage(currentPage - 1);
+        pagination.appendChild(prevButton);
 
-      // Update pagination buttons
-      updatePagination();
-    }
+        const firstButton = document.createElement('button');
+        firstButton.textContent = '<<<';
+        firstButton.onclick = () => updatePage(1);
+        pagination.appendChild(firstButton);
 
-    // Update pagination buttons
-    function updatePagination() {
-      pagination.innerHTML = ''; // Clear existing pagination
+        const startPage = Math.max(1, currentPage - 2);
+        const endPage = Math.min(totalPages, currentPage + 2);
+        for (let i = startPage; i <= endPage; i++) {
+          const pageButton = document.createElement('button');
+          pageButton.textContent = i;
+          pageButton.onclick = () => updatePage(i);
+          if (i === currentPage) pageButton.style.fontWeight = 'bold';
+          pagination.appendChild(pageButton);
+        }
 
-      // Create previous button
-      const prevButton = document.createElement('button');
-      prevButton.textContent = '<<';
-      prevButton.onclick = () => updatePage(currentPage - 1);
-      pagination.appendChild(prevButton);
+        const lastButton = document.createElement('button');
+        lastButton.textContent = '>>>';
+        lastButton.onclick = () => updatePage(totalPages);
+        pagination.appendChild(lastButton);
 
-      // Create first page button (<<<)
-      const firstButton = document.createElement('button');
-      firstButton.textContent = '<<<';
-      firstButton.onclick = () => updatePage(1);
-      pagination.appendChild(firstButton);
+        const nextButton = document.createElement('button');
+        nextButton.textContent = '>>';
+        nextButton.onclick = () => updatePage(currentPage + 1);
+        pagination.appendChild(nextButton);
+      };
 
-      // Create page number buttons (limited to 5 pages)
-      const startPage = Math.max(1, currentPage - 2);
-      const endPage = Math.min(totalPages, currentPage + 2);
-      for (let i = startPage; i <= endPage; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        pageButton.onclick = () => updatePage(i);
-        if (i === currentPage) pageButton.style.fontWeight = 'bold'; // Highlight current page
-        pagination.appendChild(pageButton);
-      }
+      updatePage(1);
+    };
 
-      // Create last page button (>>>)
-      const lastButton = document.createElement('button');
-      lastButton.textContent = '>>>';
-      lastButton.onclick = () => updatePage(totalPages);
-      pagination.appendChild(lastButton);
+    updateFilteredProxies(); // Tampilkan total proxy yang difilter pertama kali
+    renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
+  })
+  .catch(error => console.error("Error fetching proxy data:", error));
 
-      // Create next button
-      const nextButton = document.createElement('button');
-      nextButton.textContent = '>>';
-      nextButton.onclick = () => updatePage(currentPage + 1);
-      pagination.appendChild(nextButton);
-    }
-
-    // Initialize the page with the first set of proxies
-    updatePage(1);
-  }
 </script>
-
 
 </body>
 </html>
