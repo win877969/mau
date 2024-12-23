@@ -27,57 +27,7 @@
     
   <style>
  
-    /* Animasi Loading */
-.loading-icon {
-  border: 4px solid #f3f3f3; /* Light grey */
-  border-top: 4px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Animasi Checkmark */
-.check-icon {
-  color: green;
-  font-size: 20px;
-  animation: checkAnim 0.3s ease-in-out;
-}
-
-@keyframes checkAnim {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Animasi X (Error) */
-.error-icon {
-  color: red;
-  font-size: 20px;
-  animation: errorAnim 0.3s ease-in-out;
-}
-
-@keyframes errorAnim {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
+    
 
 #link1 {
     border: 2px solid #007bff; /* Warna biru */
@@ -998,38 +948,33 @@ body {
 
   // Fungsi untuk mengecek status proxy
   function checkProxyStatus(ip, port, statusElement) {
-  function checkProxyStatus(ip, port, statusElement) {
-  // Set animasi loading
-  statusElement.innerHTML = '<div class="loading-icon"></div>';
+    statusElement.innerHTML = '<div class="loading-icon"></div>';
 
-  const startTime = performance.now();
-  const Status = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
-  
-  fetch(Status)
-    .then(response => response.json())
-    .then(data => {
-      const endTime = performance.now();
-      const latency = (endTime - startTime).toFixed(2); // Menghitung latency
+    const startTime = performance.now();
+    const Status = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
+    
+    fetch(Status)
+      .then(response => response.json())
+      .then(data => {
+        const endTime = performance.now();
+        const latency = (endTime - startTime).toFixed(2); // Menghitung latency
 
-      // Menampilkan status proxy dan animasi sesuai
-      if (data.proxyStatus === "ACTIVE") {
-        statusElement.innerHTML = `
+        // Menampilkan status proxy dan latency
+        if (data.proxyStatus === "ACTIVE") {
+          statusElement.innerHTML = `
           <span class="check-icon">&#10004;</span> Aktif (${latency} ms)
         `;
-      } else if (data.proxyStatus === "DEAD") {
-        statusElement.innerHTML = `
+          } else if (data.proxyStatus === "DEAD") {
+          statusElement.innerHTML = `
           <span class="error-icon">&#10006;</span> Dead (${latency} ms)
         `;
-      }
-    })
-    .catch(() => {
-      // Menampilkan Error
-      statusElement.innerHTML = `
-        <span class="error-icon">&#10006;</span> Error
-      `;
-    });
-}
-
+          }
+      })
+      .catch(() => {
+        statusElement.textContent = 'Error';
+        statusElement.style.color = 'cyan';
+      });
+  }
 
   // Fungsi untuk render proxies dengan pagination
   function renderProxies(proxies, proxyList, pagination, itemsPerPage) {
