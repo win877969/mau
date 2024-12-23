@@ -952,7 +952,11 @@ body {
 
 </script>
 <script>
-
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
 
   // URL untuk mendapatkan proxy list
   fetch("https://ndeso.web.id/bot/proxy_list.txt")
@@ -1126,69 +1130,7 @@ body {
         // Append the row to the proxy list
         proxyList.appendChild(row);
 
-
-        
-        
-        // Update status as per your logic
-        checkProxyStatus(ip, port, document.getElementById(`status-${ip}-${port}`));
-      });
-
-      // Update pagination buttons
-      updatePagination();
-    }
-
-    // Update pagination buttons
-    function updatePagination() {
-      pagination.innerHTML = ''; // Clear existing pagination
-
-      // Create previous button
-      const prevButton = document.createElement('button');
-      prevButton.textContent = '<<';
-      prevButton.onclick = () => updatePage(currentPage - 1);
-      pagination.appendChild(prevButton);
-
-      // Create first page button (<<<)
-      const firstButton = document.createElement('button');
-      firstButton.textContent = '<<<';
-      firstButton.onclick = () => updatePage(1);
-      pagination.appendChild(firstButton);
-
-      // Create page number buttons (limited to 5 pages)
-      const startPage = Math.max(1, currentPage - 2);
-      const endPage = Math.min(totalPages, currentPage + 2);
-      for (let i = startPage; i <= endPage; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        pageButton.onclick = () => updatePage(i);
-        if (i === currentPage) pageButton.style.fontWeight = 'bold'; // Highlight current page
-        pagination.appendChild(pageButton);
-      }
-
-      // Create last page button (>>>)
-      const lastButton = document.createElement('button');
-      lastButton.textContent = '>>>';
-      lastButton.onclick = () => updatePage(totalPages);
-      pagination.appendChild(lastButton);
-
-      // Create next button
-      const nextButton = document.createElement('button');
-      nextButton.textContent = '>>';
-      nextButton.onclick = () => updatePage(currentPage + 1);
-      pagination.appendChild(nextButton);
-    }
-
-    // Initialize the page with the first set of proxies
-    updatePage(1);
-  }
-
-
-  function uuidv4() {
-  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  );
-}
-
-row.querySelector('.copy-vless').addEventListener('click', () => {
+        row.querySelector('.copy-vless').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
     const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
     const VLESS = `vless://${uuidv4()}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${id}+${isp}`;
@@ -1319,6 +1261,60 @@ row.querySelector('.copy-ss1').addEventListener('click', () => {
       confirmButtonColor: '#f39c12'
     });
 });
+        
+        
+        // Update status as per your logic
+        checkProxyStatus(ip, port, document.getElementById(`status-${ip}-${port}`));
+      });
+
+      // Update pagination buttons
+      updatePagination();
+    }
+
+    // Update pagination buttons
+    function updatePagination() {
+      pagination.innerHTML = ''; // Clear existing pagination
+
+      // Create previous button
+      const prevButton = document.createElement('button');
+      prevButton.textContent = '<<';
+      prevButton.onclick = () => updatePage(currentPage - 1);
+      pagination.appendChild(prevButton);
+
+      // Create first page button (<<<)
+      const firstButton = document.createElement('button');
+      firstButton.textContent = '<<<';
+      firstButton.onclick = () => updatePage(1);
+      pagination.appendChild(firstButton);
+
+      // Create page number buttons (limited to 5 pages)
+      const startPage = Math.max(1, currentPage - 2);
+      const endPage = Math.min(totalPages, currentPage + 2);
+      for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.onclick = () => updatePage(i);
+        if (i === currentPage) pageButton.style.fontWeight = 'bold'; // Highlight current page
+        pagination.appendChild(pageButton);
+      }
+
+      // Create last page button (>>>)
+      const lastButton = document.createElement('button');
+      lastButton.textContent = '>>>';
+      lastButton.onclick = () => updatePage(totalPages);
+      pagination.appendChild(lastButton);
+
+      // Create next button
+      const nextButton = document.createElement('button');
+      nextButton.textContent = '>>';
+      nextButton.onclick = () => updatePage(currentPage + 1);
+      pagination.appendChild(nextButton);
+    }
+
+    // Initialize the page with the first set of proxies
+    updatePage(1);
+  }
+
 
 </script>
 
