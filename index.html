@@ -988,9 +988,7 @@ function hidePopup(popupId) {
            
           // Create cells and append them to the row
 
-          const combinedCell = document.createElement('td');
-          combinedCell.innerHTML = `${isp} | ${id} <span class="flag-icon flag-icon-${countryClass}"></span>`;
-          row.appendChild(combinedCell);
+          
 
 
           
@@ -1005,6 +1003,15 @@ function hidePopup(popupId) {
           statusCell.appendChild(statusElement);
           row.appendChild(statusCell);
 
+          const idCell = document.createElement('td');
+          idCell.textContent = id;
+          row.appendChild(idCell);
+
+          const ispCell = document.createElement('td');
+          ispCell.textContent = isp;
+          row.appendChild(ispCell);
+
+        
           const wildcardCell = document.createElement('td');
           wildcardCell.textContent = 'N/A'; // Placeholder for wildcard
           row.appendChild(wildcardCell);
