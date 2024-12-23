@@ -488,8 +488,8 @@ body {
   <main class="content">
     <center><button class="button7" onclick="showPopup('sub-link')">SHOW LINK SUB</button></center>
 <div class="filters">
-      <div><label for="per-page">Items per page:</label>
-<select id="per-page">
+      <div><span class="filter-label">Items page:</span>
+<select id="items-per-page">
   <option value="10">10</option>
   <option value="25">25</option>
   <option value="50">50</option>
@@ -910,7 +910,7 @@ body {
     let filteredProxies = [...allProxies]; // Salin array asli untuk filtering
     const proxyList = document.getElementById('proxy-list');
     const pagination = document.getElementById('pagination');
-    const perPageSelect = document.getElementById('per-page');
+    const perPageSelect = document.getElementById('items-per-page');
     const searchInput = document.getElementById('search-input');
     const totalProxyElement = document.getElementById('total-proxy');
     const filteredProxyElement = document.getElementById('filtered-proxy');
