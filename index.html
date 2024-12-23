@@ -1093,6 +1093,8 @@ function uuidv4() {
       » ISP         : ${isp}<br>
       » Country     :${id}&nbsp;<span class="flag-icon flag-icon-${id.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
+      <center><span id="status-${ip}-${port}">Loading...</span></center>
+        
       <hr/>VLESS<br>
       <button class="copy-vless">COPY VLESS 443</button>
       <br><button class="copy-vless-clash">COPY CLASH 443</button>
@@ -1106,7 +1108,8 @@ function uuidv4() {
       » ISP         : ${isp}<br>
       » Country     :${id}&nbsp;<span class="flag-icon flag-icon-${id.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
-      <hr/>TROJAN<br>
+      <center><span id="status-${ip}-${port}">Loading...</span></center>
+        <hr/>TROJAN<br>
       <button class="copy-trojan">COPY TROJAN 443</button>
       <br><button class="copy-trojan-clash877">COPY CLASH 443</button> 
       <hr/>
@@ -1119,7 +1122,8 @@ function uuidv4() {
       » ISP         : ${isp}<br>
       » Country     :${id}&nbsp;<span class="flag-icon flag-icon-${id.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
-      <hr/>SHADOWSOCK<br>
+      <center><span id="status-${ip}-${port}">Loading...</span></center>
+        <hr/>SHADOWSOCK<br>
       <button class="copy-ss">COPY SHADOWSOCK</button>
       <br><button class="copy-ss1">COPY CLASH</button>
      <hr/> <button class="button8" onclick="hidePopup('ss${ip}:${port}')">Close</button> 
