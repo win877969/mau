@@ -497,8 +497,8 @@ body {
 </select>
 </div>
       <div>
-<label for="search-input">Search:</label>
-<input type="text" id="search-input" placeholder="Search by IP, Port, ID, ISP" />
+<span class="filter-label">Search:</span>
+<input type="text" id="search-bar" placeholder="Search by IP, Port, ID, ISP" />
 </div>
 </div>
     
@@ -911,7 +911,7 @@ body {
     const proxyList = document.getElementById('proxy-list');
     const pagination = document.getElementById('pagination');
     const perPageSelect = document.getElementById('items-per-page');
-    const searchInput = document.getElementById('search-input');
+    const searchInput = document.getElementById('search-bar');
     const totalProxyElement = document.getElementById('total-proxy');
     const filteredProxyElement = document.getElementById('filtered-proxy');
 
