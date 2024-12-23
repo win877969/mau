@@ -899,7 +899,7 @@ function hidePopup(popupId) {
 
   </script>
 
-      <script>
+  <script>
     // URL untuk mendapatkan proxy list
     fetch("https://ndeso.web.id/bot/proxy_list.txt")
       .then(response => response.text())
@@ -987,11 +987,9 @@ function hidePopup(popupId) {
           const row = document.createElement('tr');
 
           // Create cells and append them to the row
-          const ispCountryCell = document.createElement('td');
-          const countryClass = negara.toLowerCase();  // Pastikan variabel negara ada dan valid
-          ispCountryCell.innerHTML = `${isp} || ${id} <span class="flag-icon flag-icon-${countryClass}"></span>`; 
-          row.appendChild(ispCountryCell);
-
+          const ipPortCell = document.createElement('td');
+          ipPortCell.textContent = `${ip}:${port}`;
+          row.appendChild(ipPortCell);
 
           const statusCell = document.createElement('td');
           const statusElement = document.createElement('span');
@@ -1070,6 +1068,8 @@ function hidePopup(popupId) {
       // Initialize the page with the first set of proxies
       updatePage(1);
     }
+  
+
   </script>
 
 
