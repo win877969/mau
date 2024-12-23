@@ -988,8 +988,10 @@ function hidePopup(popupId) {
 
           // Create cells and append them to the row
           const ispCountryCell = document.createElement('td');
-          ispCountryCell.textContent = `${isp} || COUNTRY <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>`; // Menggunakan ISP sebagai contoh, COUNTRY bisa ditambahkan
+          const countryClass = negara.toLowerCase();  // Pastikan variabel negara ada dan valid
+          ispCountryCell.innerHTML = `${isp} || ${id} <span class="flag-icon flag-icon-${countryClass}"></span>`; 
           row.appendChild(ispCountryCell);
+
 
           const statusCell = document.createElement('td');
           const statusElement = document.createElement('span');
