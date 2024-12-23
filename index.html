@@ -1330,7 +1330,13 @@ function renderProxies(proxies, proxyList, pagination) {
     const [ip, port, id, isp] = proxy.split(','); // Split the proxy data into individual parts
     
     // Create a table row for each proxy
-    
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${ip}:${port}</td>
+      <td><span id="status-${ip}-${port}">Loading...</span></td>
+      <td>${id}</td>
+      <td>${isp}</td>
+    `;
     
     // Check the status of the proxy
     const statusElement = row.querySelector(`#status-${ip}-${port}`);
