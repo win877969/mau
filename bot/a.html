@@ -1304,13 +1304,18 @@ function checkProxyStatus(ip, port, statusElement) {
   const startTime = performance.now();
   const statusUrl = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
 
-  fetch(statusUrl) // Mengambil status proxy
-    .then(response => response.json())
+  fetch(statusUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
     .then(data => {
+      console.log(data); // Cek data API
       const endTime = performance.now();
       const latency = (endTime - startTime).toFixed(2); // Menghitung latency
 
-      // Menampilkan status proxy dan latency
       if (data.proxyStatus === "ACTIVE") {
         statusElement.textContent = `Aktif (${latency} ms)`;
         statusElement.style.color = 'green';
