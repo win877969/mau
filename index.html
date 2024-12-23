@@ -1303,7 +1303,7 @@ function checkProxyStatus(proxy, button) {
   const latencyCell = button.parentElement.querySelector('.latency-cell'); // Find the latency span in the same cell
 
   const startTime = performance.now();
-  fetch('https://httpbin.org/ip', {
+  fetch('https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port', {
     method: 'GET',
     headers: {
       'Proxy': `http://${proxy}`,
