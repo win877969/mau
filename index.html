@@ -929,7 +929,7 @@ function renderProxies(proxies, proxyList, pagination) {
     row.innerHTML = `
       <td> <span class="aha">${penyedia} | ${negara} </span><span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
-      <td id="status-${ip}-${port}">
+      <td id="status-${ip}:${port}">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                     </div></td>
@@ -1366,7 +1366,7 @@ function checkProxyStatus(proxy, button) {
           fetch('${Status}')
             .then(response => response.json())
             .then(data => {
-              const statusElement = document.getElementById('status-${ip}-${port}');
+              const statusElement = document.getElementById('status-${ip}:${port}');
               const { proxyStatus, ip, asn, isp, country, city, port } = data;
               
               if (proxyStatus === 'ACTIVE') {
