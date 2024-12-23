@@ -930,7 +930,7 @@ function renderProxies(proxies, proxyList, pagination) {
       <td> <span class="aha">${penyedia} | ${negara} </span><span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
       <td>
-      <span id="statusUrl-${ip}-${port}">Loading...</span>
+      <span id="status-${ip}-${port}">Loading...</span>
       </td>
       
                                 </td><td>
@@ -1304,7 +1304,7 @@ function checkProxyStatus(ip, port, statusElement) {
   const startTime = performance.now();
   const statusUrl = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
 
-  fetch(statusUrl) // Correct fetch usage
+  fetch(statusUrl) // Mengambil status proxy
     .then(response => response.json())
     .then(data => {
       const endTime = performance.now();
