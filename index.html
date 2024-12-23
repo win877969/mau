@@ -1180,6 +1180,146 @@ body {
     // Initialize the page with the first set of proxies
     updatePage(1);
   }
+
+
+  function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
+row.querySelector('.copy-vless').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
+    const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
+    const VLESS = `vless://${uuidv4()}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${id}+${isp}`;
+    navigator.clipboard.writeText(VLESS);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY VLESS 443 SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+});
+
+row.querySelector('.copy-vless-clash').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
+    const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
+    const VLESSC = `- name: (${selectedService})+${id}+${isp}
+    server: ${selectedService}
+    port: 443
+    type: vless
+    uuid: ${uuidv4()}
+    cipher: auto
+    tls: true
+    udp: true
+    skip-cert-verify: true
+    network: ws
+    servername: ${domain}
+    ws-opts:
+      path: /${ip}-${port}
+      headers:
+        Host: ${domain}`;
+    navigator.clipboard.writeText(VLESSC);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY VLESS CLASH 443 SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+});
+
+row.querySelector('.copy-trojan').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
+    const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
+    const TROJAN = `trojan://${uuidv4()}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${id}+${isp}`;
+    navigator.clipboard.writeText(TROJAN);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY TROJAN SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+});
+
+row.querySelector('.copy-trojan-clash877').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "xvp.ndeso.web.id";
+    const domain = selectedService === "xvp.ndeso.web.id" ? "xvp.ndeso.web.id" : `${selectedService}.xvp.ndeso.web.id`;
+    const TROJANC877 = `- name: (${selectedService})+${id}+${isp}
+    server: ${selectedService}
+    port: 443
+    type: trojan
+    password: ${uuidv4()}
+    skip-cert-verify: true
+    sni: ${domain}
+    network: ws
+    ws-opts:
+      path: /${ip}-${port}
+      headers:
+        Host: ${domain}
+    udp: true `;
+    navigator.clipboard.writeText(TROJANC877);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY TROJAN CLASH SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+});
+
+row.querySelector('.copy-ss').addEventListener('click', () => {
+    const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
+    const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
+    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${id}+${isp}`;
+    navigator.clipboard.writeText(SS);
+    Swal.fire({
+      title: 'Berhasil!',
+      text: 'COPY SHADOWSOCK SUKSES!',
+      icon: 'success',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#3085d6'
+    });
+});
+
+row.querySelector('.copy-ss1').addEventListener('click', () => {
+    const SS1 = `087861167414`;
+    navigator.clipboard.writeText(SS1);
+    Swal.fire({
+      title: 'Perhatian!',
+      text: 'SHADOWSOCK VERSI CLASH BELUM TERSEDIA',
+      icon: 'warning',
+      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
+      color: 'red', // Warna teks
+      customClass: {
+        popup: 'rounded-popup',
+      },
+      confirmButtonColor: '#f39c12'
+    });
+});
+
 </script>
 
 
