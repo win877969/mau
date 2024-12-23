@@ -987,9 +987,9 @@ function hidePopup(popupId) {
           const row = document.createElement('tr');
 
           // Create cells and append them to the row
-          const ipPortCell = document.createElement('td');
-          ipPortCell.textContent = `${ip}:${port}`;
-          row.appendChild(ipPortCell);
+          const ispCountryCell = document.createElement('td');
+          ispCountryCell.textContent = `${isp} || COUNTRY <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>`; // Menggunakan ISP sebagai contoh, COUNTRY bisa ditambahkan
+          row.appendChild(ispCountryCell);
 
           const statusCell = document.createElement('td');
           const statusElement = document.createElement('span');
