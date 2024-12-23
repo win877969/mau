@@ -1051,7 +1051,22 @@ body {
         const [ip, port, id, isp] = proxy.split(','); // Split the proxy data into individual parts
         
         // Set placeholder values (you can modify this to extract from proxy data if available)
-        const wildcard = '<select class="service-selector">
+        const wildcard = '';
+        const vlessTls = '';
+        const troranTls = '';
+        const shadowsocks = '';
+
+        // Create a row with innerHTML to make it more manageable
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>
+            <span>${isp} | ${id}</span>
+            <span class="flag-icon flag-icon-${id.toLowerCase()}"></span> <!-- Display the flag -->
+            </td>
+          <td>
+            <span id="status-${ip}-${port}">Loading...</span>
+          </td>
+          <td><select class="service-selector">
           <option value="">NO WILDCARD</option>
           <option value="business.blibli.com">business.blibli.com</option>          
           <option value="ava.game.naver.com">ava.game.naver.com</option>
@@ -1065,8 +1080,8 @@ body {
           <option value="zaintest.vuclip.com">zaintest.vuclip.com</option>
           <option value="io.ruangguru.com">io.ruangguru.com</option>
           <option value="api.midtrans.com">api.midtrans.com</option>
-        </select>';
-        const vlessTls = '<button class="button" onclick="showPopup('vtls${ip}:${port}')">VLESS TLS 443</button>
+        </select></td>
+          <td><button class="button" onclick="showPopup('vtls${ip}:${port}')">VLESS TLS 443</button>
       <div class="popup" id="vtls${ip}:${port}">
       <div class="popup-content"><hr/><br>
       » ISP         : ${penyedia}<br>
@@ -1078,8 +1093,8 @@ body {
       <hr/>
       <button class="button8" onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
 </div>
-</div>';
-        const troranTls = '<button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN TLS 443</button>
+</div></td>
+          <td><button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN TLS 443</button>
       <div class="popup" id="trojan${ip}:${port}">
       <div class="popup-content"><hr/><br>
       » ISP         : ${penyedia}<br>
@@ -1091,8 +1106,8 @@ body {
       <hr/>
       <button class="button8" onclick="hidePopup('trojan${ip}:${port}')">Close</button> 
     </div>
-    </div>';
-        const shadowsocks = '<button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
+    </div></td>
+          <td><button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
       <div class="popup" id="ss${ip}:${port}">
       <div class="popup-content"><hr/><br>
       » ISP         : ${penyedia}<br>
@@ -1103,22 +1118,7 @@ body {
       <br><button class="copy-ss1">COPY CLASH</button>
      <hr/> <button class="button8" onclick="hidePopup('ss${ip}:${port}')">Close</button> 
     </div>
-    </div>';
-
-        // Create a row with innerHTML to make it more manageable
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>
-            <span>${isp} | ${id}</span>
-            <span class="flag-icon flag-icon-${id.toLowerCase()}"></span> <!-- Display the flag -->
-            </td>
-          <td>
-            <span id="status-${ip}-${port}">Loading...</span>
-          </td>
-          <td>${wildcard}</td>
-          <td>${vlessTls}</td>
-          <td>${troranTls}</td>
-          <td>${shadowsocks}</td>
+    </div></td>
         `;
 
         // Append the row to the proxy list
