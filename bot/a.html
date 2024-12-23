@@ -1288,8 +1288,8 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 fetch("https://ndeso.web.id/bot/proxy_list.txt")
   .then(response => response.text())
   .then(data => {
-    allProxies = data.split("\n").filter(line => line.trim() !== "");
-    filteredProxies = allProxies;
+    const allProxies = data.split("\n").filter(line => line.trim() !== "");
+    const filteredProxies = allProxies;
     const proxyList = document.getElementById('proxy-list');
     const pagination = document.getElementById('pagination');
     renderProxies(filteredProxies, proxyList, pagination);
@@ -1301,9 +1301,9 @@ function checkProxyStatus(ip, port, statusElement) {
   statusElement.textContent = 'Loading...'; // Menampilkan Loading...
 
   const startTime = performance.now();
-  fetch('https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}', {
-  })
-    fetch(Status)
+  const statusUrl = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
+
+  fetch(statusUrl) // Correct fetch usage
     .then(response => response.json())
     .then(data => {
       const endTime = performance.now();
