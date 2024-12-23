@@ -483,7 +483,7 @@ body {
 </head>
 <body>
   <header>
-  <h1>FREE PROXY CF NDESO.WEB.ID</h1>
+  <h1>FREE PROXY CF NDESO-WEB-ID</h1>
     </header>
   <main class="content">
     <center><button class="button7" onclick="showPopup('sub-link')">SHOW LINK SUB</button></center>
@@ -510,7 +510,6 @@ body {
           <th>STATUS</th>
           <th>WILDCARD</th>
           <th>VLESS TLS 443</th>
-          <th>VLESS NTLS 80</th>
           <th>TRORAN TLS 443</th>
           <th>SHADOWSOCKS</th>
         </tr>
@@ -802,21 +801,14 @@ body {
       </select>
       </div>
     <div class="col"><p></p>
-            <label for="link1">SUB LINK SERVER 1</label>
+            <label for="link1">SUB LINK</label>
             <input type="text" id="link1" readonly>
             <div class="button-container">
-                <button class="button8" id="copyLink1" onclick="copyLink(this)" data-link="">COPY LINK SERVER 1</button>
+                <button class="button8" id="copyLink1" onclick="copyLink(this)" data-link="">COPY SUB LINK</button>
             </div>
         </div>
 
-        <div class="col">
-            <label for="link2">SUB LINK SERVER 2</label>
-            <input type="text" id="link2" readonly>
-            <div class="button-container">
-            <center>  <p>Note: Server 2 Tidak Suport Shadowsocks </p></center>
-                <button class="button8" id="copyLink2" onclick="copyLink(this)" data-link="">COPY LINK SERVER 2</button>
-            </div>
-        </div>
+        
   <button class="button7" onclick="hidePopup('sub-link')">Close</button>
  
     </div>
@@ -824,7 +816,7 @@ body {
     </div>
   </div>
   <footer class="footer">
-    <h2><p>&copy; 2024 FREE PROXY CF NDESO.WEB.ID</p></h2>
+    <h2><p>&copy; 2024 FREE PROXY CF ndeso.web.id</p></h2>
   </footer>
 <script>
   // Function to generate the link
@@ -962,16 +954,13 @@ function renderProxies(proxies, proxyList, pagination) {
       » ISP         : ${penyedia}<br>
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
-      <hr/>SERVER 1<br>
+      <hr/>VLESS<br>
       <button class="copy-vless">COPY VLESS 443</button>
       <br><button class="copy-vless-clash">COPY CLASH 443</button>
-      <hr/>SERVER 2<br><button class="copy-vless877">COPY VLESS 443</button>
-      <br><button class="copy-vless-clash877">COPY CLASH 443</button>
       <hr/>
       <button class="button8" onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
 </div>
-</div></td><td>
-      <button class="button" onclick="showPopup('vntls${ip}:${port}')">VLESS NTLS 80</button>
+</div></td>
       <div class="popup" id="vntls${ip}:${port}">
       <div class="popup-content"><hr/><br>
       » ISP         : ${penyedia}<br>
@@ -983,19 +972,17 @@ function renderProxies(proxies, proxyList, pagination) {
       <hr/>SERVER 2<br><button class="copy-vless1877">COPY VLESS 80</button>
       <br><button class="copy-vless2877">COPY CLASH 80</button>
       <hr/>
-      <button class="button8" onclick="hidePopup('vntls${ip}:${port}')">Close</button> 
+      </div>
     </div>
-    </div></td><td>
+    <td>
       <button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN TLS 443</button>
       <div class="popup" id="trojan${ip}:${port}">
       <div class="popup-content"><hr/><br>
       » ISP         : ${penyedia}<br>
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
-      <hr/>SERVER 1<br>
+      <hr/>TROJAN<br>
       <button class="copy-trojan">COPY TROJAN 443</button>
-      <br><button class="copy-trojan-clash">COPY CLASH 443</button> 
-      <hr/>SERVER 2<br><button class="copy-trojan877">COPY TROJAN 443</button>
       <br><button class="copy-trojan-clash877">COPY CLASH 443</button> 
       <hr/>
       <button class="button8" onclick="hidePopup('trojan${ip}:${port}')">Close</button> 
@@ -1007,7 +994,7 @@ function renderProxies(proxies, proxyList, pagination) {
       » ISP         : ${penyedia}<br>
       » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
-      <hr/>SERVER 1<br>
+      <hr/>SHADOWSOCK<br>
       <button class="copy-ss">COPY SHADOWSOCK</button>
       <br><button class="copy-ss1">COPY CLASH</button>
      <hr/> <button class="button8" onclick="hidePopup('ss${ip}:${port}')">Close</button> 
@@ -1037,23 +1024,7 @@ function renderProxies(proxies, proxyList, pagination) {
     });
   });
 
- row.querySelector('.copy-vless877').addEventListener('click', () => {
-    const selectedService = row.querySelector('.service-selector').value || "xvp.ndeso.web.id";
-    const domain = selectedService === "xvp.ndeso.web.id" ? "xvp.ndeso.web.id" : `${selectedService}.xvp.ndeso.web.id`;
-    const VLESS877 = `vless://FREE-V2RAY-BMKG-XYZ@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2Fvl%3D${ip}%3A${port}&security=tls&sni=${domain}#(${selectedService})+${negara}+${penyedia}`;
-    navigator.clipboard.writeText(VLESS877);
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'COPY VLESS 443 SUKSES!',
-      icon: 'success',
-      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
-      color: 'red', // Warna teks
-      customClass: {
-        popup: 'rounded-popup',
-      },
-      confirmButtonColor: '#3085d6'
-    });
-  });
+
       
   row.querySelector('.copy-vless-clash').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
@@ -1087,37 +1058,7 @@ function renderProxies(proxies, proxyList, pagination) {
     });
   });
 
-    row.querySelector('.copy-vless-clash877').addEventListener('click', () => {
-    const selectedService = row.querySelector('.service-selector').value || "xvp.ndeso.web.id";
-    const domain = selectedService === "xvp.ndeso.web.id" ? "xvp.ndeso.web.id" : `${selectedService}.xvp.ndeso.web.id`;
-    const VLESSC877 = `- name: (${selectedService})+${negara}+${penyedia}
-  server: ${selectedService}
-  port: 443
-  type: vless
-  uuid: FREE-V2RAY-BMKG-XYZ
-  cipher: auto
-  tls: true
-  udp: true
-  skip-cert-verify: true
-  network: ws
-  servername: ${domain}
-  ws-opts:
-    path: /vl=${ip}:${port}
-    headers:
-      Host: ${domain}`;
-    navigator.clipboard.writeText(VLESSC877);
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'COPY VLESS CLASH 443 SUKSES!',
-      icon: 'success',
-      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
-      color: 'red', // Warna teks
-      customClass: {
-        popup: 'rounded-popup',
-      },
-      confirmButtonColor: '#3085d6'
-    });
-  });
+    
 
   row.querySelector('.copy-trojan').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
@@ -1137,24 +1078,7 @@ function renderProxies(proxies, proxyList, pagination) {
     });
   });
 
-row.querySelector('.copy-trojan877').addEventListener('click', () => {
-    const selectedService = row.querySelector('.service-selector').value || "xvp.ndeso.web.id";
-    const domain = selectedService === "xvp.ndeso.web.id" ? "xvp.ndeso.web.id" : `${selectedService}.xvp.ndeso.web.id`;
-    const TROJAN877 = `trojan://FREE-V2RAY-BMKG-XYZ@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2Ftr%3D${ip}%3A${port}&security=tls&sni=${domain}#(${selectedService})+${negara}+${penyedia}`;
-    navigator.clipboard.writeText(TROJAN877);
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'COPY TROJAN SUKSES!',
-      icon: 'success',
-      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
-      color: 'red', // Warna teks
-      customClass: {
-        popup: 'rounded-popup',
-      },
-      confirmButtonColor: '#3085d6'
-    });
-  });
-    
+
   row.querySelector('.copy-trojan-clash877').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "xvp.ndeso.web.id";
     const domain = selectedService === "xvp.ndeso.web.id" ? "xvp.ndeso.web.id" : `${selectedService}.xvp.ndeso.web.id`;
@@ -1185,35 +1109,8 @@ row.querySelector('.copy-trojan877').addEventListener('click', () => {
     });
   });
 
-    row.querySelector('.copy-trojan-clash').addEventListener('click', () => {
-    const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
-    const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
-    const TROJANC = `- name: (${selectedService})+${negara}+${penyedia}
-    server: ${selectedService}
-    port: 443
-    type: trojan
-    password: FREE-V2RAY-BMKG-XYZ
-    skip-cert-verify: true
-    sni: ${domain}
-    network: ws
-    ws-opts:
-      path: /tr=${ip}:${port}
-      headers:
-        Host: ${domain}
-    udp: true `;
-    navigator.clipboard.writeText(TROJANC);
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'COPY TROJAN CLASH SUKSES!',
-      icon: 'success',
-      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
-      color: 'red', // Warna teks
-      customClass: {
-        popup: 'rounded-popup',
-      },
-      confirmButtonColor: '#3085d6'
-    });
-  });
+    
+      
     
   row.querySelector('.copy-ss').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
@@ -1387,7 +1284,7 @@ document.getElementById('items-per-page').addEventListener('change', (e) => {
 });
 
 // Fetching proxy data
-fetch("bot/proxy_list.txt")
+fetch("https://ndeso.web.id/bot/proxy_list.txt")
   .then(response => response.text())
   .then(data => {
     allProxies = data.split("\n").filter(line => line.trim() !== "");
