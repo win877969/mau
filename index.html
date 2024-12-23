@@ -988,7 +988,7 @@ function hidePopup(popupId) {
 
           // Create cells and append them to the row
           const ipPortCell = document.createElement('td');
-          ipPortCell.textContent = `${isp} || ${id} <span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>`;
+          ipPortCell.textContent = `${ip}:${port}`;
           row.appendChild(ipPortCell);
 
           const statusCell = document.createElement('td');
