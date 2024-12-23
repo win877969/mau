@@ -1306,7 +1306,7 @@ function checkProxyStatus(proxy, button) {
   fetch('https://httpbin.org/ip', {
     method: 'GET',
     headers: {
-      'Proxy': `http://${ip}:${port}`,
+      'Proxy': `http://${proxy}`,
     },
     timeout: 5000
   })
