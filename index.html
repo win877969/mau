@@ -985,8 +985,15 @@ function hidePopup(popupId) {
 
           // Create a new row without inner HTML
           const row = document.createElement('tr');
-
+           
           // Create cells and append them to the row
+
+          const combinedCell = document.createElement('td');
+          combinedCell.innerHTML = `${isp} | ${id} <span class="flag-icon flag-icon-${countryClass}"></span>`;
+          row.appendChild(combinedCell);
+
+
+          
           const ipPortCell = document.createElement('td');
           ipPortCell.textContent = `${ip}:${port}`;
           row.appendChild(ipPortCell);
