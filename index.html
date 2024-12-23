@@ -904,18 +904,27 @@ body {
     .then(response => response.text())
     .then(data => {
       const allProxies = data.split("\n").filter(line => line.trim() !== "");
-      let filteredProxies = allProxies;
-      const proxyList = document.getElementById('proxy-list');
-      const pagination = document.getElementById('pagination');
-      const perPageSelect = document.getElementById('per-page'); // Dropdown untuk jumlah item per halaman
-      const searchInput = document.getElementById('search-input'); // Input pencarian
-      
+    let filteredProxies = [...allProxies]; // Salin array asli untuk filtering
+    const proxyList = document.getElementById('proxy-list');
+    const pagination = document.getElementById('pagination');
+    const perPageSelect = document.getElementById('per-page');
+    const searchInput = document.getElementById('search-input');
+    const totalProxyElement = document.getElementById('total-proxy');
+    const filteredProxyElement = document.getElementById('filtered-proxy');
+
+    // Tampilkan total proxy keseluruhan
+    totalProxyElement.innerHTML = `<strong>Total Proxies:</strong> ${allProxies.length}`;
+
+    // Fungsi untuk memperbarui jumlah proxy yang difilter
+    const updateFilteredProxies = () => {
+      filteredProxyElement.innerHTML = `<strong>Filtered Proxies:</strong> ${filteredProxies.length}`;
+    };
       // Set default items per page
-      let itemsPerPage = parseInt(perPageSelect.value, 10);
+      let itemsPerPage = parseInt(perPageSelect.value, 15);
 
       // Fungsi untuk memperbarui jumlah item per halaman
       perPageSelect.addEventListener('change', () => {
-        itemsPerPage = parseInt(perPageSelect.value, 10);
+        itemsPerPage = parseInt(perPageSelect.value, 15);
         renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
       });
 
