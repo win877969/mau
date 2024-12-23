@@ -929,10 +929,8 @@ function renderProxies(proxies, proxyList, pagination) {
     row.innerHTML = `
       <td> <span class="aha">${penyedia} | ${negara} </span><span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
-      <td id="status-${ip}:${port}">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div></td>
+      <td><button class="cekproxy" onclick="checkProxyStatus('${ip}:${port}', this)">CHECK</button>          
+      <span class="latency-cell"></span></td>
       <td>
         <select class="service-selector">
           <option value="">NO WILDCARD</option>
@@ -1305,7 +1303,7 @@ function checkProxyStatus(proxy, button) {
   const latencyCell = button.parentElement.querySelector('.latency-cell'); // Find the latency span in the same cell
 
   const startTime = performance.now();
-  fetch('https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}', {
+  fetch('https://httpbin.org/ip', {
     method: 'GET',
     headers: {
       'Proxy': `http://${ip}:${port}`,
@@ -1362,31 +1360,6 @@ function checkProxyStatus(proxy, button) {
 
 
 </script>
-          <script>
-          fetch('${Status}')
-            .then(response => response.json())
-            .then(data => {
-              const statusElement = document.getElementById('status-${ip}:${port}');
-              const { proxyStatus, ip, asn, isp, country, city, port } = data;
-              
-              if (proxyStatus === 'ACTIVE') {
-    statusElement.textContent = 'ACTIVE';
-    statusElement.style.color = '#00FF00'; 
-    statusElement.style.fontSize = '14px'; 
-    statusElement.style.fontWeight = 'bold'; 
-} else if (proxyStatus === 'DEAD') {
-    statusElement.textContent = 'DEAD';
-    statusElement.style.color = '#FF3333'; 
-    statusElement.style.fontSize = '14px'; 
-    statusElement.style.fontWeight = 'bold'; 
-}
-
-            })
-            .catch(error => {
-              const statusElement = document.getElementById('status-${proxyIP}-${proxyPort}');
-              statusElement.textContent = 'Error';
-              statusElement.style.color = 'cyan';
-            });
-        </script>
+  
 </body>
 </html>
