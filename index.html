@@ -23,8 +23,8 @@
     <meta name="twitter:image" content="https://png.pngtree.com/background/20231016/original/pngtree-high-definition-3d-wallpaper-in-black-and-red-picture-image_5583707.jpg"> <!-- Ganti dengan URL gambar yang sesuai -->
     <link href="https://png.pngtree.com/background/20231016/original/pngtree-high-definition-3d-wallpaper-in-black-and-red-picture-image_5583707.jpg" rel="icon" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.6.0/css/flag-icon.min.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icon-css/css/flag-icon.min.css">
+    
   <style>
  
     
@@ -503,10 +503,8 @@ body {
     <table>
       <thead>
         <tr>          
-          <th>IP:PORT</th>
+          <th>ISP || COUNTRY</th>
           <th>STATUS</th>
-          <th>ID</th>
-          <th>ISP</th>
           <th>WILDCARD</th>
           <th>VLESS TLS 443</th>
           <th>TRORAN TLS 443</th>
@@ -995,8 +993,8 @@ body {
         row.innerHTML = `
           <td>
             <span>${isp} | ${id}</span>
-            <span class="flag-icon flag-icon-${isp.toLowerCase()}"></span> <!-- Assuming 'isp' is your country code -->
-          </td>
+            <span class="flag-icon flag-icon-${id.toLowerCase()}"></span> <!-- Display the flag -->
+            </td>
           <td>
             <span id="status-${ip}-${port}">Loading...</span>
           </td>
@@ -1059,13 +1057,6 @@ body {
 
     // Initialize the page with the first set of proxies
     updatePage(1);
-  }
-  
-    // Display total proxies
-  const totalProxies = proxies.length;
-  const totalProxyElement = document.getElementById('total-proxy');
-  if (totalProxyElement) {
-    totalProxyElement.textContent = `Total Proxies: ${totalProxies}`;
   }
 </script>
 
