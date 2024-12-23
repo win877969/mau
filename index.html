@@ -487,6 +487,16 @@ body {
     </header>
   <main class="content">
     <center><button class="button7" onclick="showPopup('sub-link')">SHOW LINK SUB</button></center>
+<label for="per-page">Items per page:</label>
+<select id="per-page">
+  <option value="10">10</option>
+  <option value="25">25</option>
+  <option value="50">50</option>
+  <option value="100">100</option>
+</select>
+
+<label for="search-input">Search:</label>
+<input type="text" id="search-input" placeholder="Search by IP, Port, ID, ISP" />
 
     
       <div class="table-container">
@@ -888,18 +898,39 @@ function hidePopup(popupId) {
 }
 
   </script>
-    <script>
+<script>
 // URL untuk mendapatkan proxy list
 fetch("https://ndeso.web.id/bot/proxy_list.txt")
   .then(response => response.text())
   .then(data => {
     const allProxies = data.split("\n").filter(line => line.trim() !== "");
-    const filteredProxies = allProxies;
+    let filteredProxies = allProxies;
     const proxyList = document.getElementById('proxy-list');
     const pagination = document.getElementById('pagination');
+    const perPageSelect = document.getElementById('per-page'); // Dropdown untuk jumlah item per halaman
+    const searchInput = document.getElementById('search-input'); // Input pencarian
     
-    // Menambahkan Pagination dan render proxies
-    renderProxies(filteredProxies, proxyList, pagination);
+    // Set default items per page
+    let itemsPerPage = parseInt(perPageSelect.value, 10);
+
+    // Fungsi untuk memperbarui jumlah item per halaman
+    perPageSelect.addEventListener('change', () => {
+      itemsPerPage = parseInt(perPageSelect.value, 10);
+      renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
+    });
+
+    // Fungsi untuk pencarian
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      filteredProxies = allProxies.filter(proxy => {
+        const [ip, port, id, isp] = proxy.split(',');
+        return ip.toLowerCase().includes(query) || port.includes(query) || id.toLowerCase().includes(query) || isp.toLowerCase().includes(query);
+      });
+      renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
+    });
+
+    // Render proxies dengan pagination
+    renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
   })
   .catch(error => console.error("Error fetching proxy data:", error));
 
@@ -932,8 +963,7 @@ function checkProxyStatus(ip, port, statusElement) {
 }
 
 // Fungsi untuk render proxies dengan pagination
-function renderProxies(proxies, proxyList, pagination) {
-  const itemsPerPage = 5; // Jumlah proxy per halaman
+function renderProxies(proxies, proxyList, pagination, itemsPerPage) {
   const totalPages = Math.ceil(proxies.length / itemsPerPage);
   let currentPage = 1;
 
@@ -1030,11 +1060,10 @@ function renderProxies(proxies, proxyList, pagination) {
   // Initialize the page with the first set of proxies
   updatePage(1);
 }
-
-
-
-
 </script>
-  
+
+<!-- HTML -->
+
+
 </body>
 </html>
