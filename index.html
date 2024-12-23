@@ -1051,10 +1051,59 @@ body {
         const [ip, port, id, isp] = proxy.split(','); // Split the proxy data into individual parts
         
         // Set placeholder values (you can modify this to extract from proxy data if available)
-        const wildcard = 'N/A';
-        const vlessTls = 'N/A';
-        const troranTls = 'N/A';
-        const shadowsocks = 'N/A';
+        const wildcard = '<select class="service-selector">
+          <option value="">NO WILDCARD</option>
+          <option value="business.blibli.com">business.blibli.com</option>          
+          <option value="ava.game.naver.com">ava.game.naver.com</option>
+          <option value="graph.instagram.com">graph.instagram.com</option>
+          <option value="quiz.int.vidio.com">quiz.int.vidio.com</option>
+          <option value="live.iflix.com.com">live.iflix.com</option>
+          <option value="support.zoom.us">support.zoom.us</option>
+          <option value="blog.webex.com">blog.webex.com</option>
+          <option value="investors.spotify.com">investors.spotify.com</option>
+          <option value="cache.netflix.com">cache.netflix.com</option>
+          <option value="zaintest.vuclip.com">zaintest.vuclip.com</option>
+          <option value="io.ruangguru.com">io.ruangguru.com</option>
+          <option value="api.midtrans.com">api.midtrans.com</option>
+        </select>';
+        const vlessTls = '<button class="button" onclick="showPopup('vtls${ip}:${port}')">VLESS TLS 443</button>
+      <div class="popup" id="vtls${ip}:${port}">
+      <div class="popup-content"><hr/><br>
+      » ISP         : ${penyedia}<br>
+      » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
+      » IP:PORT      : ${ip}:${port}<br>
+      <hr/>VLESS<br>
+      <button class="copy-vless">COPY VLESS 443</button>
+      <br><button class="copy-vless-clash">COPY CLASH 443</button>
+      <hr/>
+      <button class="button8" onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
+</div>
+</div>';
+        const troranTls = '<button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN TLS 443</button>
+      <div class="popup" id="trojan${ip}:${port}">
+      <div class="popup-content"><hr/><br>
+      » ISP         : ${penyedia}<br>
+      » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
+      » IP:PORT      : ${ip}:${port}<br>
+      <hr/>TROJAN<br>
+      <button class="copy-trojan">COPY TROJAN 443</button>
+      <br><button class="copy-trojan-clash877">COPY CLASH 443</button> 
+      <hr/>
+      <button class="button8" onclick="hidePopup('trojan${ip}:${port}')">Close</button> 
+    </div>
+    </div>';
+        const shadowsocks = '<button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
+      <div class="popup" id="ss${ip}:${port}">
+      <div class="popup-content"><hr/><br>
+      » ISP         : ${penyedia}<br>
+      » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
+      » IP:PORT      : ${ip}:${port}<br>
+      <hr/>SHADOWSOCK<br>
+      <button class="copy-ss">COPY SHADOWSOCK</button>
+      <br><button class="copy-ss1">COPY CLASH</button>
+     <hr/> <button class="button8" onclick="hidePopup('ss${ip}:${port}')">Close</button> 
+    </div>
+    </div>';
 
         // Create a row with innerHTML to make it more manageable
         const row = document.createElement('tr');
