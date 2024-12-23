@@ -927,7 +927,7 @@ function renderProxies(proxies, proxyList, pagination) {
     const uuid = uuidv4();
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td> <span class="aha">${penyedia} | ${negara} </span><span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
+      <td> <span class="aha">${isp} | ${id} </span><span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
      </td>
       <td><span id="status-${ip}-${port}">Loading...</span></td>
     <td>
