@@ -1267,7 +1267,7 @@ body {
 
   row.querySelector('.copy-vless1').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id"; // Pastikan ini ada di dalam event listener
-    const VLESS1 = `vless://${uuid}@tp1.ndeso.web.id:80?encryption=none&type=ws&host=tp1.ndeso.web.id&path=%2F${ip}-${port}&security=none&sni=#(${selectedService})+${negara}+${penyedia}`;
+    const VLESS1 = `vless://${uuid}@tp1.ndeso.web.id:80?encryption=none&type=ws&host=tp1.ndeso.web.id&path=%2F${ip}-${port}&security=none&sni=#(${selectedService})+${id}+${isp}`;
     navigator.clipboard.writeText(VLESS1);
     Swal.fire({
       title: 'Berhasil!',
@@ -1284,7 +1284,7 @@ body {
 
   row.querySelector('.copy-vless2').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id"; // Pastikan ini ada di dalam event listener
-    const VLESS2 = `- name: (${selectedService})+${negara}+${penyedia}
+    const VLESS2 = `- name: (${selectedService})+${id}+${isp}
   server: tp1.ndeso.web.id
   port: 80
   type: vless
