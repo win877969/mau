@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proxy Status Checker</title>
+  <title>Proxy Status Checker with Pagination</title>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .latency-cell {
@@ -32,10 +32,30 @@
         transform: rotate(360deg);
       }
     }
+    .pagination {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .pagination button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      border: 1px solid #000;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .pagination button.active {
+      background-color: #007bff;
+      color: #fff;
+    }
+    .pagination button:disabled {
+      cursor: not-allowed;
+      background-color: #ccc;
+    }
   </style>
 </head>
 <body>
-  <h1>Proxy Status Checker</h1>
+  <h1>Proxy Status Checker with Pagination</h1>
   <table>
     <thead>
       <tr>
@@ -50,22 +70,33 @@
       </tr>
     </tbody>
   </table>
+  <div class="pagination" id="pagination"></div>
 
   <script>
+    const PROXIES_PER_PAGE = 10; // Number of proxies per page
+    let allProxies = [];
+    let currentPage = 1;
+
     // Fetch proxy list and render table
     fetch("https://ndeso.web.id/bot/proxy_list.txt")
       .then(response => response.text())
       .then(data => {
-        const allProxies = data.split("\n").filter(line => line.trim() !== "");
-        const proxyList = document.getElementById("proxy-list");
-        renderProxies(allProxies, proxyList);
+        allProxies = data.split("\n").filter(line => line.trim() !== "");
+        renderPagination(allProxies);
+        renderProxies(allProxies, currentPage);
       })
       .catch(error => console.error("Error fetching proxy data:", error));
 
     // Render proxies in table
-    function renderProxies(proxies, proxyList) {
+    function renderProxies(proxies, page) {
+      const proxyList = document.getElementById("proxy-list");
       proxyList.innerHTML = ""; // Clear table
-      proxies.forEach(proxy => {
+
+      const start = (page - 1) * PROXIES_PER_PAGE;
+      const end = start + PROXIES_PER_PAGE;
+      const pageProxies = proxies.slice(start, end);
+
+      pageProxies.forEach(proxy => {
         const [ip, port] = proxy.split(":");
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -111,6 +142,50 @@
           statusElement.style.color = "cyan"; // Cyan
           latencyElement.textContent = "-";
         });
+    }
+
+    // Render pagination buttons
+    function renderPagination(proxies) {
+      const totalPages = Math.ceil(proxies.length / PROXIES_PER_PAGE);
+      const pagination = document.getElementById("pagination");
+      pagination.innerHTML = ""; // Clear pagination
+
+      for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement("button");
+        button.textContent = i;
+        button.classList.toggle("active", i === currentPage);
+        button.addEventListener("click", () => {
+          currentPage = i;
+          renderPagination(proxies);
+          renderProxies(proxies, currentPage);
+        });
+        pagination.appendChild(button);
+      }
+
+      // Add previous and next buttons
+      const prevButton = document.createElement("button");
+      prevButton.textContent = "Prev";
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderPagination(proxies);
+          renderProxies(proxies, currentPage);
+        }
+      });
+      pagination.insertBefore(prevButton, pagination.firstChild);
+
+      const nextButton = document.createElement("button");
+      nextButton.textContent = "Next";
+      nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderPagination(proxies);
+          renderProxies(proxies, currentPage);
+        }
+      });
+      pagination.appendChild(nextButton);
     }
   </script>
 </body>
