@@ -1328,20 +1328,37 @@ function renderProxies(proxies, proxyList, pagination) {
   proxyList.innerHTML = ''; // Clear existing proxy list
 
   proxies.forEach(proxy => {
-    const [ip, port] = proxy.split(':');
+    const [ip, port, id, isp] = proxy.split(','); // Split the proxy data into individual parts
     
-    // Create a table row for each proxy
+    // Create a new row without inner HTML
     const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${ip}:${port}</td>
-      <td><span id="status-${ip}-${port}">Loading...</span></td>
-    `;
-    
-    // Check the status of the proxy
-    const statusElement = row.querySelector(`#status-${ip}-${port}`);
-    checkProxyStatus(ip, port, statusElement);
 
+    // Create cells and append them to the row
+    const ipPortCell = document.createElement('td');
+    ipPortCell.textContent = `${ip}:${port}`;
+    row.appendChild(ipPortCell);
+
+    const statusCell = document.createElement('td');
+    const statusElement = document.createElement('span');
+    statusElement.id = `status-${ip}-${port}`;
+    statusElement.textContent = 'Loading...'; // Set loading text initially
+    statusCell.appendChild(statusElement);
+    row.appendChild(statusCell);
+
+    // Assuming you want to place these elsewhere in the page
+    const idCell = document.createElement('td');
+    idCell.textContent = id;
+    row.appendChild(idCell);
+
+    const ispCell = document.createElement('td');
+    ispCell.textContent = isp;
+    row.appendChild(ispCell);
+
+    // Append the row to the proxy list
     proxyList.appendChild(row);
+
+    // Check the status of the proxy
+    checkProxyStatus(ip, port, statusElement);
   });
 }
 
