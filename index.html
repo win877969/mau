@@ -488,20 +488,7 @@ body {
   <main class="content">
     <center><button class="button7" onclick="showPopup('sub-link')">SHOW LINK SUB</button></center>
 
-    <div class="filters">
-      <div>
-        <span class="filter-label">Item Page:</span>
-        <select id="items-per-page">
-          <option value="10">10 Baris</option>
-          <option value="25">25 Baris</option>
-          <option value="50">50 Baris</option>
-          <option value="100">100 Baris</option>
-        </select>
-      </div>
-      <div>
-        <span class="filter-label">Search:</span>
-        <input type="text" id="search-bar" placeholder="Cari Isp, Country Code">
-      </div></div>
+    
       <div class="table-container">
     <table>
       <thead>
@@ -902,6 +889,8 @@ function hidePopup(popupId) {
 
   </script>
     <script>
+<script>
+// URL untuk mendapatkan proxy list
 fetch("https://ndeso.web.id/bot/proxy_list.txt")
   .then(response => response.text())
   .then(data => {
@@ -909,11 +898,13 @@ fetch("https://ndeso.web.id/bot/proxy_list.txt")
     const filteredProxies = allProxies;
     const proxyList = document.getElementById('proxy-list');
     const pagination = document.getElementById('pagination');
+    
+    // Menambahkan Pagination dan render proxies
     renderProxies(filteredProxies, proxyList, pagination);
   })
   .catch(error => console.error("Error fetching proxy data:", error));
 
-// Check Proxy status function
+// Fungsi untuk mengecek status proxy
 function checkProxyStatus(ip, port, statusElement) {
   statusElement.textContent = 'Loading...'; // Menampilkan Loading...
 
@@ -941,44 +932,109 @@ function checkProxyStatus(ip, port, statusElement) {
     });
 }
 
-// Rendering proxies
+// Fungsi untuk render proxies dengan pagination
 function renderProxies(proxies, proxyList, pagination) {
-  proxyList.innerHTML = ''; // Clear existing proxy list
+  const itemsPerPage = 5; // Jumlah proxy per halaman
+  const totalPages = Math.ceil(proxies.length / itemsPerPage);
+  let currentPage = 1;
 
-  proxies.forEach(proxy => {
-    const [ip, port, id, isp] = proxy.split(','); // Split the proxy data into individual parts
-    
-    // Create a new row without inner HTML
-    const row = document.createElement('tr');
+  function updatePage(page) {
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
 
-    // Create cells and append them to the row
-    const ipPortCell = document.createElement('td');
-    ipPortCell.textContent = `${ip}:${port}`;
-    row.appendChild(ipPortCell);
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageProxies = proxies.slice(start, end);
 
-    const statusCell = document.createElement('td');
-    const statusElement = document.createElement('span');
-    statusElement.id = `status-${ip}-${port}`;
-    statusElement.textContent = 'Loading...'; // Set loading text initially
-    statusCell.appendChild(statusElement);
-    row.appendChild(statusCell);
+    // Clear existing proxy list
+    proxyList.innerHTML = '';
 
-    // Assuming you want to place these elsewhere in the page
-    const idCell = document.createElement('td');
-    idCell.textContent = id;
-    row.appendChild(idCell);
+    // Render proxies for the current page
+    pageProxies.forEach(proxy => {
+      const [ip, port, id, isp] = proxy.split(','); // Split the proxy data into individual parts
 
-    const ispCell = document.createElement('td');
-    ispCell.textContent = isp;
-    row.appendChild(ispCell);
+      // Create a new row without inner HTML
+      const row = document.createElement('tr');
 
-    // Append the row to the proxy list
-    proxyList.appendChild(row);
+      // Create cells and append them to the row
+      const ipPortCell = document.createElement('td');
+      ipPortCell.textContent = `${ip}:${port}`;
+      row.appendChild(ipPortCell);
 
-    // Check the status of the proxy
-    checkProxyStatus(ip, port, statusElement);
-  });
+      const statusCell = document.createElement('td');
+      const statusElement = document.createElement('span');
+      statusElement.id = `status-${ip}-${port}`;
+      statusElement.textContent = 'Loading...'; // Set loading text initially
+      statusCell.appendChild(statusElement);
+      row.appendChild(statusCell);
+
+      // Assuming you want to place these elsewhere in the page
+      const idCell = document.createElement('td');
+      idCell.textContent = id;
+      row.appendChild(idCell);
+
+      const ispCell = document.createElement('td');
+      ispCell.textContent = isp;
+      row.appendChild(ispCell);
+
+      // Append the row to the proxy list
+      proxyList.appendChild(row);
+
+      // Check the status of the proxy
+      checkProxyStatus(ip, port, statusElement);
+    });
+
+    // Update pagination buttons
+    updatePagination();
+  }
+
+  // Update pagination buttons
+  function updatePagination() {
+    pagination.innerHTML = ''; // Clear existing pagination
+
+    // Create previous button
+    const prevButton = document.createElement('button');
+    prevButton.textContent = '<<';
+    prevButton.onclick = () => updatePage(currentPage - 1);
+    pagination.appendChild(prevButton);
+
+    // Create first page button (<<<)
+    const firstButton = document.createElement('button');
+    firstButton.textContent = '<<<';
+    firstButton.onclick = () => updatePage(1);
+    pagination.appendChild(firstButton);
+
+    // Create page number buttons (limited to 5 pages)
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+    for (let i = startPage; i <= endPage; i++) {
+      const pageButton = document.createElement('button');
+      pageButton.textContent = i;
+      pageButton.onclick = () => updatePage(i);
+      if (i === currentPage) pageButton.style.fontWeight = 'bold'; // Highlight current page
+      pagination.appendChild(pageButton);
+    }
+
+    // Create last page button (>>>)
+    const lastButton = document.createElement('button');
+    lastButton.textContent = '>>>';
+    lastButton.onclick = () => updatePage(totalPages);
+    pagination.appendChild(lastButton);
+
+    // Create next button
+    const nextButton = document.createElement('button');
+    nextButton.textContent = '>>';
+    nextButton.onclick = () => updatePage(currentPage + 1);
+    pagination.appendChild(nextButton);
+  }
+
+  // Initialize the page with the first set of proxies
+  updatePage(1);
 }
+</script>
+
+
+
 
 </script>
   
