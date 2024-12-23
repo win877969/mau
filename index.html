@@ -487,17 +487,20 @@ body {
     </header>
   <main class="content">
     <center><button class="button7" onclick="showPopup('sub-link')">SHOW LINK SUB</button></center>
-<label for="per-page">Items per page:</label>
+<div class="filters">
+      <div><label for="per-page">Items per page:</label>
 <select id="per-page">
   <option value="10">10</option>
   <option value="25">25</option>
   <option value="50">50</option>
   <option value="100">100</option>
 </select>
-
+</div>
+      <div>
 <label for="search-input">Search:</label>
 <input type="text" id="search-input" placeholder="Search by IP, Port, ID, ISP" />
-
+</div>
+</div>
     
       <div class="table-container">
     <table>
