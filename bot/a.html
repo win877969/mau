@@ -24,10 +24,60 @@
     <link href="https://png.pngtree.com/background/20231016/original/pngtree-high-definition-3d-wallpaper-in-black-and-red-picture-image_5583707.jpg" rel="icon" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icon-css/css/flag-icon.min.css">
-
+    
   <style>
  
-    
+    /* Animasi Loading */
+.loading-icon {
+  border: 4px solid #f3f3f3; /* Light grey */
+  border-top: 4px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animasi Checkmark */
+.check-icon {
+  color: green;
+  font-size: 20px;
+  animation: checkAnim 0.3s ease-in-out;
+}
+
+@keyframes checkAnim {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animasi X (Error) */
+.error-icon {
+  color: red;
+  font-size: 20px;
+  animation: errorAnim 0.3s ease-in-out;
+}
+
+@keyframes errorAnim {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 
 #link1 {
     border: 2px solid #007bff; /* Warna biru */
@@ -487,26 +537,26 @@ body {
     </header>
   <main class="content">
     <center><button class="button7" onclick="showPopup('sub-link')">SHOW LINK SUB</button></center>
-
-    <div class="filters">
+<div class="filters">
+      <div><span class="filter-label">Items page:</span>
+<select id="items-per-page">
+  <option value="10">10</option>
+  <option value="25">25</option>
+  <option value="50">50</option>
+  <option value="100">100</option>
+</select>
+</div>
       <div>
-        <span class="filter-label">Item Page:</span>
-        <select id="items-per-page">
-          <option value="10">10 Baris</option>
-          <option value="25">25 Baris</option>
-          <option value="50">50 Baris</option>
-          <option value="100">100 Baris</option>
-        </select>
-      </div>
-      <div>
-        <span class="filter-label">Search:</span>
-        <input type="text" id="search-bar" placeholder="Cari Isp, Country Code">
-      </div></div>
+<span class="filter-label">Search:</span>
+<input type="text" id="search-bar" placeholder="Search by IP, Port, ID, ISP" />
+</div>
+</div>
+    
       <div class="table-container">
     <table>
       <thead>
         <tr>          
-          <th>ISP | COUNTRY</th>
+          <th>ISP || COUNTRY</th>
           <th>STATUS</th>
           <th>WILDCARD</th>
           <th>VLESS TLS 443</th>
@@ -889,52 +939,140 @@ body {
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Function to show the popup
-    // Function to show a popup
-function showPopup(popupId) {
-  document.getElementById(popupId).style.display = "flex";
-}
+  // Function to show a popup
+  function showPopup(popupId) {
+    document.getElementById(popupId).style.display = "flex";
+  }
 
-// Function to hide a popup
-function hidePopup(popupId) {
-  document.getElementById(popupId).style.display = "none";
-}
+  // Function to hide a popup
+  function hidePopup(popupId) {
+    document.getElementById(popupId).style.display = "none";
+  }
 
-  </script>
-    <script>
-let proxyPerPage = 15;
-let currentPage = 1;
-let filteredProxies = [];
-let allProxies = [];
 
-// Function to handle UUID generation
+</script>
+<script>
 function uuidv4() {
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
 }
 
-// Function to render proxies
-function renderProxies(proxies, proxyList, pagination) {
-  const start = (currentPage - 1) * proxyPerPage;
-  const end = start + proxyPerPage;
-  const currentPageProxies = proxies.slice(start, end);
+  // URL untuk mendapatkan proxy list
+  fetch("https://ndeso.web.id/bot/proxy_list.txt")
+    .then(response => response.text())
+    .then(data => {
+      const allProxies = data.split("\n").filter(line => line.trim() !== "");
+    let filteredProxies = [...allProxies]; // Salin array asli untuk filtering
+    const proxyList = document.getElementById('proxy-list');
+    const pagination = document.getElementById('pagination');
+    const perPageSelect = document.getElementById('items-per-page');
+    const searchInput = document.getElementById('search-bar');
+    const totalProxyElement = document.getElementById('total-proxy');
+    const filteredProxyElement = document.getElementById('filtered-proxy');
 
-  proxyList.innerHTML = ''; // Clear previous list
+    // Tampilkan total proxy keseluruhan
+    totalProxyElement.innerHTML = `<strong>Total Proxies:</strong> ${allProxies.length}`;
 
-  currentPageProxies.forEach(proxy => {
-    const [ip, port, negara, penyedia] = proxy.split(",");
-    const uuid = uuidv4();
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td> <span class="aha">${penyedia} | ${negara} </span><span class="flag-icon flag-icon-${negara.toLowerCase()}"></span>
-     </td>
-      <td>
-      <span id="status-${ip}-${port}">Loading...</span>
-      </td>
-      
-                                </td><td>
-        <select class="service-selector">
+    // Fungsi untuk memperbarui jumlah proxy yang difilter
+    const updateFilteredProxies = () => {
+      filteredProxyElement.innerHTML = `<strong>Filtered Proxies:</strong> ${filteredProxies.length}`;
+    };
+      // Set default items per page
+      let itemsPerPage = parseInt(perPageSelect.value, 15);
+
+      // Fungsi untuk memperbarui jumlah item per halaman
+      perPageSelect.addEventListener('change', () => {
+        itemsPerPage = parseInt(perPageSelect.value, 15);
+        renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
+      });
+
+      // Fungsi untuk pencarian
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        filteredProxies = allProxies.filter(proxy => {
+          const [ip, port, id, isp] = proxy.split(',');
+          return ip.toLowerCase().includes(query) || port.includes(query) || id.toLowerCase().includes(query) || isp.toLowerCase().includes(query);
+        });
+        renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
+      });
+
+      // Render proxies dengan pagination
+      renderProxies(filteredProxies, proxyList, pagination, itemsPerPage);
+    })
+    .catch(error => console.error("Error fetching proxy data:", error));
+
+  // Fungsi untuk mengecek status proxy
+  function checkProxyStatus(ip, port, statusElement) {
+    statusElement.innerHTML = '<div class="loading-icon"></div>';
+
+    const startTime = performance.now();
+    const Status = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
+    
+    fetch(Status)
+      .then(response => response.json())
+      .then(data => {
+        const endTime = performance.now();
+        const latency = (endTime - startTime).toFixed(2); // Menghitung latency
+
+        // Menampilkan status proxy dan latency
+        if (data.proxyStatus === "ACTIVE") {
+          statusElement.innerHTML = `
+          <span class="check-icon">&#10004;</span> (${latency} ms)
+        `;
+          statusElement.style.color = 'green';
+          } else if (data.proxyStatus === "DEAD") {
+          statusElement.innerHTML = `
+          <span class="error-icon">&#10006;</span> Dead
+        `;
+          statusElement.style.color = 'red';
+          }
+      })
+      .catch(() => {
+        statusElement.innerHTML = `
+        <span class="error-icon">&#10006;</span> Error
+      `;
+        statusElement.style.color = 'cyan';
+      });
+  }
+
+  // Fungsi untuk render proxies dengan pagination
+  function renderProxies(proxies, proxyList, pagination, itemsPerPage) {
+    const totalPages = Math.ceil(proxies.length / itemsPerPage);
+    let currentPage = 1;
+
+    function updatePage(page) {
+      if (page < 1 || page > totalPages) return;
+      currentPage = page;
+
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageProxies = proxies.slice(start, end);
+
+      // Clear existing proxy list
+      proxyList.innerHTML = '';
+
+      // Render proxies for the current page
+      pageProxies.forEach(proxy => {
+        const [ip, port, id, isp] = proxy.split(','); // Split the proxy data into individual parts
+        
+        // Set placeholder values (you can modify this to extract from proxy data if available)
+        const wildcard = '';
+        const vlessTls = '';
+        const troranTls = '';
+        const shadowsocks = '';
+
+        // Create a row with innerHTML to make it more manageable
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>
+            <span>${isp} | ${id}</span>
+            <span class="flag-icon flag-icon-${id.toLowerCase()}"></span> <!-- Display the flag -->
+            </td>
+          <td>
+            <span id="status-${ip}-${port}">Loading...</span>
+          </td>
+          <td><select class="service-selector">
           <option value="">NO WILDCARD</option>
           <option value="business.blibli.com">business.blibli.com</option>          
           <option value="ava.game.naver.com">ava.game.naver.com</option>
@@ -948,14 +1086,15 @@ function renderProxies(proxies, proxyList, pagination) {
           <option value="zaintest.vuclip.com">zaintest.vuclip.com</option>
           <option value="io.ruangguru.com">io.ruangguru.com</option>
           <option value="api.midtrans.com">api.midtrans.com</option>
-        </select>
-      </td><td>
-      <button class="button" onclick="showPopup('vtls${ip}:${port}')">VLESS TLS 443</button>
+        </select></td>
+          <td><button class="button" onclick="showPopup('vtls${ip}:${port}')">VLESS TLS 443</button>
       <div class="popup" id="vtls${ip}:${port}">
       <div class="popup-content"><hr/><br>
-      » ISP         : ${penyedia}<br>
-      » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
+      » ISP         : ${isp}<br>
+      » Country     :${id}&nbsp;<span class="flag-icon flag-icon-${id.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
+      <center><span id="status-${ip}-${port}">Loading...</span></center>
+        
       <hr/>VLESS<br>
       <button class="copy-vless">COPY VLESS 443</button>
       <br><button class="copy-vless-clash">COPY CLASH 443</button>
@@ -963,55 +1102,42 @@ function renderProxies(proxies, proxyList, pagination) {
       <button class="button8" onclick="hidePopup('vtls${ip}:${port}')">Close</button> 
 </div>
 </div></td>
-      <div class="popup" id="vntls${ip}:${port}">
-      <div class="popup-content"><hr/><br>
-      » ISP         : ${penyedia}<br>
-      » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
-      » IP:PORT      : ${ip}:${port}<br>
-      <hr/>SERVER 1<br>
-      <button class="copy-vless1">COPY VLESS 80</button>
-      <br><button class="copy-vless2">COPY CLASH 80</button>
-      <hr/>SERVER 2<br><button class="copy-vless1877">COPY VLESS 80</button>
-      <br><button class="copy-vless2877">COPY CLASH 80</button>
-      <hr/>
-      </div>
-    </div>
-    <td>
-      <button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN TLS 443</button>
+          <td><button class="button" onclick="showPopup('trojan${ip}:${port}')">TROJAN TLS 443</button>
       <div class="popup" id="trojan${ip}:${port}">
       <div class="popup-content"><hr/><br>
-      » ISP         : ${penyedia}<br>
-      » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
+      » ISP         : ${isp}<br>
+      » Country     :${id}&nbsp;<span class="flag-icon flag-icon-${id.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
-      <hr/>TROJAN<br>
+      <center><span id="status-${ip}-${port}">Loading...</span></center>
+        <hr/>TROJAN<br>
       <button class="copy-trojan">COPY TROJAN 443</button>
       <br><button class="copy-trojan-clash877">COPY CLASH 443</button> 
       <hr/>
       <button class="button8" onclick="hidePopup('trojan${ip}:${port}')">Close</button> 
     </div>
-    </div></td><td>
-      <button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
+    </div></td>
+          <td><button class="button" onclick="showPopup('ss${ip}:${port}')">SHADOWSOCK</button>
       <div class="popup" id="ss${ip}:${port}">
       <div class="popup-content"><hr/><br>
-      » ISP         : ${penyedia}<br>
-      » Country     :${negara}&nbsp;<span class="flag-icon flag-icon-${negara.toLowerCase()}"></span><br>
+      » ISP         : ${isp}<br>
+      » Country     :${id}&nbsp;<span class="flag-icon flag-icon-${id.toLowerCase()}"></span><br>
       » IP:PORT      : ${ip}:${port}<br>
-      <hr/>SHADOWSOCK<br>
+      <center><span id="status-${ip}-${port}">Loading...</span></center>
+        <hr/>SHADOWSOCK<br>
       <button class="copy-ss">COPY SHADOWSOCK</button>
       <br><button class="copy-ss1">COPY CLASH</button>
      <hr/> <button class="button8" onclick="hidePopup('ss${ip}:${port}')">Close</button> 
     </div>
     </div></td>
-    `;
-    proxyList.appendChild(row);
+        `;
 
-    // Event listeners for copy buttons
-    
-    
-  row.querySelector('.copy-vless').addEventListener('click', () => {
+        // Append the row to the proxy list
+        proxyList.appendChild(row);
+
+        row.querySelector('.copy-vless').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
     const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
-    const VLESS = `vless://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${negara}+${penyedia}`;
+    const VLESS = `vless://${uuidv4()}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${id}+${isp}`;
     navigator.clipboard.writeText(VLESS);
     Swal.fire({
       title: 'Berhasil!',
@@ -1024,28 +1150,26 @@ function renderProxies(proxies, proxyList, pagination) {
       },
       confirmButtonColor: '#3085d6'
     });
-  });
+});
 
-
-      
-  row.querySelector('.copy-vless-clash').addEventListener('click', () => {
+row.querySelector('.copy-vless-clash').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
     const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
-    const VLESSC = `- name: (${selectedService})+${negara}+${penyedia}
-  server: ${selectedService}
-  port: 443
-  type: vless
-  uuid: ${uuid}
-  cipher: auto
-  tls: true
-  udp: true
-  skip-cert-verify: true
-  network: ws
-  servername: ${domain}
-  ws-opts:
-    path: /${ip}-${port}
-    headers:
-      Host: ${domain}`;
+    const VLESSC = `- name: (${selectedService})+${id}+${isp}
+    server: ${selectedService}
+    port: 443
+    type: vless
+    uuid: ${uuidv4()}
+    cipher: auto
+    tls: true
+    udp: true
+    skip-cert-verify: true
+    network: ws
+    servername: ${domain}
+    ws-opts:
+      path: /${ip}-${port}
+      headers:
+        Host: ${domain}`;
     navigator.clipboard.writeText(VLESSC);
     Swal.fire({
       title: 'Berhasil!',
@@ -1058,14 +1182,12 @@ function renderProxies(proxies, proxyList, pagination) {
       },
       confirmButtonColor: '#3085d6'
     });
-  });
+});
 
-    
-
-  row.querySelector('.copy-trojan').addEventListener('click', () => {
+row.querySelector('.copy-trojan').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
     const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
-    const TROJAN = `trojan://${uuid}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${negara}+${penyedia}`;
+    const TROJAN = `trojan://${uuidv4()}@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${id}+${isp}`;
     navigator.clipboard.writeText(TROJAN);
     Swal.fire({
       title: 'Berhasil!',
@@ -1078,17 +1200,16 @@ function renderProxies(proxies, proxyList, pagination) {
       },
       confirmButtonColor: '#3085d6'
     });
-  });
+});
 
-
-  row.querySelector('.copy-trojan-clash877').addEventListener('click', () => {
+row.querySelector('.copy-trojan-clash877').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "xvp.ndeso.web.id";
     const domain = selectedService === "xvp.ndeso.web.id" ? "xvp.ndeso.web.id" : `${selectedService}.xvp.ndeso.web.id`;
-    const TROJANC877 = `- name: (${selectedService})+${negara}+${penyedia}
+    const TROJANC877 = `- name: (${selectedService})+${id}+${isp}
     server: ${selectedService}
     port: 443
     type: trojan
-    password: ${uuid}
+    password: ${uuidv4()}
     skip-cert-verify: true
     sni: ${domain}
     network: ws
@@ -1109,15 +1230,12 @@ function renderProxies(proxies, proxyList, pagination) {
       },
       confirmButtonColor: '#3085d6'
     });
-  });
+});
 
-    
-      
-    
-  row.querySelector('.copy-ss').addEventListener('click', () => {
+row.querySelector('.copy-ss').addEventListener('click', () => {
     const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id";
     const domain = selectedService === "tp1.ndeso.web.id" ? "tp1.ndeso.web.id" : `${selectedService}.tp1.ndeso.web.id`;
-    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${negara}+${penyedia}`;
+    const SS = `ss://bm9uZTo1ZDJlYmQyYS05Y2I5LTRkMWItYWY1NS04NjE3ZDNlODFmMzk%3D@${selectedService}:443?encryption=none&type=ws&host=${domain}&path=%2F${ip}-${port}&security=tls&sni=${domain}#(${selectedService})+${id}+${isp}`;
     navigator.clipboard.writeText(SS);
     Swal.fire({
       title: 'Berhasil!',
@@ -1130,9 +1248,9 @@ function renderProxies(proxies, proxyList, pagination) {
       },
       confirmButtonColor: '#3085d6'
     });
-  });
+});
 
-  row.querySelector('.copy-ss1').addEventListener('click', () => {
+row.querySelector('.copy-ss1').addEventListener('click', () => {
     const SS1 = `087861167414`;
     navigator.clipboard.writeText(SS1);
     Swal.fire({
@@ -1146,193 +1264,64 @@ function renderProxies(proxies, proxyList, pagination) {
       },
       confirmButtonColor: '#f39c12'
     });
-  });
+});
+        
+        
+        // Update status as per your logic
+        checkProxyStatus(ip, port, document.getElementById(`status-${ip}-${port}`));
+      });
 
-  row.querySelector('.copy-vless1').addEventListener('click', () => {
-    const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id"; // Pastikan ini ada di dalam event listener
-    const VLESS1 = `vless://${uuid}@tp1.ndeso.web.id:80?encryption=none&type=ws&host=tp1.ndeso.web.id&path=%2F${ip}-${port}&security=none&sni=#(${selectedService})+${negara}+${penyedia}`;
-    navigator.clipboard.writeText(VLESS1);
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'COPY VLESS 80 SUKSES!',
-      icon: 'success',
-      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
-      color: 'red', // Warna teks
-      customClass: {
-        popup: 'rounded-popup',
-      },
-      confirmButtonColor: '#3085d6'
-    });
-  });
-
-  row.querySelector('.copy-vless2').addEventListener('click', () => {
-    const selectedService = row.querySelector('.service-selector').value || "tp1.ndeso.web.id"; // Pastikan ini ada di dalam event listener
-    const VLESS2 = `- name: (${selectedService})+${negara}+${penyedia}
-  server: tp1.ndeso.web.id
-  port: 80
-  type: vless
-  uuid: ${uuid}
-  cipher: auto
-  tls: false
-  skip-cert-verify: false
-  servername: tp1.ndeso.web.id
-  network: ws
-  ws-opts:
-    path: /${ip}-${port}
-    headers:
-      Host: tp1.ndeso.web.id
-  udp: true `;
-    navigator.clipboard.writeText(VLESS2);
-    Swal.fire({
-      title: 'Berhasil!',
-      text: 'COPY VLESS CLASH 80 SUKSES!',
-      icon: 'success',
-      background: 'rgba(6, 18, 67, 0.89)', // Warna latar belakang (biru pucat)
-      color: 'red', // Warna teks
-      customClass: {
-        popup: 'rounded-popup',
-      },
-      confirmButtonColor: '#3085d6'
-    });
-  });
-
-    
-  });
-
-  // Display total proxies
-  const totalProxies = proxies.length;
-  const totalProxyElement = document.getElementById('total-proxy');
-  if (totalProxyElement) {
-    totalProxyElement.textContent = `Total Proxies: ${totalProxies}`;
-  }
-
-  renderPagination(proxies, pagination);
-}
-
-// Function to render pagination
-// Function to render pagination
-function renderPagination(proxies, pagination) {
-  const totalPages = Math.ceil(proxies.length / proxyPerPage);
-  const maxButtons = 6;
-  pagination.innerHTML = '';
-
-  if (currentPage > 1) {
-    const firstButton = document.createElement('button');
-    firstButton.textContent = '<< First';
-    firstButton.addEventListener('click', () => updatePage(1, proxies, pagination));
-    pagination.appendChild(firstButton);
-
-    const prevButton = document.createElement('button');
-    prevButton.textContent = '<< Previous';
-    prevButton.addEventListener('click', () => updatePage(currentPage - 1, proxies, pagination));
-    pagination.appendChild(prevButton);
-  }
-
-  const startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-  const endPage = Math.min(totalPages, startPage + maxButtons - 1);
-
-  for (let i = startPage; i <= endPage; i++) {
-    const pageButton = document.createElement('button');
-    pageButton.textContent = i;
-    if (i === currentPage) {
-      pageButton.classList.add('active');
+      // Update pagination buttons
+      updatePagination();
     }
-    pageButton.addEventListener('click', () => updatePage(i, proxies, pagination));
-    pagination.appendChild(pageButton);
-  }
 
-  if (currentPage < totalPages) {
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next >>';
-    nextButton.addEventListener('click', () => updatePage(currentPage + 1, proxies, pagination));
-    pagination.appendChild(nextButton);
+    // Update pagination buttons
+    function updatePagination() {
+      pagination.innerHTML = ''; // Clear existing pagination
 
-    const lastButton = document.createElement('button');
-    lastButton.textContent = 'Last >>';
-    lastButton.addEventListener('click', () => updatePage(totalPages, proxies, pagination));
-    pagination.appendChild(lastButton);
-  }
-}
+      // Create previous button
+      const prevButton = document.createElement('button');
+      prevButton.textContent = '<<';
+      prevButton.onclick = () => updatePage(currentPage - 1);
+      pagination.appendChild(prevButton);
 
+      // Create first page button (<<<)
+      const firstButton = document.createElement('button');
+      firstButton.textContent = '<<<';
+      firstButton.onclick = () => updatePage(1);
+      pagination.appendChild(firstButton);
 
-// Function to update page
-function updatePage(page, proxies, pagination) {
-  currentPage = page;
-  const proxyList = document.getElementById('proxy-list');
-  renderProxies(proxies, proxyList, pagination);
-}
-
-// Function to filter proxies
-function filterProxies(searchTerm) {
-  searchTerm = searchTerm.toLowerCase();
-  filteredProxies = allProxies.filter(proxy => proxy.toLowerCase().includes(searchTerm));
-  currentPage = 1;
-  const proxyList = document.getElementById('proxy-list');
-  const pagination = document.getElementById('pagination');
-  renderProxies(filteredProxies, proxyList, pagination);
-}
-
-// Event listener for search bar
-document.getElementById('search-bar').addEventListener('input', (e) => {
-  filterProxies(e.target.value);
-});
-
-// Event listener for items per page dropdown
-document.getElementById('items-per-page').addEventListener('change', (e) => {
-  proxyPerPage = parseInt(e.target.value);
-  const proxyList = document.getElementById('proxy-list');
-  const pagination = document.getElementById('pagination');
-  renderProxies(filteredProxies, proxyList, pagination);
-});
-
-// Fetching proxy data
-fetch("https://ndeso.web.id/bot/proxy_list.txt")
-  .then(response => response.text())
-  .then(data => {
-    const allProxies = data.split("\n").filter(line => line.trim() !== "");
-    const filteredProxies = allProxies;
-    const proxyList = document.getElementById('proxy-list');
-    const pagination = document.getElementById('pagination');
-    renderProxies(filteredProxies, proxyList, pagination);
-  })
-  .catch(error => console.error("Error fetching proxy data:", error)); // Correct placement here
-
-// Check Proxy status function
-function checkProxyStatus(ip, port, statusElement) {
-  statusElement.textContent = 'Loading...'; // Menampilkan Loading...
-
-  const startTime = performance.now();
-  const statusUrl = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
-
-  fetch(statusUrl)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      // Create page number buttons (limited to 5 pages)
+      const startPage = Math.max(1, currentPage - 2);
+      const endPage = Math.min(totalPages, currentPage + 2);
+      for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.onclick = () => updatePage(i);
+        if (i === currentPage) pageButton.style.fontWeight = 'bold'; // Highlight current page
+        pagination.appendChild(pageButton);
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log(data); // Cek data API
-      const endTime = performance.now();
-      const latency = (endTime - startTime).toFixed(2); // Menghitung latency
 
-      if (data.proxyStatus === "ACTIVE") {
-        statusElement.textContent = `Aktif (${latency} ms)`;
-        statusElement.style.color = 'green';
-      } else if (data.proxyStatus === "DEAD") {
-        statusElement.textContent = `Dead (${latency} ms)`;
-        statusElement.style.color = 'red';
-      }
-    })
-    .catch(() => {
-      statusElement.textContent = 'Error';
-      statusElement.style.color = 'cyan';
-    });
-}
+      // Create last page button (>>>)
+      const lastButton = document.createElement('button');
+      lastButton.textContent = '>>>';
+      lastButton.onclick = () => updatePage(totalPages);
+      pagination.appendChild(lastButton);
+
+      // Create next button
+      const nextButton = document.createElement('button');
+      nextButton.textContent = '>>';
+      nextButton.onclick = () => updatePage(currentPage + 1);
+      pagination.appendChild(nextButton);
+    }
+
+    // Initialize the page with the first set of proxies
+    updatePage(1);
+  }
 
 
 </script>
-       
+
+
 </body>
 </html>
-
