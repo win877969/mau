@@ -959,7 +959,7 @@ function uuidv4() {
 }
 
   // URL untuk mendapatkan proxy list
-  fetch("https://raw.githubusercontent.com/dickymuliafiqri/Nautica/refs/heads/main/proxyList.txt")
+  fetch("bot/proxy_list.txt")
     .then(response => response.text())
     .then(data => {
       const allProxies = data.split("\n").filter(line => line.trim() !== "");
@@ -1007,7 +1007,7 @@ function uuidv4() {
     statusElement.innerHTML = '<div class="loading-icon"></div>';
 
     const startTime = performance.now();
-    const Status = `https://id1.foolvpn.me/api/v1/check?ip=${ip}:${port}`;
+    const Status = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
     
     fetch(Status)
       .then(response => response.json())
@@ -1070,7 +1070,7 @@ function uuidv4() {
             <span class="flag-icon flag-icon-${id.toLowerCase()}"></span> <!-- Display the flag -->
             </td>
           <td>
-            <span id="status-${ip}:${port}">Loading...</span>
+            <span id="status-${ip}-${port}">Loading...</span>
           </td>
           <td><select class="service-selector">
           <option value="">NO WILDCARD</option>
