@@ -959,7 +959,7 @@ function uuidv4() {
 }
 
   // URL untuk mendapatkan proxy list
-  fetch("https://ndeso.web.id/bot/proxy_list.txt")
+  fetch("https://raw.githubusercontent.com/dickymuliafiqri/Nautica/refs/heads/main/kvProxyList.json")
     .then(response => response.text())
     .then(data => {
       const allProxies = data.split("\n").filter(line => line.trim() !== "");
