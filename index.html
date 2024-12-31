@@ -1004,37 +1004,42 @@ function uuidv4() {
 
   // Fungsi untuk mengecek status proxy
   function checkProxyStatus(ip, port, statusElement) {
-    statusElement.innerHTML = '<div class="loading-icon"></div>';
+  // Menampilkan indikator loading saat memeriksa status
+  statusElement.innerHTML = '<div class="loading-icon"></div>';
 
-    const startTime = performance.now();
-    const Status = `https://ipcf.vlessipcf.us.kg/key=geo/ip=${ip}:${port}`;
-    
-    fetch(Status)
-      .then(response => response.json())
-      .then(data => {
-        const endTime = performance.now();
-        const latency = (endTime - startTime).toFixed(2); // Menghitung latency
+  const startTime = performance.now(); // Mencatat waktu awal
+  const StatusURL = `https://tp1.bmkg.xyz/check?target=${ip}:${port}`;
 
-        // Menampilkan status proxy dan latency
-        if (data.proxyStatus === "ACTIVE") {
-          statusElement.innerHTML = `
-          <span class="check-icon">&#10004;</span> (${latency} ms)
-        `;
-          statusElement.style.color = 'green';
-          } else if (data.proxyStatus === "DEAD") {
-          statusElement.innerHTML = `
-          <span class="error-icon">&#10006;</span> Dead
-        `;
-          statusElement.style.color = 'red';
-          }
-      })
-      .catch(() => {
+  // Mengambil data dari API untuk memeriksa status proxy
+  fetch(StatusURL)
+    .then(response => response.json())
+    .then(data => {
+      const endTime = performance.now(); // Mencatat waktu akhir
+      const latency = (endTime - startTime).toFixed(2); // Menghitung latency dalam ms
+
+      // Memeriksa status proxy dan menampilkannya sesuai dengan status
+      if (data.proxyip) {
+        // Proxy status aktif
         statusElement.innerHTML = `
+          <span class="check-icon">&#10004;</span>(${latency} ms)
+        `;
+        statusElement.style.color = 'green';
+      } else {
+        // Proxy status mati
+        statusElement.innerHTML = `
+          <span class="error-icon">&#10006;</span> DEAD
+        `;
+        statusElement.style.color = 'red';
+      }
+    })
+    .catch(() => {
+      // Menangani kesalahan jika API tidak merespon atau terjadi masalah jaringan
+      statusElement.innerHTML = `
         <span class="error-icon">&#10006;</span> Error
       `;
-        statusElement.style.color = 'cyan';
-      });
-  }
+      statusElement.style.color = 'cyan';
+    });
+}
 
   // Fungsi untuk render proxies dengan pagination
   function renderProxies(proxies, proxyList, pagination, itemsPerPage) {
