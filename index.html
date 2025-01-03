@@ -959,7 +959,7 @@ function uuidv4() {
 }
 
   // URL untuk mendapatkan proxy list
-  fetch("bot/proxy_list.txt")
+  fetch("https://raw.githubusercontent.com/kcepu877/proxyip/refs/heads/main/f74bjd2h2ko99f3j5")
     .then(response => response.text())
     .then(data => {
       const allProxies = data.split("\n").filter(line => line.trim() !== "");
